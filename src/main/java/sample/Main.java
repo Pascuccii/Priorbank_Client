@@ -24,7 +24,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 800, 500, Color.TRANSPARENT);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         root.setOnMousePressed(mouseEvent ->  {
-
+                //test
                 xOffset = mouseEvent.getSceneX();
                 yOffset = mouseEvent.getSceneY();
         });
