@@ -16,7 +16,7 @@ public class ConnectionClass {
     public ConnectionClass (String URL, String USER, String PASS) {
         try {
             connection = DriverManager.getConnection(URL, USER, PASS);
-            //            statement.execute("INSERT INTO users (name,password) VALUES ('first','first')");
+            //statement.execute("INSERT INTO users (name,password) VALUES ('first','first')");
 //            statement.executeUpdate("UPDATE users SET users.name = 'admin' WHERE id = 4");
 
 //            statement.addBatch("INSERT INTO users (name,password) VALUES ('batch1','pas')");

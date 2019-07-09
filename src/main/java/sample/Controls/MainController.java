@@ -1,30 +1,13 @@
 package sample.Controls;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
-import java.util.Calendar;
-import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.Connectivity.ConnectionClass;
 
@@ -256,8 +239,8 @@ public class MainController {
         loginButton.getStyleClass().add("loginButton");
 
         loginButton.setOnAction(actionEvent -> {
+            loginWarning.setStyle("-fx-text-fill: #d85751");
             boolean was = false;
-            boolean correctFormat = true;
             String enteredUsername = usernameField.getText();
             String enteredPassword = passwordField.getText();
 
@@ -284,6 +267,44 @@ public class MainController {
                     }
                     else
                         loginWarning.setText("Wrong login/password.");
+                }
+                else
+                    loginWarning.setText("No connection.");
+            }
+            else
+                loginWarning.setText("Username/password must be at least 3 characters");
+        });
+        signUpButton.setOnAction(actionEvent -> {
+            loginWarning.setStyle("-fx-text-fill: #d85751");
+            boolean was = false;
+            String enteredUsername = usernameField.getText();
+            String enteredPassword = passwordField.getText();
+
+            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+                if(conn.isConnected()) {
+                    for (User u : usersData )
+                        if(enteredUsername.equals(u.getUsername())) {
+                            was = true;
+                            break;
+                        }
+
+                    if(!was){
+                        try {
+                            String prepStat = "INSERT INTO `mydbtest`.`users` (`name`, `password`) VALUES (?, ?)";
+                            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                            preparedStatement.setString(1, enteredUsername);
+                            preparedStatement.setString(2, enteredPassword);
+                            preparedStatement.execute();
+                            initUsersData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        loginWarning.setStyle("-fx-text-fill: #a1b56c");
+                        loginWarning.setText(enteredUsername + " registered.");
+                    }
+                    else
+                        loginWarning.setText("Username is not free.");
                 }
                 else
                     loginWarning.setText("No connection.");
