@@ -211,3 +211,46 @@
     -fx-text-fill: #d85751;
     -fx-font-weight: bold;
 }
+
+.criteriaButton {
+    -fx-background-color: #383838;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+}
+
+.criteriaButton:hover {
+    -fx-background-color: #282828;
+}
+
+.criteriaButton:pressed {
+    -fx-background-color: #D8D8D8;
+}
+
+.menu-item.label {
+    -fx-background-color: blue;
+}
+
+.menu-item {
+    -fx-background-color: #383838;
+}
+
+.menu-item:hover {
+    -fx-background-color: #282828;
+}
+
+.menu-item:pressed {
+    -fx-background-color: #D8D8D8;
+}
+
+.context-menu {
+    -fx-background-color: #383838;
+}
+
+.resetSearchButton {
+    -fx-background-color: #383838;
+    -fx-border-color: #D8D8D8;
+    -fx-border-width: 0.5;
+    -fx-border-radius: 0 5 5 0;
+    -fx-background-radius: 0 5 5 0;
+}

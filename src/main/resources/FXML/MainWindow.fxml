@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -32,9 +34,9 @@
               <items>
                 <AnchorPane fx:id="leftAnchorPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="210.0">
                      <children>
-                        <FlowPane layoutX="-12.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <FlowPane fx:id="menuAdmin" layoutX="-12.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="205.0" text="Меню (админ.)" textFill="#ffffff">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="205.0" text="Меню а" textFill="#ffffff">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -72,20 +74,61 @@
                                  </padding>
                               </Button>
                            </children></FlowPane>
+                        <FlowPane fx:id="menuUser" layoutX="-2.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="205.0" text="Меню п" textFill="#ffffff">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="menuButton11" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 1  Управление пользователями">
+                                 <FlowPane.margin>
+                                    <Insets left="2.0" right="2.0" />
+                                 </FlowPane.margin>
+                                 <padding>
+                                    <Insets bottom="8.0" left="4.0" top="8.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="menuButton21" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 2  Добавить пользователя">
+                                 <FlowPane.margin>
+                                    <Insets left="2.0" right="2.0" />
+                                 </FlowPane.margin>
+                                 <padding>
+                                    <Insets bottom="8.0" left="4.0" top="8.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="menuButton31" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 3  Удалить пользователя">
+                                 <FlowPane.margin>
+                                    <Insets left="2.0" right="2.0" />
+                                 </FlowPane.margin>
+                                 <padding>
+                                    <Insets bottom="8.0" left="4.0" top="8.0" />
+                                 </padding>
+                              </Button>
+                              <Button fx:id="menuButton41" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 4  Написать SQL запрос">
+                                 <FlowPane.margin>
+                                    <Insets left="2.0" right="2.0" />
+                                 </FlowPane.margin>
+                                 <padding>
+                                    <Insets bottom="8.0" left="4.0" top="8.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </FlowPane>
                      </children>
                   </AnchorPane>
                 <AnchorPane fx:id="rightAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="409.0">
                      <children>
-                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="connectionIndicator" layoutX="152.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" />
+                              <Button fx:id="connectionIndicator" layoutX="152.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.topAnchor="10.0" />
                               <TableView fx:id="usersTable" editable="true" layoutX="14.0" layoutY="43.0" maxWidth="500.0" prefHeight="150.0" prefWidth="340.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
                                 <columns>
-                                    <TableColumn fx:id="idColumn" prefWidth="30.0" text="Id" />
-                                    <TableColumn fx:id="accessModeColumn" prefWidth="75.0" text="accessMode" />
+                                    <TableColumn fx:id="idColumn" prefWidth="30.0" text="ID" />
+                                    <TableColumn fx:id="accessModeColumn" prefWidth="75.0" text="Access" />
                                   <TableColumn fx:id="usernameColumn" minWidth="0.0" prefWidth="80.00005340576172" text="Username" />
                                   <TableColumn fx:id="passwordColumn" minWidth="0.0" prefWidth="66.4000244140625" text="Password" />
-                                    <TableColumn fx:id="emailColumn" prefWidth="147.199951171875" text="e-mail" />
+                                    <TableColumn fx:id="emailColumn" prefWidth="147.199951171875" text="E-mail" />
                                 </columns>
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -95,6 +138,18 @@
                                  </columnResizePolicy>
                               </TableView>
                               <Label layoutX="30.0" layoutY="14.0" text="Database connection" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="15.0" />
+                              <TextField fx:id="searchField" layoutX="221.0" layoutY="12.0" prefHeight="26.0" prefWidth="136.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="12.0" />
+                              <MenuButton fx:id="criteriaButton" layoutX="387.6" layoutY="12.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Username" AnchorPane.rightAnchor="94.0" AnchorPane.topAnchor="12.0">
+                                <items>
+                                  <MenuItem fx:id="criteriaMenuItem_Id" mnemonicParsing="false" text="Id" />
+                                    <MenuItem fx:id="criteriaMenuItem_Access" mnemonicParsing="false" text="Access" />
+                                  <MenuItem fx:id="criteriaMenuItem_Username" mnemonicParsing="false" text="Username" />
+                                    <MenuItem fx:id="criteriaMenuItem_Password" mnemonicParsing="false" text="Password" />
+                                    <MenuItem fx:id="criteriaMenuItem_Email" mnemonicParsing="false" text="E-mail" />
+                                </items>
+                              </MenuButton>
+                              <Button fx:id="searchButton" layoutX="487.0" layoutY="9.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0" />
+                              <Button fx:id="resetSearchButton" layoutX="355.0" layoutY="12.5" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="12.0" />
                            </children></AnchorPane>
                         <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>

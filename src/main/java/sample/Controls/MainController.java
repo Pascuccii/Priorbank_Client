@@ -1,6 +1,8 @@
 package sample.Controls;
 
 import java.sql.*;
+import java.util.Iterator;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import sample.Connectivity.ConnectionClass;
 
@@ -113,10 +116,43 @@ public class MainController {
     private Label currentUserLabel;
 
     @FXML
-    private AnchorPane loginElementsPane;
+    private AnchorPane loginElementsPane; //блок с полями ввода
+
+    @FXML
+    private FlowPane menuAdmin;
+
+    @FXML
+    private FlowPane menuUser;
 
     @FXML
     private Button logoutButton;
+
+    @FXML
+    private Button searchButton;
+
+    @FXML
+    private Button resetSearchButton;
+
+    @FXML
+    private MenuButton criteriaButton;
+
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Id;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Username;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Password;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Access;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Email;
 
     @FXML
     void initialize() throws SQLException {
@@ -184,6 +220,7 @@ public class MainController {
                 loginElementsPane.setLayoutY(176);
                 loginWarning.setLayoutX(45);
                 loginWarning.setLayoutY(117);
+                searchField.setPrefWidth(136);
             } else {
                 stage.setMaximized(true);
                 usersTable.setPrefHeight(500d);
@@ -192,6 +229,8 @@ public class MainController {
                 loginElementsPane.setLayoutY(350);
                 loginWarning.setLayoutX(405);
                 loginWarning.setLayoutY(290);
+                searchField.setPrefWidth(350);
+
             }
         });
         exitButton.setOnAction(actionEvent -> {
@@ -203,6 +242,12 @@ public class MainController {
         minimizeButton.setFocusTraversable(false);
         exitButton.setFocusTraversable(false);
         logoutButton.setFocusTraversable(false);
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("accessMode"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         menuButton1.setOnAction(actionEvent -> {
             setAllInvisible();
@@ -228,7 +273,7 @@ public class MainController {
         menuPane2.setOnMouseClicked(mouseEvent -> menuPane2.requestFocus());
         menuPane3.setOnMouseClicked(mouseEvent -> menuPane3.requestFocus());
         menuPane4.setOnMouseClicked(mouseEvent -> menuPane4.requestFocus());
-        loginPane.setOnMouseClicked(mouseEvent -> usernameField.requestFocus());
+        loginPane.setOnMouseClicked(mouseEvent -> loginPane.requestFocus());
 
         menuPane1.getStyleClass().add("menuPane");
         menuPane2.getStyleClass().add("menuPane");
@@ -256,12 +301,17 @@ public class MainController {
 
                     if(was){
                         String mode;
-                        if (currentUser.getAccessMode() == 1)
+                        if (currentUser.getAccessMode() == 1) {
                             mode = "Admin: ";
-                        else
+                            menuAdmin.setVisible(true);
+                        }
+                        else {
                             mode = "User: ";
+                            menuUser.setVisible(true);
+                        }
                         currentUserLabel.setText(mode + currentUser.getUsername());
                         leftAnchorPane.setDisable(false);
+
                         loginPane.setVisible(false);
                         loginWarning.setText("");
                     }
@@ -321,11 +371,81 @@ public class MainController {
             if(keyEvent.getCode() == KeyCode.ENTER)
                 passwordField.requestFocus();
         });
+
+        criteriaButton.getStyleClass().add("criteriaButton");
+        criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
+        criteriaMenuItem_Access.setOnAction(actionEvent -> criteriaButton.setText("Access"));
+        criteriaMenuItem_Username.setOnAction(actionEvent -> criteriaButton.setText("Username"));
+        criteriaMenuItem_Password.setOnAction(actionEvent -> criteriaButton.setText("Password"));
+        criteriaMenuItem_Email.setOnAction(actionEvent -> criteriaButton.setText("E-mail"));
+
+        resetSearchButton.getStyleClass().add("resetSearchButton");
+        resetSearchButton.setOnAction(actionEvent -> {
+            try {
+                searchField.clear();
+                initUsersData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        searchField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER)
+                searchButton.fire();
+        });
+        searchButton.setOnAction(actionEvent -> {
+            try {
+                initUsersData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if(!searchField.getText().equals("")) {
+                Iterator<User> i = usersData.iterator();
+                switch (criteriaButton.getText()) {
+                    case "Id":
+                        while (i.hasNext()) {
+                            if (i.next().getId() != Integer.parseInt(searchField.getText())) {
+                                i.remove();
+                            }
+                        }
+                        break;
+                    case "Access":
+                        while (i.hasNext()) {
+                            if (i.next().getAccessMode() != Integer.parseInt(searchField.getText())) {
+                                i.remove();
+                            }
+                        }
+                        break;
+                    case "Username":
+                        while (i.hasNext()) {
+                            if (!i.next().getUsername().equals(searchField.getText())) {
+                                i.remove();
+                            }
+                        }
+                        break;
+                    case "Password":
+                        while (i.hasNext()) {
+                            if (!i.next().getPassword().equals(searchField.getText())) {
+                                i.remove();
+                            }
+                        }
+                        break;
+                    case "E-mail":
+                        while (i.hasNext()) {
+                            if (!i.next().getEmail().equals(searchField.getText())) {
+                                i.remove();
+                            }
+                        }
+                        break;
+                }
+            }
+        });
         login();
     }
 
     private void login() {
         logoutButton.setVisible(false);
+        menuAdmin.setVisible(false);
+        menuUser.setVisible(false);
         leftAnchorPane.setDisable(true);
         currentUser = null;
         currentUserLabel.setText("");
@@ -346,20 +466,11 @@ public class MainController {
     private void initUsersData() throws SQLException {
         if (conn.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
-
-            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-            accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("accessMode"));
-            usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-            passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
-            emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
             usersTable.setItems(usersData);
-
-            String query = "SELECT * FROM users";
             Statement statement = conn.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-
-
+            ResultSet resultSet = statement.executeQuery("SELECT  * FROM users");
             usersData.clear();
+
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
