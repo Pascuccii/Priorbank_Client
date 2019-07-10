@@ -197,6 +197,9 @@ public class MainController {
                 case DIGIT4:
                     menuButton4.fire();
                     break;
+                case ESCAPE:
+                    logoutButton.fire();
+                    break;
             }
         });
         leftAnchorPane.getStyleClass().add("leftAnchorPane");
@@ -249,22 +252,10 @@ public class MainController {
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        menuButton1.setOnAction(actionEvent -> {
-            setAllInvisible();
-            menuPane1.setVisible(true);
-        });
-        menuButton2.setOnAction(actionEvent -> {
-            setAllInvisible();
-            menuPane2.setVisible(true);
-        });
-        menuButton3.setOnAction(actionEvent -> {
-            setAllInvisible();
-            menuPane3.setVisible(true);
-        });
-        menuButton4.setOnAction(actionEvent -> {
-            setAllInvisible();
-            menuPane4.setVisible(true);
-        });
+        menuButton1.setOnAction(actionEvent -> selectMenuItem(menuButton1, menuPane1));
+        menuButton2.setOnAction(actionEvent -> selectMenuItem(menuButton2, menuPane2));
+        menuButton3.setOnAction(actionEvent -> selectMenuItem(menuButton3, menuPane3));
+        menuButton4.setOnAction(actionEvent -> selectMenuItem(menuButton4, menuPane4));
 
         menuPane1.setOnMouseClicked(mouseEvent -> {
             menuPane1.requestFocus();
@@ -282,6 +273,7 @@ public class MainController {
 
         signUpButton.getStyleClass().add("signUpButton");
         loginButton.getStyleClass().add("loginButton");
+
 
         loginButton.setOnAction(actionEvent -> {
             loginWarning.setStyle("-fx-text-fill: #d85751");
@@ -311,7 +303,7 @@ public class MainController {
                         }
                         currentUserLabel.setText(mode + currentUser.getUsername());
                         leftAnchorPane.setDisable(false);
-
+                        menuButton1.fire();
                         loginPane.setVisible(false);
                         loginWarning.setText("");
                     }
@@ -368,8 +360,13 @@ public class MainController {
                 loginButton.fire();
         });
         usernameField.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.ENTER)
+            if(keyEvent.getCode() == KeyCode.ENTER) {
                 passwordField.requestFocus();
+                passwordField.selectAll();
+            }
+        });
+        usernameField.setOnMouseClicked(mouseEvent -> {
+            usernameField.selectAll();
         });
 
         criteriaButton.getStyleClass().add("criteriaButton");
@@ -440,6 +437,20 @@ public class MainController {
             }
         });
         login();
+    }
+
+    private void selectMenuItem(Button menuItem, AnchorPane pane) {
+        menuButton1.setStyle("");
+        menuButton2.setStyle("");
+        menuButton3.setStyle("");
+        menuButton4.setStyle("");
+
+        setAllInvisible();
+        pane.setVisible(true);
+        menuItem.setStyle("-fx-background-image: url(assets/selected.png);" +
+                          "-fx-background-repeat: no-repeat;" +
+                          "-fx-background-size: 5pt;" +
+                          "-fx-background-position: 200 0;");
     }
 
     private void login() {
