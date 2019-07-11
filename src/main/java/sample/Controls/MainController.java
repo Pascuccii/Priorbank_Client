@@ -14,6 +14,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import sample.Connectivity.ConnectionClass;
 
+import javax.swing.text.html.ImageView;
+
 public class MainController {
 
     private double xOffset = 0;
@@ -47,16 +49,22 @@ public class MainController {
     private AnchorPane leftAnchorPane;
 
     @FXML
-    private Button menuButton1;
+    private Button menuAdminButton1;
+    @FXML
+    private Button menuAdminButton2;
+    @FXML
+    private Button menuAdminButton3;
+    @FXML
+    private Button menuAdminButton4;
 
     @FXML
-    private Button menuButton2;
-
+    private Button menuUserButton1;
     @FXML
-    private Button menuButton3;
-
+    private Button menuUserButton2;
     @FXML
-    private Button menuButton4;
+    private Button menuUserButton3;
+    @FXML
+    private Button menuUserButton4;
 
     @FXML
     private AnchorPane rightAnchorPane;
@@ -155,14 +163,51 @@ public class MainController {
     private MenuItem criteriaMenuItem_Email;
 
     @FXML
-    void initialize() throws SQLException {
-//        TimeUnit.SECONDS.sleep(5);
-//        TimeUnit.SECONDS.sleep(5);
-//        TimeUnit.SECONDS.sleep(5);
-//        TimeUnit.SECONDS.sleep(5);
-//        TimeUnit.SECONDS.sleep(5);
-//        TimeUnit.SECONDS.sleep(5);
+    private AnchorPane menuPane31;
 
+    @FXML
+    private Label languageLabel;
+    @FXML
+    private MenuButton languageButton;
+    @FXML
+    private MenuItem languageItem_Russian;
+    @FXML
+    private MenuItem languageItem_English;
+
+    @FXML
+    private Label themeLabel;
+    @FXML
+    private MenuButton themeButton;
+    @FXML
+    private MenuItem themeItem_Dark;
+    @FXML
+    private MenuItem themeItem_Light;
+
+    @FXML
+    private Label menuAdminLabel;
+
+    @FXML
+    private Label menuUserLabel;
+
+    @FXML
+    private Label menuPane1_DBLabel;
+
+    @FXML
+    private Button loginLanguageButton;
+
+    @FXML
+    private Label loginUsernameLabel;
+
+    @FXML
+    private Label loginPasswordLabel;
+
+    @FXML
+    private Button loginPaneTranslate;
+
+    @FXML
+    void initialize() throws SQLException {
+        primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
+        translate("English");
         conn = new ConnectionClass("jdbc:mysql://localhost:3306/mydbtest?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         initUsersData();
@@ -186,16 +231,28 @@ public class MainController {
         primaryAnchorPane.setOnKeyPressed(keyEvent -> {
             switch (keyEvent.getCode()) {
                 case DIGIT1:
-                    menuButton1.fire();
+                    if(currentUser.getAccessMode() == 1)
+                        menuAdminButton1.fire();
+                    else
+                        menuUserButton1.fire();
                     break;
                 case DIGIT2:
-                    menuButton2.fire();
+                    if(currentUser.getAccessMode() == 1)
+                        menuAdminButton2.fire();
+                    else
+                        menuUserButton2.fire();
                     break;
                 case DIGIT3:
-                    menuButton3.fire();
+                    if(currentUser.getAccessMode() == 1)
+                        menuAdminButton3.fire();
+                    else
+                        menuUserButton3.fire();
                     break;
                 case DIGIT4:
-                    menuButton4.fire();
+                    if(currentUser.getAccessMode() == 1)
+                        menuAdminButton4.fire();
+                    else
+                        menuUserButton4.fire();
                     break;
                 case ESCAPE:
                     logoutButton.fire();
@@ -218,7 +275,10 @@ public class MainController {
             if (stage.isMaximized() && theme == 0) {
                 stage.setMaximized(false);
                 usersTable.setPrefHeight(150d);
-                minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
+                if(currentUser.getTheme().equals("Dark")) 
+                    minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
+                else
+                    minimizeButton.setStyle("-fx-background-image: url(assets/expand-black.png)");
                 loginElementsPane.setLayoutX(250);
                 loginElementsPane.setLayoutY(176);
                 loginWarning.setLayoutX(45);
@@ -227,7 +287,10 @@ public class MainController {
             } else {
                 stage.setMaximized(true);
                 usersTable.setPrefHeight(500d);
-                minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
+                if(currentUser.getTheme().equals("Dark"))
+                    minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
+                else
+                    minimizeButton.setStyle("-fx-background-image: url(assets/minimize-black.png)");
                 loginElementsPane.setLayoutX(610);
                 loginElementsPane.setLayoutY(350);
                 loginWarning.setLayoutX(405);
@@ -252,10 +315,14 @@ public class MainController {
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        menuButton1.setOnAction(actionEvent -> selectMenuItem(menuButton1, menuPane1));
-        menuButton2.setOnAction(actionEvent -> selectMenuItem(menuButton2, menuPane2));
-        menuButton3.setOnAction(actionEvent -> selectMenuItem(menuButton3, menuPane3));
-        menuButton4.setOnAction(actionEvent -> selectMenuItem(menuButton4, menuPane4));
+        menuAdminButton1.setOnAction(actionEvent -> selectMenuItem(menuAdminButton1, menuPane1));
+        menuUserButton1.setOnAction(actionEvent -> selectMenuItem(menuUserButton1, menuPane1));
+        menuAdminButton2.setOnAction(actionEvent -> selectMenuItem(menuAdminButton2, menuPane2));
+        menuUserButton2.setOnAction(actionEvent -> selectMenuItem(menuUserButton2, menuPane2));
+        menuAdminButton3.setOnAction(actionEvent -> selectMenuItem(menuAdminButton3, menuPane3));
+        menuUserButton3.setOnAction(actionEvent -> selectMenuItem(menuUserButton3, menuPane3));
+        menuAdminButton4.setOnAction(actionEvent -> selectMenuItem(menuAdminButton4, menuPane4));
+        menuUserButton4.setOnAction(actionEvent -> selectMenuItem(menuUserButton4, menuPane4));
 
         menuPane1.setOnMouseClicked(mouseEvent -> {
             menuPane1.requestFocus();
@@ -284,28 +351,19 @@ public class MainController {
             if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
                 if(conn.isConnected()) {
                     for (User u : usersData )
-                        if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
+                            if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
                             was = true;
                             currentUser = u;
                             logoutButton.setVisible(true);
                             break;
                         }
 
-                    if(was){
-                        String mode;
-                        if (currentUser.getAccessMode() == 1) {
-                            mode = "Admin: ";
-                            menuAdmin.setVisible(true);
+                    if(was) {
+                        try {
+                            loginSuccess();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
-                        else {
-                            mode = "User: ";
-                            menuUser.setVisible(true);
-                        }
-                        currentUserLabel.setText(mode + currentUser.getUsername());
-                        leftAnchorPane.setDisable(false);
-                        menuButton1.fire();
-                        loginPane.setVisible(false);
-                        loginWarning.setText("");
                     }
                     else
                         loginWarning.setText("Wrong login/password.");
@@ -342,7 +400,7 @@ public class MainController {
                             e.printStackTrace();
                         }
 
-                        loginWarning.setStyle("-fx-text-fill: #a1b56c");
+                        loginWarning.setStyle("-fx-text-fill: #7f8e55");
                         loginWarning.setText(enteredUsername + " registered.");
                     }
                     else
@@ -354,27 +412,62 @@ public class MainController {
             else
                 loginWarning.setText("Username/password must be at least 3 characters");
         });
-        logoutButton.setOnAction(actionEvent -> login());
+        logoutButton.setOnAction(actionEvent -> loginBegin());
         loginPane.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
                 loginButton.fire();
         });
         usernameField.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.ENTER) {
+            if(keyEvent.getCode() == KeyCode.TAB) {
                 passwordField.requestFocus();
                 passwordField.selectAll();
             }
         });
-        usernameField.setOnMouseClicked(mouseEvent -> {
-            usernameField.selectAll();
+        passwordField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.TAB) {
+                usernameField.requestFocus();
+                usernameField.selectAll();
+            }
         });
+        //        usernameField.setOnMouseClicked(mouseEvent -> {
+//            usernameField.selectAll();
+//        });
 
-        criteriaButton.getStyleClass().add("criteriaButton");
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
         criteriaMenuItem_Access.setOnAction(actionEvent -> criteriaButton.setText("Access"));
         criteriaMenuItem_Username.setOnAction(actionEvent -> criteriaButton.setText("Username"));
         criteriaMenuItem_Password.setOnAction(actionEvent -> criteriaButton.setText("Password"));
         criteriaMenuItem_Email.setOnAction(actionEvent -> criteriaButton.setText("E-mail"));
+
+        languageItem_English.setOnAction(actionEvent -> {
+            try {
+                translate("English");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        languageItem_Russian.setOnAction(actionEvent -> {
+            try {
+                translate("Russian");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        themeItem_Dark.setOnAction(actionEvent -> {
+            try {
+                setTheme("Dark");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        themeItem_Light.setOnAction(actionEvent -> {
+            try {
+                setTheme("Light");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
 
         resetSearchButton.getStyleClass().add("resetSearchButton");
         resetSearchButton.setOnAction(actionEvent -> {
@@ -436,24 +529,123 @@ public class MainController {
                 }
             }
         });
-        login();
+
+        loginBegin();
+    //КОНФИГИ ПОЛЬЗОВАТЕЛЕЙ
+    }
+
+    private void translate(String language) throws SQLException {
+        switch (language){
+            case "English":
+                if(currentUser != null)
+                    currentUser.setLanguageDB(conn,"English");
+                languageButton.setText("English");
+                loginUsernameLabel.setText("Username");
+                loginPasswordLabel.setText("Password");
+                loginButton.setText("Log In");
+                logoutButton.setText("Log Out");
+
+                menuAdminLabel.setText("Menu a");
+                menuUserLabel.setText("Menu u");
+
+                menuAdminButton1.setText(" 1 User management");
+                menuUserButton1.setText(" 1 User management");
+                menuAdminButton2.setText(" 2 Car management");
+                menuUserButton2.setText(" 2 Car management");
+                menuAdminButton3.setText(" 3 Settings");
+                menuUserButton3.setText(" 3 Settings");
+                menuAdminButton4.setText(" 4 Exit");
+                menuUserButton4.setText(" 4 Exit");
+
+                menuPane1_DBLabel.setText("Database connection");
+                searchButton.setText("Search");
+
+                languageLabel.setText("Language");
+                languageItem_Russian.setText("Russian");
+                languageItem_English.setText("English");
+                themeLabel.setText("Theme");
+                break;
+            case "Russian":
+                if(currentUser != null)
+                    currentUser.setLanguageDB(conn,"Russian");
+                languageButton.setText("Русский");
+                loginUsernameLabel.setText("Имя");
+                loginPasswordLabel.setText("Пароль");
+                loginButton.setText("Войти");
+                logoutButton.setText("Выйти");
+
+                menuAdminLabel.setText("Меню а");
+                menuUserLabel.setText("Меню п");
+
+                menuAdminButton1.setText(" 1 Управление пользователями");
+                menuUserButton1.setText(" 1 Управление пользователями");
+                menuAdminButton2.setText(" 2 Управление автомобилями");
+                menuUserButton2.setText(" 2 Управление автомобилями");
+                menuAdminButton3.setText(" 3 Настройки");
+                menuUserButton3.setText(" 3 Настройки");
+                menuAdminButton4.setText(" 4 Выход");
+                menuUserButton4.setText(" 4 Выход");
+
+                menuPane1_DBLabel.setText("Соединение с БД");
+                searchButton.setText("Поиск");
+
+                languageLabel.setText("Язык");
+                languageItem_Russian.setText("Русский");
+                languageItem_English.setText("Английский");
+                themeLabel.setText("Тема");
+                break;
+        }
+    }
+
+    private void setTheme(String theme) throws SQLException {
+        theme = theme.trim();
+        theme = theme.toLowerCase();
+        switch (theme){
+            case "dark":
+                themeButton.setText("Dark");
+                if(currentUser != null)
+                    currentUser.setThemeDB(conn,"Dark");
+                primaryAnchorPane.getStylesheets().clear();
+                primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
+
+                primaryAnchorPane.getScene().getStylesheets().add("CSS/LightTheme.css");
+                break;
+            case "light":
+                themeButton.setText("Light");
+                if(currentUser != null)
+                    currentUser.setThemeDB(conn,"Light");
+                primaryAnchorPane.getStylesheets().clear();
+                primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
+
+                break;
+        }
     }
 
     private void selectMenuItem(Button menuItem, AnchorPane pane) {
-        menuButton1.setStyle("");
-        menuButton2.setStyle("");
-        menuButton3.setStyle("");
-        menuButton4.setStyle("");
+        menuAdminButton1.setStyle("");
+        menuUserButton1.setStyle("");
+        menuAdminButton2.setStyle("");
+        menuUserButton2.setStyle("");
+        menuAdminButton3.setStyle("");
+        menuUserButton3.setStyle("");
+        menuAdminButton4.setStyle("");
+        menuUserButton4.setStyle("");
 
         setAllInvisible();
         pane.setVisible(true);
-        menuItem.setStyle("-fx-background-image: url(assets/selected.png);" +
-                          "-fx-background-repeat: no-repeat;" +
-                          "-fx-background-size: 5pt;" +
-                          "-fx-background-position: 200 0;");
+        if(currentUser.getTheme().equals("Dark"))
+            menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
+                    "-fx-background-repeat: no-repeat;" +
+                    "-fx-background-size: 2pt 25pt;" +
+                    "-fx-background-position: 1 1;");
+        else
+            menuItem.setStyle("-fx-background-image: url(assets/selected-black.png);" +
+                    "-fx-background-repeat: no-repeat;" +
+                    "-fx-background-size: 2pt 25pt;" +
+                    "-fx-background-position: 1 1;");
     }
 
-    private void login() {
+    private void loginBegin() {
         logoutButton.setVisible(false);
         menuAdmin.setVisible(false);
         menuUser.setVisible(false);
@@ -464,6 +656,24 @@ public class MainController {
         loginPane.setVisible(true);
         usernameField.clear();
         passwordField.clear();
+    }
+
+    private void loginSuccess() throws SQLException {
+        leftAnchorPane.setDisable(false);
+        if (currentUser.getAccessMode() == 1) {
+            menuAdmin.setVisible(true);
+            menuAdminButton1.fire();
+        }
+        else {
+            menuUser.setVisible(true);
+            menuUserButton1.fire();
+        }
+        translate(currentUser.getLanguage());
+        setTheme(currentUser.getTheme());
+        currentUserLabel.setText(currentUser.getUsername());
+
+        loginPane.setVisible(false);
+        loginWarning.setText("");
     }
 
     private void setAllInvisible() {
@@ -479,9 +689,11 @@ public class MainController {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             usersTable.setItems(usersData);
             Statement statement = conn.getConnection().createStatement();
+            Statement statement2 = conn.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT  * FROM users");
             usersData.clear();
 
+            System.out.println();
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
@@ -489,8 +701,13 @@ public class MainController {
                 user.setUsername(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
                 user.setEMail(resultSet.getString("email"));
+                ResultSet resultSetConfigs = statement2.executeQuery("SELECT * FROM user_configs");
+                while(resultSetConfigs.next())
+                    if(resultSetConfigs.getInt("userId") == user.getId()){
+                        user.setTheme(resultSetConfigs.getString("theme"));
+                        user.setLanguage(resultSetConfigs.getString("language"));
+                    }
                 usersData.add(user);
-
                 System.out.println(user);
             }
         } else
