@@ -217,7 +217,8 @@
     -fx-background-color: #383838;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-border-width: 0;
+    -fx-border-width: 1;
+    -fx-border-color: #4B4B4B;
 }
 
 .menu-button:hover {
@@ -240,11 +241,6 @@
     -fx-background-color: #D8D8D8;
 }
 
-.menu-button {
-    -fx-border-width: 1;
-    -fx-border-color: #4B4B4B;
-}
-
 .context-menu {
     -fx-background-color: #383838;
 }
@@ -263,5 +259,9 @@
 
 .resetSearchButton:pressed {
     -fx-background-image: url(../assets/exit-black.png);
+}
+
+.menuPane31 {
+    -fx-border-color: #4B4b4B;
 }
 

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sample.Controls.MainController;
 
 public class Main extends Application {
 
@@ -30,6 +31,11 @@ public class Main extends Application {
         primaryStage.setMaximized(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Closing...");
     }
 
     public static void main(String[] args) {

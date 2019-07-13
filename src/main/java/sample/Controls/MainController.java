@@ -1,5 +1,6 @@
 package sample.Controls;
 
+import java.io.*;
 import java.sql.*;
 import java.util.Iterator;
 
@@ -13,8 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import sample.Connectivity.ConnectionClass;
-
-import javax.swing.text.html.ImageView;
 
 public class MainController {
 
@@ -212,6 +211,7 @@ public class MainController {
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         initUsersData();
 
+        //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
@@ -225,6 +225,7 @@ public class MainController {
         });
 
         title.getStyleClass().add("title");
+        menuPane31.getStyleClass().add("menuPane31");
         workPane.getStyleClass().add("workPane");
         loginPane.getStyleClass().add("loginPane");
         primaryAnchorPane.getStyleClass().add("primaryAnchorPane");
@@ -301,9 +302,12 @@ public class MainController {
         });
         exitButton.setOnAction(actionEvent -> {
             Stage stage = (Stage) exitButton.getScene().getWindow();
+            saveLastConfig();
             stage.close();
         });
 
+        languageButton.setFocusTraversable(false);
+        themeButton.setFocusTraversable(false);
         hideButton.setFocusTraversable(false);
         minimizeButton.setFocusTraversable(false);
         exitButton.setFocusTraversable(false);
@@ -340,6 +344,7 @@ public class MainController {
 
         signUpButton.getStyleClass().add("signUpButton");
         loginButton.getStyleClass().add("loginButton");
+        logoutButton.getStyleClass().add("logoutButton");
 
 
         loginButton.setOnAction(actionEvent -> {
@@ -412,7 +417,10 @@ public class MainController {
             else
                 loginWarning.setText("Username/password must be at least 3 characters");
         });
-        logoutButton.setOnAction(actionEvent -> loginBegin());
+        logoutButton.setOnAction(actionEvent -> {
+            saveLastConfig();
+            loginBegin();
+        });
         loginPane.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
                 loginButton.fire();
@@ -429,10 +437,8 @@ public class MainController {
                 usernameField.selectAll();
             }
         });
-        //        usernameField.setOnMouseClicked(mouseEvent -> {
-//            usernameField.selectAll();
-//        });
 
+        searchField.setPromptText("Search...");
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
         criteriaMenuItem_Access.setOnAction(actionEvent -> criteriaButton.setText("Access"));
         criteriaMenuItem_Username.setOnAction(actionEvent -> criteriaButton.setText("Username"));
@@ -530,8 +536,45 @@ public class MainController {
             }
         });
 
+
+        loadLastConfig();
         loginBegin();
-    //КОНФИГИ ПОЛЬЗОВАТЕЛЕЙ
+    }
+
+    private void loadLastConfig() {
+        try {
+            File lastConfig = new File("src/main/java/sample/Controls/lastConfig.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(lastConfig));
+            String text = reader.readLine();
+            for (User u : usersData )
+                if(text.equals(u.getUsername()))
+                {
+                    translate(u.getLanguage());
+                    setTheme(u.getTheme());
+                }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveLastConfig() {
+        try {
+            if(currentUser != null) {
+                File lastConfig = new File("src/main/java/sample/Controls/lastConfig.txt");
+                FileWriter lastConfigWriter = new FileWriter(lastConfig, false);
+                if (!lastConfig.exists())
+                    if (lastConfig.createNewFile())
+                        System.out.println("lastConfig.txt created.");
+
+                lastConfigWriter.write(currentUser.getUsername());
+                lastConfigWriter.flush();
+                System.out.println("last config saved");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void translate(String language) throws SQLException {
@@ -539,6 +582,7 @@ public class MainController {
             case "English":
                 if(currentUser != null)
                     currentUser.setLanguageDB(conn,"English");
+                searchField.setPromptText("Search...");
                 languageButton.setText("English");
                 loginUsernameLabel.setText("Username");
                 loginPasswordLabel.setText("Password");
@@ -568,6 +612,7 @@ public class MainController {
             case "Russian":
                 if(currentUser != null)
                     currentUser.setLanguageDB(conn,"Russian");
+                searchField.setPromptText("Искать...");
                 languageButton.setText("Русский");
                 loginUsernameLabel.setText("Имя");
                 loginPasswordLabel.setText("Пароль");

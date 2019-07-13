@@ -1,13 +1,5 @@
-.connectionIndicator {
-    -fx-background-image: url(../assets/indicator-green.png);
-    -fx-background-color: #D8D8D8;
-    -fx-background-size: 5pt;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: 9.5 11;
-}
-
 .text-field {
-    -fx-background-color: #282828;
+    -fx-background-color: #B8B8B8;
     -fx-font-weight: bold;
 }
 
@@ -26,7 +18,7 @@
 
 .table-view .column-header-background .label{
     -fx-background-color: transparent;
-    -fx-text-fill: #282828;
+    -fx-text-fill: #323232;
 }
 
 .table-view .column-header {
@@ -34,11 +26,15 @@
 }
 
 .table-view .table-cell{
-    -fx-text-fill: #282828;
+    -fx-text-fill: #323232;
+}
+
+.table-view-divider {
+    -fx-background-color: #282828;
 }
 
 .table-row-cell{
-    -fx-background-color: #B8B8B8;
+    -fx-background-color: #F8F8F8;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
 }
@@ -83,21 +79,21 @@
 }
 
 .button {
-    -fx-background-color: #D8D8D8;
+    -fx-background-color: rgba(78, 186, 204, 0.55);
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-border-color: #4B4B4B;
+    -fx-border-color: #F6F6F6;
     -fx-font-weight: bold;
-    -fx-text-fill: #282828;
+    -fx-text-fill: #323232;
 }
 
 .button:hover {
-    -fx-background-color: #383838;
+    -fx-background-color: rgba(74, 155, 170, 0.72);
 }
 
 .button:pressed {
-    -fx-background-color: #D8D8D8;
-    -fx-text-fill: #282828;
+    -fx-background-color: #F8F8F8;
+    -fx-text-fill: #323232;
 }
 
 .hideButton {
@@ -108,7 +104,7 @@
     -fx-background-position: 5.5 6;
 }
 .hideButton:hover {
-    -fx-background-color: #525252;
+    -fx-background-color: #8E8E8E;
 }
 .hideButton:pressed {
     -fx-background-image: url(../assets/hide-black.png);
@@ -124,7 +120,7 @@
     -fx-background-position: 5.5 6;
 }
 .minimizeButton:hover {
-    -fx-background-color: #525252;
+    -fx-background-color: #8E8E8E;
 }
 .minimizeButton:pressed {
     -fx-background-image: url(../assets/expand-black.png);
@@ -147,35 +143,35 @@
 }
 
 .menuPane {
-    -fx-background-color: #D8D8D8;
+    -fx-background-color: #F8F8F8;
 }
 
 .leftAnchorPane {
-    -fx-background-color: #D8D8D8;
-    -fx-border-color: red;
+    -fx-background-color: #F8F8F8;
+    -fx-border-color: #585858;
 }
 
 .rightAnchorPane {
-    -fx-background-color: #D8D8D8;
-    -fx-border-color: red
+    -fx-background-color: #F8F8F8;
+    -fx-border-color: #585858;
 }
 
 .split-pane {
-    -fx-background-color: #D8D8D8;
+    -fx-background-color: #4ebacc;
 }
 
 .split-pane-divider {
-    -fx-background-color: #D8D8D8;
+    -fx-background-color: #4ebacc;
 }
 
 .label {
-    -fx-text-fill: #282828;
+    -fx-text-fill: #323232;
     -fx-font-weight: bold;
 }
 
 .title {
-    -fx-background-color: #D8D8D8;
-    -fx-opacity: 0.8;
+    -fx-background-color: #4ebacc;
+    -fx-opacity: 0.9;
 }
 
 .root {
@@ -189,8 +185,8 @@
 }
 
 .loginPane {
-    -fx-background-color: #D8D8D8;
-    -fx-border-color: red;
+    -fx-background-color: #4ebacc;
+    -fx-border-color: #D8D8D8;
 }
 
 .signUpButton {
@@ -209,6 +205,10 @@
     -fx-border-color: #4B4B4B;
 }
 
+.logoutButton {
+
+}
+
 .loginWarning {
     -fx-text-fill: #d85751;
     -fx-font-weight: bold;
@@ -218,15 +218,16 @@
     -fx-background-color: transparent;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-border-width: 0;
+    -fx-border-width: 1;
+    -fx-border-color: #585858;
 }
 
 .menu-button:hover {
-    -fx-background-color: #383838;
+    -fx-background-color: #8E8E8E;
 }
 
 .menu-button:pressed {
-    -fx-background-color: #D8D8D8;
+    -fx-background-color: #282828;
 }
 
 .menu-item {
@@ -234,16 +235,20 @@
 }
 
 .menu-item:hover {
-    -fx-background-color: #383838;
+    -fx-background-color: #8E8E8E;
+}
+
+.connectionIndicator {
+    -fx-background-image: url(../assets/indicator-green.png);
+    -fx-background-color: #D8D8D8;
+    -fx-background-size: 5pt;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 9.5 11;
 }
 
 .menu-item:pressed {
-    -fx-background-color: #D8D8D8;
-}
-
-.menu-button {
-    -fx-border-width: 1;
-    -fx-border-color: #4B4B4B;
+    -fx-background-color: #282828;
+    -fx-text-fill: #323232;
 }
 
 .context-menu {
@@ -264,5 +269,9 @@
 
 .resetSearchButton:pressed {
     -fx-background-image: url(../assets/exit-black.png);
+}
+
+.menuPane31 {
+    -fx-border-color: #4B4b4B;
 }
 
