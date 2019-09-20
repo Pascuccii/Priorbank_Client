@@ -207,7 +207,7 @@ public class MainController {
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         translate("English");
-        conn = new ConnectionClass("jdbc:mysql://localhost:3306/mydbtest?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+        conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         initUsersData();
 
@@ -216,7 +216,7 @@ public class MainController {
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
             try {
-                conn = new ConnectionClass("jdbc:mysql://localhost:3306/mydbtest?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+                conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
                 initUsersData();
             } catch (SQLException e) {
@@ -353,31 +353,40 @@ public class MainController {
             String enteredUsername = usernameField.getText();
             String enteredPassword = passwordField.getText();
 
-            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-                if(conn.isConnected()) {
-                    for (User u : usersData )
-                            if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
-                            was = true;
-                            currentUser = u;
-                            logoutButton.setVisible(true);
-                            break;
-                        }
-
-                    if(was) {
-                        try {
-                            loginSuccess();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else
-                        loginWarning.setText("Wrong login/password.");
-                }
-                else
-                    loginWarning.setText("No connection.");
+            try {
+                if (enteredUsername.equals("admin"))
+                    currentUser = new User("admin","admin");
+                    logoutButton.setVisible(true);
+                    loginSuccess();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-            else
-                loginWarning.setText("Username/password must be at least 3 characters");
+//
+//            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+//                if(conn.isConnected()) {
+//                    for (User u : usersData )
+//                            if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
+//                            was = true;
+//                            currentUser = u;
+//                            logoutButton.setVisible(true);
+//                            break;
+//                        }
+//
+//                    if(was) {
+//                        try {
+//                            loginSuccess();
+//                        } catch (SQLException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    else
+//                        loginWarning.setText("Wrong login/password.");
+//                }
+//                else
+//                    loginWarning.setText("No connection.");
+//            }
+//            else
+//                loginWarning.setText("Username/password must be at least 3 characters");
         });
         signUpButton.setOnAction(actionEvent -> {
             loginWarning.setStyle("-fx-text-fill: #d85751");
@@ -395,7 +404,7 @@ public class MainController {
 
                     if(!was){
                         try {
-                            String prepStat = "INSERT INTO `mydbtest`.`users` (`name`, `password`) VALUES (?, ?)";
+                            String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
                             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
                             preparedStatement.setString(1, enteredUsername);
                             preparedStatement.setString(2, enteredPassword);
@@ -679,12 +688,12 @@ public class MainController {
         setAllInvisible();
         pane.setVisible(true);
         if(currentUser.getTheme().equals("Dark"))
-            menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
+            menuItem.setStyle("-fx-background-image: url(assets/exit-white.png);" +
                     "-fx-background-repeat: no-repeat;" +
                     "-fx-background-size: 2pt 25pt;" +
                     "-fx-background-position: 1 1;");
         else
-            menuItem.setStyle("-fx-background-image: url(assets/selected-black.png);" +
+            menuItem.setStyle("-fx-background-image: url(assets/exit-black.png);" +
                     "-fx-background-repeat: no-repeat;" +
                     "-fx-background-size: 2pt 25pt;" +
                     "-fx-background-position: 1 1;");
