@@ -26,8 +26,10 @@ public class ConnectionClass {
 //            statement.clearBatch();
 //            boolean status = statement.isClosed();
 //            System.out.println(status);
-            if(!connection.isClosed())
+            if(!connection.isClosed()) {
                 connected = true;
+                System.out.println("Connection succeed!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

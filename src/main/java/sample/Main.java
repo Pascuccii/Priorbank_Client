@@ -27,7 +27,7 @@ public class Main extends Application {
         root.setOnMouseDragged(mouseEvent ->  {
                 primaryStage.setX(mouseEvent.getScreenX() - xOffset);
                 primaryStage.setY(mouseEvent.getScreenY() - yOffset);
-            });
+        });
         primaryStage.setMaximized(false);
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -354,39 +354,40 @@ public class MainController {
             String enteredPassword = passwordField.getText();
 
             try {
-                if (enteredUsername.equals("admin"))
-                    currentUser = new User("admin","admin");
+                if (enteredUsername.equals("admin")) {
+                    currentUser = new User("admin", "admin");
                     logoutButton.setVisible(true);
                     loginSuccess();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//
-//            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-//                if(conn.isConnected()) {
-//                    for (User u : usersData )
-//                            if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
-//                            was = true;
-//                            currentUser = u;
-//                            logoutButton.setVisible(true);
-//                            break;
-//                        }
-//
-//                    if(was) {
-//                        try {
-//                            loginSuccess();
-//                        } catch (SQLException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    else
-//                        loginWarning.setText("Wrong login/password.");
-//                }
-//                else
-//                    loginWarning.setText("No connection.");
-//            }
-//            else
-//                loginWarning.setText("Username/password must be at least 3 characters");
+
+            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+                if(conn.isConnected()) {
+                    for (User u : usersData )
+                        if(enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
+                            was = true;
+                            currentUser = u;
+                            logoutButton.setVisible(true);
+                            break;
+                        }
+
+                    if(was) {
+                        try {
+                            loginSuccess();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else
+                        loginWarning.setText("Wrong login/password.");
+                }
+                else
+                    loginWarning.setText("No connection.");
+            }
+            else
+                loginWarning.setText("Username/password must be at least 3 characters");
         });
         signUpButton.setOnAction(actionEvent -> {
             loginWarning.setStyle("-fx-text-fill: #d85751");
@@ -561,9 +562,7 @@ public class MainController {
                     translate(u.getLanguage());
                     setTheme(u.getTheme());
                 }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -662,7 +661,7 @@ public class MainController {
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
 
-                primaryAnchorPane.getScene().getStylesheets().add("CSS/LightTheme.css");
+                //primaryAnchorPane.getScene().getStylesheets().add("CSS/LightTheme.css");
                 break;
             case "light":
                 themeButton.setText("Light");
