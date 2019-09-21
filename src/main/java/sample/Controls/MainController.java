@@ -687,12 +687,12 @@ public class MainController {
         setAllInvisible();
         pane.setVisible(true);
         if(currentUser.getTheme().equals("Dark"))
-            menuItem.setStyle("-fx-background-image: url(assets/exit-white.png);" +
+            menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
                     "-fx-background-repeat: no-repeat;" +
                     "-fx-background-size: 2pt 25pt;" +
                     "-fx-background-position: 1 1;");
         else
-            menuItem.setStyle("-fx-background-image: url(assets/exit-black.png);" +
+            menuItem.setStyle("-fx-background-image: url(assets/selected-black.png);" +
                     "-fx-background-repeat: no-repeat;" +
                     "-fx-background-size: 2pt 25pt;" +
                     "-fx-background-position: 1 1;");
