@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableCellSkin;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -25,63 +27,6 @@ public class MainController {
     private int theme = 0;
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
-
-    @FXML
-    private AnchorPane primaryAnchorPane;
-
-    @FXML
-    private AnchorPane workPane;
-
-    @FXML
-    private AnchorPane title;
-
-    @FXML
-    private Button hideButton;
-
-    @FXML
-    private Button minimizeButton;
-
-    @FXML
-    private Button exitButton;
-
-    @FXML
-    private AnchorPane leftAnchorPane;
-
-    @FXML
-    private Button menuAdminButton1;
-    @FXML
-    private Button menuAdminButton2;
-    @FXML
-    private Button menuAdminButton3;
-    @FXML
-    private Button menuAdminButton4;
-
-    @FXML
-    private Button menuUserButton1;
-    @FXML
-    private Button menuUserButton2;
-    @FXML
-    private Button menuUserButton3;
-    @FXML
-    private Button menuUserButton4;
-
-    @FXML
-    private AnchorPane rightAnchorPane;
-
-    @FXML
-    private AnchorPane menuPane1;
-
-    @FXML
-    private AnchorPane menuPane2;
-
-    @FXML
-    private AnchorPane menuPane3;
-
-    @FXML
-    private AnchorPane menuPane4;
-
-    @FXML
-    private AnchorPane loginPane;
 
     @FXML
     private TableView<User> usersTable;
@@ -102,52 +47,91 @@ public class MainController {
     private TableColumn<User, String> emailColumn;
 
     @FXML
-    private Button connectionIndicator;
+    private AnchorPane primaryAnchorPane;
 
     @FXML
-    private TextField usernameField;
+    private AnchorPane title;
 
     @FXML
-    private PasswordField passwordField;
+    private Button hideButton;
 
     @FXML
-    private Button loginButton;
+    private Button minimizeButton;
 
     @FXML
-    private Button signUpButton;
-
-    @FXML
-    private Label loginWarning;
-
-    @FXML
-    private Label currentUserLabel;
-
-    @FXML
-    private AnchorPane loginElementsPane; //блок с полями ввода
-
-    @FXML
-    private FlowPane menuAdmin;
-
-    @FXML
-    private FlowPane menuUser;
+    private Button exitButton;
 
     @FXML
     private Button logoutButton;
 
     @FXML
-    private Button searchButton;
+    private Label currentUserLabel;
 
     @FXML
-    private Button resetSearchButton;
+    private AnchorPane workPane;
 
     @FXML
-    private MenuButton criteriaButton;
+    private AnchorPane leftAnchorPane;
+
+    @FXML
+    private FlowPane menuAdmin;
+
+    @FXML
+    private Label menuAdminLabel;
+
+    @FXML
+    private Button menuAdminButton1;
+
+    @FXML
+    private Button menuAdminButton2;
+
+    @FXML
+    private Button menuAdminButton3;
+
+    @FXML
+    private Button menuAdminButton4;
+
+    @FXML
+    private FlowPane menuUser;
+
+    @FXML
+    private Label menuUserLabel;
+
+    @FXML
+    private Button menuUserButton1;
+
+    @FXML
+    private Button menuUserButton2;
+
+    @FXML
+    private Button menuUserButton3;
+
+    @FXML
+    private Button menuUserButton4;
+
+    @FXML
+    private AnchorPane rightAnchorPane;
+
+    @FXML
+    private AnchorPane menuPane1;
+
+    @FXML
+    private Button connectionIndicator;
+
+    @FXML
+    private Label menuPane1_DBLabel;
 
     @FXML
     private TextField searchField;
 
     @FXML
+    private MenuButton criteriaButton;
+
+    @FXML
     private MenuItem criteriaMenuItem_Id;
+
+    @FXML
+    private MenuItem criteriaMenuItem_Access;
 
     @FXML
     private MenuItem criteriaMenuItem_Username;
@@ -156,43 +140,109 @@ public class MainController {
     private MenuItem criteriaMenuItem_Password;
 
     @FXML
-    private MenuItem criteriaMenuItem_Access;
+    private MenuItem criteriaMenuItem_Email;
 
     @FXML
-    private MenuItem criteriaMenuItem_Email;
+    private Button searchButton;
+
+    @FXML
+    private Button resetSearchButton;
+
+    @FXML
+    private AnchorPane createUser_AnchorPane;
+
+    @FXML
+    private TextField createUser_AnchorPane_Username;
+
+    @FXML
+    private TextField createUser_AnchorPane_Email;
+
+    @FXML
+    private TextField createUser_AnchorPane_Password;
+
+    @FXML
+    private Button createUserButton;
+
+    @FXML
+    private MenuButton createUser_AnchorPane_AccessMode_MenuButton;
+
+    @FXML
+    private AnchorPane changeUser_AnchorPane;
+
+    @FXML
+    private TextField changeUser_AnchorPane_Username;
+
+    @FXML
+    private TextField changeUser_AnchorPane_Email;
+
+    @FXML
+    private TextField changeUser_AnchorPane_Password;
+
+    @FXML
+    private TextField changeUser_AnchorPane_Id;
+
+    @FXML
+    private Button changeUser_AnchorPane_IdSubmitButton;
+
+    @FXML
+    private Button changeUserButton;
+
+    @FXML
+    private MenuButton changeUser_AnchorPane_AccessMode_MenuButton;
+
+    @FXML
+    private AnchorPane deleteUser_AnchorPane;
+
+    @FXML
+    private Button deleteUserButton;
+
+    @FXML
+    private AnchorPane menuPane2;
+
+    @FXML
+    private AnchorPane menuPane3;
 
     @FXML
     private AnchorPane menuPane31;
 
     @FXML
-    private Label languageLabel;
-    @FXML
     private MenuButton languageButton;
+
     @FXML
     private MenuItem languageItem_Russian;
+
     @FXML
     private MenuItem languageItem_English;
 
     @FXML
+    private Label languageLabel;
+
+    @FXML
     private Label themeLabel;
+
     @FXML
     private MenuButton themeButton;
+
     @FXML
     private MenuItem themeItem_Dark;
+
     @FXML
     private MenuItem themeItem_Light;
 
     @FXML
-    private Label menuAdminLabel;
+    private AnchorPane menuPane4;
 
     @FXML
-    private Label menuUserLabel;
+    private AnchorPane loginPane;
 
     @FXML
-    private Label menuPane1_DBLabel;
+    private AnchorPane loginElementsPane;
 
     @FXML
-    private Button loginLanguageButton;
+    private TextField usernameField;
+
+    @FXML
+    private Button loginButton;
 
     @FXML
     private Label loginUsernameLabel;
@@ -201,7 +251,16 @@ public class MainController {
     private Label loginPasswordLabel;
 
     @FXML
-    private Button loginPaneTranslate;
+    private Button signUpButton;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label loginWarning;
+
+    @FXML
+    private Button loginLanguageButton;
 
     @FXML
     void initialize() throws SQLException {
@@ -262,6 +321,9 @@ public class MainController {
         });
         leftAnchorPane.getStyleClass().add("leftAnchorPane");
         rightAnchorPane.getStyleClass().add("rightAnchorPane");
+        createUser_AnchorPane.getStyleClass().add("menuPane31");
+        changeUser_AnchorPane.getStyleClass().add("menuPane31");
+        deleteUser_AnchorPane.getStyleClass().add("menuPane31");
 
         hideButton.getStyleClass().add("hideButton");
         minimizeButton.getStyleClass().add("minimizeButton");
@@ -276,6 +338,7 @@ public class MainController {
             if (stage.isMaximized() && theme == 0) {
                 stage.setMaximized(false);
                 usersTable.setPrefHeight(150d);
+                createUser_AnchorPane.setLayoutY(212);
                 if(currentUser.getTheme().equals("Dark")) 
                     minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
                 else
@@ -287,7 +350,8 @@ public class MainController {
                 searchField.setPrefWidth(136);
             } else {
                 stage.setMaximized(true);
-                usersTable.setPrefHeight(500d);
+                usersTable.setPrefHeight(606d);
+                createUser_AnchorPane.setLayoutY(667);
                 if(currentUser.getTheme().equals("Dark"))
                     minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
                 else
