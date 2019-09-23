@@ -1,0 +1,38 @@
+HTML:
+<p class="movingShape">O</p>
+
+
+
+CSS:
+p.movingShape {
+    margin-top: 10px;
+    position: absolute;
+    font-size: 170px;
+    animation: slide-slow 4s linear;
+    animation-iteration-count: infinite;
+}
+
+p.movingShape:hover{
+    font-size: 400px;
+}
+
+@keyframes slide-slow {
+    0% {
+        color: red;
+        margin-left: 92%;
+        transform-origin: 92%;
+        transform: rotate(0deg);
+    }
+    50% {
+        color: blue;
+        margin-left: 0%;
+        transform-origin: 0%;
+        transform: rotate(360deg);
+    }
+    100% {
+        color: red;
+        margin-left: 92%;
+        transform-origin: 92%;
+        transform: rotate(720deg);
+    }
+}

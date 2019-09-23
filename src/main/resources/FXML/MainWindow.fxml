@@ -24,7 +24,7 @@
             <Button fx:id="minimizeButton" layoutX="543.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="3.0" />
             <Button fx:id="exitButton" layoutX="569.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
             <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="3.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
-            <Label fx:id="currentUserLabel" layoutX="73.0" layoutY="8.0" prefHeight="18.0" prefWidth="254.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="8.0" />
+            <Label fx:id="currentUserLabel" layoutX="83.0" layoutY="8.0" prefHeight="18.0" prefWidth="254.0" AnchorPane.leftAnchor="83.0" AnchorPane.topAnchor="8.0" />
          </children>
          <padding>
             <Insets bottom="3.0" />
@@ -121,7 +121,7 @@
                   </AnchorPane>
                 <AnchorPane fx:id="rightAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="409.0">
                      <children>
-                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Button fx:id="connectionIndicator" layoutX="152.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.topAnchor="11.0" />
                               <TableView fx:id="usersTable" editable="true" layoutX="14.0" layoutY="43.0" maxWidth="513.0" prefHeight="154.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
@@ -152,9 +152,9 @@
                               </MenuButton>
                               <Button fx:id="searchButton" layoutX="487.0" layoutY="9.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0" />
                               <Button fx:id="resetSearchButton" layoutX="355.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="11.5" />
-                              <ImageView fitHeight="25.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="52.0">
+                              <ImageView fx:id="fixImage" fitHeight="25.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="fixImage" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="52.0">
                                  <image>
-                                    <Image url="@../assets/fix-white.png" />
+                                    <Image url="@../assets/fix-black.png" />
                                  </image>
                               </ImageView>
                               <AnchorPane fx:id="createUser_AnchorPane" layoutX="30.0" layoutY="212.0" prefHeight="82.0" prefWidth="511.0" AnchorPane.leftAnchor="30.0">
@@ -199,24 +199,48 @@
                            <children>
                               <Label layoutX="186.0" layoutY="172.0" text="2" />
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane fx:id="menuPane31" layoutX="60.0" layoutY="31.0" prefHeight="59.0" prefWidth="466.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                              <AnchorPane fx:id="menuPane31" layoutX="60.0" layoutY="31.0" prefHeight="76.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0">
                                  <children>
-                                    <MenuButton fx:id="languageButton" layoutX="110.0" layoutY="14.0" mnemonicParsing="false" prefWidth="103.0" text="English" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="14.0">
+                                    <MenuButton fx:id="languageButton" layoutX="111.0" layoutY="33.0" mnemonicParsing="false" prefWidth="103.0" text="English" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="33.0">
                                       <items>
                                         <MenuItem fx:id="languageItem_Russian" mnemonicParsing="false" text="Russian" />
                                         <MenuItem fx:id="languageItem_English" mnemonicParsing="false" text="English" />
                                       </items>
                                     </MenuButton>
-                                    <Label fx:id="languageLabel" layoutX="27.0" layoutY="19.0" text="Language:" AnchorPane.leftAnchor="27.0" AnchorPane.topAnchor="19.0" />
-                                    <Label fx:id="themeLabel" layoutX="308.0" layoutY="19.0" text="Theme:" AnchorPane.leftAnchor="308.0" AnchorPane.topAnchor="19.0" />
-                                    <MenuButton fx:id="themeButton" layoutX="329.0" layoutY="14.0" mnemonicParsing="false" prefWidth="103.0" text="Dark Theme" AnchorPane.leftAnchor="378.8" AnchorPane.topAnchor="15.0">
+                                    <Label fx:id="languageLabel" layoutX="28.0" layoutY="38.0" text="Language:" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="38.0" />
+                                    <Label fx:id="themeLabel" layoutX="309.0" layoutY="38.0" text="Theme:" AnchorPane.leftAnchor="309.0" AnchorPane.topAnchor="38.0" />
+                                    <MenuButton fx:id="themeButton" layoutX="380.0" layoutY="34.0" mnemonicParsing="false" prefWidth="103.0" text="Dark Theme" AnchorPane.leftAnchor="380.0" AnchorPane.topAnchor="34.0">
                                        <items>
                                           <MenuItem fx:id="themeItem_Dark" mnemonicParsing="false" text="Dark Theme" />
                                           <MenuItem fx:id="themeItem_Light" mnemonicParsing="false" text="Light Theme" />
                                        </items>
                                     </MenuButton>
+                                    <Label fx:id="customizationLabel" alignment="CENTER" layoutX="166.0" layoutY="5.0" prefHeight="18.0" prefWidth="180.0" text="Customization" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="accountSettingsPane" layoutX="30.0" layoutY="97.0" prefHeight="170.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
+                                 <children>
+                                    <Label fx:id="accountSettingsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Account" textAlignment="CENTER" />
+                                    <TextField fx:id="accountSettingsUsernameTextField" layoutX="174.0" layoutY="35.0" />
+                                    <TextField fx:id="accountSettingsEmailTextField" layoutX="174.0" layoutY="113.0" prefHeight="25.0" prefWidth="159.0" />
+                                    <Label fx:id="accountSettingsUsernameLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="39.0" text="Username" />
+                                    <Label fx:id="accountSettingsPasswordLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="78.0" text="Password" />
+                                    <Label fx:id="accountSettingsEmailLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="117.0" text="E-Mail" />
+                                    <Button fx:id="accountSettingsSaveButton" layoutX="400.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Save" />
+                                    <PasswordField fx:id="accountSettingsPasswordTextField" layoutX="174.0" layoutY="74.0" />
+                                 </children></AnchorPane>
+                              <AnchorPane fx:id="databaseSettingsPane" layoutX="29.0" layoutY="300.0" prefHeight="170.0" prefWidth="513.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="280.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Database connection" textAlignment="CENTER" />
+                                    <TextField fx:id="databaseSettingsURLTextField" layoutX="43.0" layoutY="35.0" prefHeight="26.0" prefWidth="458.0" text="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;useSSL=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow" />
+                                    <Label fx:id="databaseSettingsURLLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="39.0" text="URL" />
+                                    <Label fx:id="databaseSettingsUsernameLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="78.0" text="Username" />
+                                    <Label fx:id="databaseSettingsPasswordLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="115.0" text="Password" />
+                                    <Button fx:id="databaseSettingsConnectButton" layoutX="400.0" layoutY="111.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Connect" />
+                                    <TextField fx:id="databaseSettingsUsernameTextField" layoutX="176.0" layoutY="74.0" text="root" />
+                                    <PasswordField fx:id="databaseSettingsPasswordTextField" layoutX="176.0" layoutY="111.0" text="root" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
@@ -238,7 +262,7 @@
                         <TextField fx:id="usernameField" layoutX="79.0" prefWidth="150.0" />
                         <Button fx:id="loginButton" layoutX="87.0" layoutY="113.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Log In" />
                         <Label fx:id="loginUsernameLabel" layoutY="4.0" text="Username" />
-                        <Label fx:id="loginPasswordLabel" layoutX="1.0" layoutY="48.0" text="Password" />
+                        <Label fx:id="loginPasswordLabel" layoutY="48.0" text="Password" />
                         <Button fx:id="signUpButton" layoutX="187.39999389648438" layoutY="113.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0" />
                         <PasswordField fx:id="passwordField" layoutX="79.0" layoutY="45.0" prefWidth="150.0" />
                      </children>

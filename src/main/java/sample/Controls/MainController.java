@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableCellSkin;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -152,6 +153,9 @@ public class MainController {
     private Button resetSearchButton;
 
     @FXML
+    private ImageView fixImage;
+
+    @FXML
     private AnchorPane createUser_AnchorPane;
 
     @FXML
@@ -168,6 +172,12 @@ public class MainController {
 
     @FXML
     private MenuButton createUser_AnchorPane_AccessMode_MenuButton;
+
+    @FXML
+    private MenuItem createUser_AccessMenuItem_User;
+
+    @FXML
+    private MenuItem createUser_AccessMenuItem_Admin;
 
     @FXML
     private AnchorPane changeUser_AnchorPane;
@@ -194,10 +204,22 @@ public class MainController {
     private MenuButton changeUser_AnchorPane_AccessMode_MenuButton;
 
     @FXML
+    private MenuItem changeUser_AccessMenuItem_User;
+
+    @FXML
+    private MenuItem changeUser_AccessMenuItem_Admin;
+
+    @FXML
     private AnchorPane deleteUser_AnchorPane;
 
     @FXML
+    private TextField deleteUserTextField;
+
+    @FXML
     private Button deleteUserButton;
+
+    @FXML
+    private Label deleteUserLabel;
 
     @FXML
     private AnchorPane menuPane2;
@@ -233,6 +255,60 @@ public class MainController {
     private MenuItem themeItem_Light;
 
     @FXML
+    private Label customizationLabel;
+
+    @FXML
+    private AnchorPane accountSettingsPane;
+
+    @FXML
+    private Label accountSettingsLabel;
+
+    @FXML
+    private TextField accountSettingsUsernameTextField;
+
+    @FXML
+    private TextField accountSettingsEmailTextField;
+
+    @FXML
+    private Label accountSettingsUsernameLabel;
+
+    @FXML
+    private Label accountSettingsPasswordLabel;
+
+    @FXML
+    private Label accountSettingsEmailLabel;
+
+    @FXML
+    private Button accountSettingsSaveButton;
+
+    @FXML
+    private PasswordField accountSettingsPasswordTextField;
+
+    @FXML
+    private AnchorPane databaseSettingsPane;
+
+    @FXML
+    private TextField databaseSettingsURLTextField;
+
+    @FXML
+    private Label databaseSettingsURLLabel;
+
+    @FXML
+    private Label databaseSettingsUsernameLabel;
+
+    @FXML
+    private Label databaseSettingsPasswordLabel;
+
+    @FXML
+    private Button databaseSettingsConnectButton;
+
+    @FXML
+    private TextField databaseSettingsUsernameTextField;
+
+    @FXML
+    private PasswordField databaseSettingsPasswordTextField;
+
+    @FXML
     private AnchorPane menuPane4;
 
     @FXML
@@ -263,27 +339,6 @@ public class MainController {
     private Label loginWarning;
 
     @FXML
-    private Button loginLanguageButton;
-
-    @FXML
-    private TextField deleteUserTextField;
-
-    @FXML
-    private Label deleteUserLabel;
-
-    @FXML
-    private MenuItem createUser_AccessMenuItem_User;
-
-    @FXML
-    private MenuItem createUser_AccessMenuItem_Admin;
-
-    @FXML
-    private MenuItem changeUser_AccessMenuItem_User;
-
-    @FXML
-    private MenuItem changeUser_AccessMenuItem_Admin;
-
-    @FXML
     void initialize() throws SQLException {
         //currentUser = new User(1,1,"","","","Dark","English");
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
@@ -306,7 +361,9 @@ public class MainController {
         });
 
         title.getStyleClass().add("title");
-        menuPane31.getStyleClass().add("menuPane31");
+        menuPane31.getStyleClass().add("elementsPane");
+        accountSettingsPane.getStyleClass().add("elementsPane");
+        databaseSettingsPane.getStyleClass().add("elementsPane");
         workPane.getStyleClass().add("workPane");
         loginPane.getStyleClass().add("loginPane");
         primaryAnchorPane.getStyleClass().add("primaryAnchorPane");
@@ -343,9 +400,10 @@ public class MainController {
         });
         leftAnchorPane.getStyleClass().add("leftAnchorPane");
         rightAnchorPane.getStyleClass().add("rightAnchorPane");
-        createUser_AnchorPane.getStyleClass().add("menuPane31");
-        changeUser_AnchorPane.getStyleClass().add("menuPane31");
-        deleteUser_AnchorPane.getStyleClass().add("menuPane31");
+        createUser_AnchorPane.getStyleClass().add("elementsPane");
+        changeUser_AnchorPane.getStyleClass().add("elementsPane");
+        deleteUser_AnchorPane.getStyleClass().add("elementsPane");
+        fixImage.getStyleClass().add("fixImage");
 
         hideButton.getStyleClass().add("hideButton");
         minimizeButton.getStyleClass().add("minimizeButton");
@@ -435,6 +493,8 @@ public class MainController {
         loginPane.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
                 loginButton.fire();
+            if(keyEvent.getCode() == KeyCode.ESCAPE)
+                exitButton.fire();
         });
         usernameField.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode() == KeyCode.TAB) {
@@ -603,6 +663,7 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+        themeItem_Light.setDisable(true);
 
         resetSearchButton.getStyleClass().add("resetSearchButton");
         resetSearchButton.setOnAction(actionEvent -> {
@@ -664,7 +725,6 @@ public class MainController {
                 }
             }
         });
-
 
         loadLastConfig();
         loginBegin();
@@ -824,7 +884,7 @@ public class MainController {
     private void setTheme(String theme) throws SQLException {
         theme = theme.trim();
         theme = theme.toLowerCase();
-        switch (theme){
+        switch (theme) {
             case "dark":
                 themeButton.setText("Dark");
                 currentTheme = "Dark";
@@ -832,8 +892,8 @@ public class MainController {
                     currentUser.setThemeDB(conn,"Dark");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
+                fixImage.setImage(new Image("assets/fix-black.png"));
 
-                //primaryAnchorPane.getScene().getStylesheets().add("CSS/LightTheme.css");
                 break;
             case "light":
                 themeButton.setText("Light");
@@ -842,6 +902,7 @@ public class MainController {
                     currentUser.setThemeDB(conn,"Light");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
+                fixImage.setImage(new Image("assets/fix-white.png"));
 
                 break;
         }
@@ -1120,3 +1181,5 @@ public class MainController {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
     }
 }
+
+//КАРТИНКА ПОИСКА

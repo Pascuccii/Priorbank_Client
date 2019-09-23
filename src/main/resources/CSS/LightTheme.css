@@ -1,15 +1,16 @@
 .text-field {
-    -fx-background-color: #B8B8B8;
+    -fx-background-color: #f6f6f6;
+    -fx-border-color: #626262;
     -fx-font-weight: bold;
-    -fx-prompt-text-fill: #525252;
+    -fx-prompt-text-fill: #bababa;
+    -fx-border-radius: 2px;
 }
 
 .table-view{
     -fx-border-radius: 3;
     -fx-background-radius: 3;
     -fx-background-color: #B8B8B8;
-
-    -fx-border-color: #282828;
+    -fx-border-color: #626262;
     -fx-font-weight: bold;
 }
 
@@ -80,20 +81,20 @@
 }
 
 .button {
-    -fx-background-color: rgba(78, 186, 204, 0.55);
+    -fx-background-color: #D6D6D6;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-border-color: #F6F6F6;
+    -fx-border-color: #626262;
     -fx-font-weight: bold;
     -fx-text-fill: #323232;
 }
 
 .button:hover {
-    -fx-background-color: rgba(74, 155, 170, 0.72);
+    -fx-background-color: #e6e6e6;
 }
 
 .button:pressed {
-    -fx-background-color: #F8F8F8;
+    -fx-background-color: #8c8c8c;
     -fx-text-fill: #323232;
 }
 
@@ -144,25 +145,25 @@
 }
 
 .menuPane {
-    -fx-background-color: #F8F8F8;
+    -fx-background-color: #D6D6D6;
 }
 
 .leftAnchorPane {
-    -fx-background-color: #F8F8F8;
-    -fx-border-color: #585858;
+    -fx-background-color: #D6D6D6;
+    -fx-border-color: #626262;
 }
 
 .rightAnchorPane {
-    -fx-background-color: #F8F8F8;
-    -fx-border-color: #585858;
+    -fx-background-color: #D6D6D6;
+    -fx-border-color: #626262;
 }
 
 .split-pane {
-    -fx-background-color: #4ebacc;
+    -fx-background-color: #D6D6D6;
 }
 
 .split-pane-divider {
-    -fx-background-color: #4ebacc;
+    -fx-background-color: #D6D6D6;
 }
 
 .label {
@@ -171,13 +172,13 @@
 }
 
 .title {
-    -fx-background-color: #4ebacc;
+    -fx-background-color: #D6D6D6;
     -fx-opacity: 0.9;
 }
 
 .root {
     -fx-background-color: transparent;
-    -fx-border-color: #D8D8D8;
+    -fx-border-color: #D6D6D6;
     -fx-border-width: 1;
 }
 
@@ -186,13 +187,13 @@
 }
 
 .loginPane {
-    -fx-background-color: #4ebacc;
-    -fx-border-color: #D8D8D8;
+    -fx-background-color: #D6D6D6;
+    -fx-border-color: #626262;
 }
 
 .signUpButton {
     -fx-background-image: url(../assets/signUpButton-black.png);
-    -fx-border-color: #4B4B4B;
+    -fx-border-color: #626262;
     -fx-background-size: 20pt;
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5 5.5;
@@ -203,7 +204,7 @@
 }
 
 .loginButton {
-    -fx-border-color: #4B4B4B;
+    -fx-border-color: #626262;
 }
 
 .logoutButton {
@@ -220,7 +221,7 @@
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-width: 1;
-    -fx-border-color: #585858;
+    -fx-border-color: #626262;
 }
 
 .menu-button:hover {
@@ -228,7 +229,7 @@
 }
 
 .menu-button:pressed {
-    -fx-background-color: #282828;
+    -fx-background-color: #8c8c8c;
 }
 
 .menu-item {
@@ -248,7 +249,7 @@
 }
 
 .menu-item:pressed {
-    -fx-background-color: #282828;
+    -fx-background-color: #8c8c8c;
     -fx-text-fill: #323232;
 }
 
@@ -262,7 +263,7 @@
     -fx-background-size: 6.5pt;
     -fx-background-position: 7 9;
     -fx-background-repeat: no-repeat;
-    -fx-border-color: #282828;
+    -fx-border-color: #626262;
     -fx-border-width: 0.5;
     -fx-border-radius: 0 5 5 0;
     -fx-background-radius: 0 5 5 0;
@@ -273,6 +274,6 @@
 }
 
 .menuPane31 {
-    -fx-border-color: #4B4b4B;
+    -fx-border-color: #626262;
 }
 
