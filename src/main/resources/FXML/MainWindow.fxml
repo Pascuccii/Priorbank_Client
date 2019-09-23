@@ -165,8 +165,8 @@
                                     <Button fx:id="createUserButton" layoutX="393.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Add" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="23.0" />
                                     <MenuButton fx:id="createUser_AnchorPane_AccessMode_MenuButton" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
                                        <items>
-                                          <MenuItem mnemonicParsing="false" text="Action 1" />
-                                          <MenuItem mnemonicParsing="false" text="Action 2" />
+                                          <MenuItem fx:id="createUser_AccessMenuItem_User" mnemonicParsing="false" text="User" />
+                                          <MenuItem fx:id="createUser_AccessMenuItem_Admin" mnemonicParsing="false" text="Administrator" />
                                        </items>
                                     </MenuButton>
                                  </children>
@@ -181,15 +181,15 @@
                                     <Button fx:id="changeUserButton" layoutX="393.0" layoutY="22.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Save" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="22.0" />
                                     <MenuButton fx:id="changeUser_AnchorPane_AccessMode_MenuButton" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
                                        <items>
-                                          <MenuItem mnemonicParsing="false" text="Action 1" />
-                                          <MenuItem mnemonicParsing="false" text="Action 2" />
+                                          <MenuItem fx:id="changeUser_AccessMenuItem_User" mnemonicParsing="false" text="User" />
+                                          <MenuItem fx:id="changeUser_AccessMenuItem_Admin" mnemonicParsing="false" text="Admin" />
                                        </items>
                                     </MenuButton>
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="deleteUser_AnchorPane" layoutX="30.0" layoutY="393.0" prefHeight="52.0" prefWidth="511.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
                                  <children>
-                                    <TextField fx:id="deleteUserTextField" layoutX="104.0" layoutY="6.0" prefHeight="26.0" prefWidth="257.0" promptText="8,12,15,22,..." AnchorPane.bottomAnchor="12.600000000000001" AnchorPane.rightAnchor="151.0" />
+                                    <TextField fx:id="deleteUserTextField" layoutX="104.0" layoutY="6.0" prefHeight="26.0" prefWidth="257.0" promptText="8,12,15,22,..." AnchorPane.bottomAnchor="12.600000000000001" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="151.0" />
                                     <Button fx:id="deleteUserButton" layoutX="393.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Delete" AnchorPane.rightAnchor="30.0" />
                                     <Label fx:id="deleteUserLabel" layoutX="14.0" layoutY="16.4" text="ID's to delete:" />
                                  </children>

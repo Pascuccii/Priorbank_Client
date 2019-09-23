@@ -4,6 +4,7 @@ import java.io.*;
 import java.sql.*;
 import java.util.Iterator;
 
+import com.mysql.cj.util.StringUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +23,8 @@ public class MainController {
     private double xOffset = 0;
     private double yOffset = 0;
     private User currentUser;
+    private String currentTheme;
+    private String currentLanguage;
 
     private ConnectionClass conn;
     private int theme = 0;
@@ -263,7 +266,26 @@ public class MainController {
     private Button loginLanguageButton;
 
     @FXML
+    private TextField deleteUserTextField;
+
+    @FXML
+    private Label deleteUserLabel;
+
+    @FXML
+    private MenuItem createUser_AccessMenuItem_User;
+
+    @FXML
+    private MenuItem createUser_AccessMenuItem_Admin;
+
+    @FXML
+    private MenuItem changeUser_AccessMenuItem_User;
+
+    @FXML
+    private MenuItem changeUser_AccessMenuItem_Admin;
+
+    @FXML
     void initialize() throws SQLException {
+        //currentUser = new User(1,1,"","","","Dark","English");
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         translate("English");
         conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
@@ -339,7 +361,7 @@ public class MainController {
                 stage.setMaximized(false);
                 usersTable.setPrefHeight(150d);
                 createUser_AnchorPane.setLayoutY(212);
-                if(currentUser.getTheme().equals("Dark")) 
+                if(currentTheme.equals("Dark"))
                     minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
                 else
                     minimizeButton.setStyle("-fx-background-image: url(assets/expand-black.png)");
@@ -352,7 +374,7 @@ public class MainController {
                 stage.setMaximized(true);
                 usersTable.setPrefHeight(606d);
                 createUser_AnchorPane.setLayoutY(667);
-                if(currentUser.getTheme().equals("Dark"))
+                if(currentTheme.equals("Dark"))
                     minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
                 else
                     minimizeButton.setStyle("-fx-background-image: url(assets/minimize-black.png)");
@@ -453,44 +475,7 @@ public class MainController {
             else
                 loginWarning.setText("Username/password must be at least 3 characters");
         });
-        signUpButton.setOnAction(actionEvent -> {
-            loginWarning.setStyle("-fx-text-fill: #d85751");
-            boolean was = false;
-            String enteredUsername = usernameField.getText();
-            String enteredPassword = passwordField.getText();
-
-            if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-                if(conn.isConnected()) {
-                    for (User u : usersData )
-                        if(enteredUsername.equals(u.getUsername())) {
-                            was = true;
-                            break;
-                        }
-
-                    if(!was){
-                        try {
-                            String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
-                            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
-                            preparedStatement.setString(1, enteredUsername);
-                            preparedStatement.setString(2, enteredPassword);
-                            preparedStatement.execute();
-                            initUsersData();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-
-                        loginWarning.setStyle("-fx-text-fill: #7f8e55");
-                        loginWarning.setText(enteredUsername + " registered.");
-                    }
-                    else
-                        loginWarning.setText("Username is not free.");
-                }
-                else
-                    loginWarning.setText("No connection.");
-            }
-            else
-                loginWarning.setText("Username/password must be at least 3 characters");
-        });
+        signUpButton.setOnAction(actionEvent -> registration_User(loginWarning, usernameField.getText(), passwordField.getText()));
         logoutButton.setOnAction(actionEvent -> {
             saveLastConfig();
             loginBegin();
@@ -511,6 +496,11 @@ public class MainController {
                 usernameField.selectAll();
             }
         });
+        changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> {
+            if(StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText()))
+                submitId(Integer.parseInt(changeUser_AnchorPane_Id.getText()));
+        });
+        createUserButton.setOnAction(actionEvent -> registration_Admin(null,createUser_AnchorPane_Username.getText(),createUser_AnchorPane_Password.getText(),createUser_AnchorPane_Email.getText(),createUser_AnchorPane_AccessMode_MenuButton.getText()));
 
         searchField.setPromptText("Search...");
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
@@ -518,6 +508,30 @@ public class MainController {
         criteriaMenuItem_Username.setOnAction(actionEvent -> criteriaButton.setText("Username"));
         criteriaMenuItem_Password.setOnAction(actionEvent -> criteriaButton.setText("Password"));
         criteriaMenuItem_Email.setOnAction(actionEvent -> criteriaButton.setText("E-mail"));
+        createUser_AccessMenuItem_User.setOnAction(actionEvent -> {
+            if(currentLanguage.equals("English"))
+                createUser_AnchorPane_AccessMode_MenuButton.setText("User");
+            if(currentLanguage.equals("Russian"))
+                createUser_AnchorPane_AccessMode_MenuButton.setText("Пользователь");
+        });
+        createUser_AccessMenuItem_Admin.setOnAction(actionEvent -> {
+            if(currentLanguage.equals("English"))
+                createUser_AnchorPane_AccessMode_MenuButton.setText("Admin");
+            if(currentLanguage.equals("Russian"))
+                createUser_AnchorPane_AccessMode_MenuButton.setText("Администратор");
+        });
+        changeUser_AccessMenuItem_User.setOnAction(actionEvent -> {
+            if(currentLanguage.equals("English"))
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("User");
+            if(currentLanguage.equals("Russian"))
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("Пользователь");
+        });
+        changeUser_AccessMenuItem_Admin.setOnAction(actionEvent -> {
+            if(currentLanguage.equals("English"))
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("Admin");
+            if(currentLanguage.equals("Russian"))
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("Администратор");
+        });
 
         languageItem_English.setOnAction(actionEvent -> {
             try {
@@ -652,6 +666,7 @@ public class MainController {
     private void translate(String language) throws SQLException {
         switch (language){
             case "English":
+                currentLanguage = "English";
                 if(currentUser != null)
                     currentUser.setLanguageDB(conn,"English");
                 searchField.setPromptText("Search...");
@@ -680,8 +695,34 @@ public class MainController {
                 languageItem_Russian.setText("Russian");
                 languageItem_English.setText("English");
                 themeLabel.setText("Theme");
+
+                createUser_AnchorPane_Username.setPromptText("Username");
+                if(createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Пользователь")
+                        || createUser_AnchorPane_AccessMode_MenuButton.getText().equals("User"))
+                    createUser_AnchorPane_AccessMode_MenuButton.setText("User");
+                if(createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Администратор")
+                        || createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Admin"))
+                    createUser_AnchorPane_AccessMode_MenuButton.setText("Admin");
+                createUser_AccessMenuItem_User.setText("User");
+                createUser_AccessMenuItem_Admin.setText("Admin");
+                createUser_AnchorPane_Password.setPromptText("Password");
+                createUser_AnchorPane_Email.setPromptText("E-Mail");
+                createUserButton.setText("Add");
+
+                changeUser_AnchorPane_Username.setPromptText("Username");
+                changeUser_AnchorPane_Password.setPromptText("Password");
+                changeUser_AnchorPane_Email.setPromptText("E-Mail");
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("User");
+                changeUser_AccessMenuItem_User.setText("User");
+                changeUser_AccessMenuItem_Admin.setText("Admin");
+                changeUserButton.setText("Save");
+
+                deleteUserLabel.setText("ID's to delete:");
+                deleteUserButton.setText("Delete");
+
                 break;
             case "Russian":
+                currentLanguage = "Russian";
                 if(currentUser != null)
                     currentUser.setLanguageDB(conn,"Russian");
                 searchField.setPromptText("Искать...");
@@ -710,6 +751,31 @@ public class MainController {
                 languageItem_Russian.setText("Русский");
                 languageItem_English.setText("Английский");
                 themeLabel.setText("Тема");
+
+                createUser_AnchorPane_Username.setPromptText("Имя пользователя");
+                if(createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Пользователь")
+                        || createUser_AnchorPane_AccessMode_MenuButton.getText().equals("User"))
+                    createUser_AnchorPane_AccessMode_MenuButton.setText("Пользователь");
+                if(createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Администратор")
+                        || createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Admin"))
+                    createUser_AnchorPane_AccessMode_MenuButton.setText("Администратор");
+                createUser_AccessMenuItem_User.setText("Пользователь");
+                createUser_AccessMenuItem_Admin.setText("Администратор");
+                createUser_AnchorPane_Password.setPromptText("Пароль");
+                createUser_AnchorPane_Email.setPromptText("Электронный адрес");
+                createUserButton.setText("Добавить");
+
+                changeUser_AnchorPane_Username.setPromptText("Имя пользователя");
+                changeUser_AnchorPane_Password.setPromptText("Пароль");
+                changeUser_AnchorPane_Email.setPromptText("Электронный адрес");
+                changeUser_AnchorPane_AccessMode_MenuButton.setText("Пользователь");
+                changeUser_AccessMenuItem_User.setText("Пользователь");
+                changeUser_AccessMenuItem_Admin.setText("Администратор");
+                changeUserButton.setText("Сохранить");
+
+                deleteUserLabel.setText("Удаляемые ID:");
+                deleteUserButton.setText("Удалить");
+
                 break;
         }
     }
@@ -720,6 +786,7 @@ public class MainController {
         switch (theme){
             case "dark":
                 themeButton.setText("Dark");
+                currentTheme = "Dark";
                 if(currentUser != null)
                     currentUser.setThemeDB(conn,"Dark");
                 primaryAnchorPane.getStylesheets().clear();
@@ -729,6 +796,7 @@ public class MainController {
                 break;
             case "light":
                 themeButton.setText("Light");
+                currentTheme = "Light";
                 if(currentUser != null)
                     currentUser.setThemeDB(conn,"Light");
                 primaryAnchorPane.getStylesheets().clear();
@@ -799,6 +867,145 @@ public class MainController {
         menuPane3.setVisible(false);
         menuPane4.setVisible(false);
         loginPane.setVisible(false);
+    }
+
+    private void changeUser(int id, String username, String password, String email, int access_mode) {
+        boolean was = false;
+        int enteredId = Integer.parseInt(changeUser_AnchorPane_Id.getText());
+        String enteredUsername = changeUser_AnchorPane_Username.getText();
+        String enteredPassword = changeUser_AnchorPane_Password.getText();
+        String enteredEmail = changeUser_AnchorPane_Email.getText();
+        int enteredAccessMode = (changeUser_AnchorPane_AccessMode_MenuButton.getText().equals("Admin") ||
+                changeUser_AnchorPane_AccessMode_MenuButton.getText().equals("Администратор")) ? 1 : 0;
+
+        if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+            if(conn.isConnected()) {
+                for (User u : usersData )
+                    if(enteredUsername.equals(u.getUsername())) {
+                        was = true;
+                        break;
+                    }
+
+                if(!was){
+                    try {
+                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
+                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        preparedStatement.setString(1, enteredUsername);
+                        preparedStatement.setString(2, enteredPassword);
+                        preparedStatement.execute();
+                        initUsersData();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    loginWarning.setStyle("-fx-text-fill: #7f8e55");
+                    loginWarning.setText(enteredUsername + " registered.");
+                }
+                else
+                    loginWarning.setText("Username is not free.");
+            }
+            else
+                loginWarning.setText("No connection.");
+        }
+        else
+            loginWarning.setText("Username/password must be at least 3 characters");
+    }
+
+    private boolean submitId(int id) {
+
+        if(conn.isConnected())
+            for (User u : usersData )
+                if(id == u.getId())
+                {
+                    changeUser_AnchorPane_Username.setText(u.getUsername());
+                    changeUser_AnchorPane_Password.setText(u.getPassword());
+                    changeUser_AnchorPane_Email.setText(u.getEmail());
+                    if(currentLanguage.equals("English"))
+                        changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "User" : "Admin");
+                    if(currentLanguage.equals("Russian"))
+                        changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "Пользователь" : "Администратор");
+                }
+                return false;
+    }
+    private void registration_Admin(Label warningLabel, String username, String password, String email, String accessMode) {
+        int access_mode = accessMode.equals("User") || accessMode.equals("Пользователь") ? 0 : 1;
+        if(warningLabel == null)
+            warningLabel = new Label();
+        warningLabel.setStyle("-fx-text-fill: #d85751");
+        boolean was = false;
+
+        if(!(password.length() < 3 || username.length() < 3)) {
+            if(conn.isConnected()) {
+                for (User u : usersData )
+                    if(username.equals(u.getUsername())) {
+                        was = true;
+                        break;
+                    }
+
+                if(!was){
+                    try {
+                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
+                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        preparedStatement.setString(1, username);
+                        preparedStatement.setString(2, password);
+                        preparedStatement.setString(3, email);
+                        preparedStatement.setInt(4, access_mode);
+                        preparedStatement.execute();
+                        initUsersData();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    warningLabel.setStyle("-fx-text-fill: #7f8e55");
+                    warningLabel.setText(username + " registered.");
+                }
+                else
+                    warningLabel.setText("Username is not free.");
+            }
+            else
+                warningLabel.setText("No connection.");
+        }
+        else
+            warningLabel.setText("Username/password must be at least 3 characters");
+    }
+
+    private void registration_User(Label warningLabel, String username, String password) {
+        if(warningLabel == null)
+            warningLabel = new Label();
+        warningLabel.setStyle("-fx-text-fill: #d85751");
+        boolean was = false;
+
+        if(!(password.length() < 3 || username.length() < 3)) {
+            if(conn.isConnected()) {
+                for (User u : usersData )
+                    if(username.equals(u.getUsername())) {
+                        was = true;
+                        break;
+                    }
+
+                if(!was){
+                    try {
+                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
+                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        preparedStatement.setString(1, username);
+                        preparedStatement.setString(2, password);
+                        preparedStatement.execute();
+                        initUsersData();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    warningLabel.setStyle("-fx-text-fill: #7f8e55");
+                    warningLabel.setText(username + " registered.");
+                }
+                else
+                    warningLabel.setText("Username is not free.");
+            }
+            else
+                warningLabel.setText("No connection.");
+        }
+        else
+            warningLabel.setText("Username/password must be at least 3 characters");
     }
 
     private void initUsersData() throws SQLException {

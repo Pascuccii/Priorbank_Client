@@ -8,7 +8,7 @@
 
 .text-field {
     -fx-background-color: #b1b1b1;
-    -fx-prompt-text-fill: #5e5e5e;
+    -fx-prompt-text-fill: #747474;
     -fx-font-weight: bold;
 }
 
@@ -263,6 +263,6 @@
 }
 
 .menuPane31 {
-    -fx-border-color: #4B4b4B;
+    -fx-border-color: #7d7d7d;
 }
 
