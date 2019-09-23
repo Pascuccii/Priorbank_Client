@@ -432,6 +432,63 @@ public class MainController {
         loginButton.getStyleClass().add("loginButton");
         logoutButton.getStyleClass().add("logoutButton");
 
+        loginPane.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
+                loginButton.fire();
+        });
+        usernameField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.TAB) {
+                passwordField.requestFocus();
+                passwordField.selectAll();
+            }
+        });
+        passwordField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.TAB) {
+                usernameField.requestFocus();
+                usernameField.selectAll();
+            }
+        });
+        changeUser_AnchorPane_Id.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                changeUser_AnchorPane_IdSubmitButton.fire();
+            }
+        });
+        changeUser_AnchorPane_Username.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                changeUserButton.fire();
+            }
+        });
+        changeUser_AnchorPane_Password.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                changeUserButton.fire();
+            }
+        });
+        changeUser_AnchorPane_Email.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                changeUserButton.fire();
+            }
+        });
+        createUser_AnchorPane_Username.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                createUserButton.fire();
+            }
+        });
+        createUser_AnchorPane_Password.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                createUserButton.fire();
+            }
+        });
+        createUser_AnchorPane_Email.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                createUserButton.fire();
+            }
+        });
+        deleteUserTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                deleteUserButton.fire();
+            }
+        });
+
 
         loginButton.setOnAction(actionEvent -> {
             loginWarning.setStyle("-fx-text-fill: #d85751");
@@ -480,27 +537,10 @@ public class MainController {
             saveLastConfig();
             loginBegin();
         });
-        loginPane.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
-                loginButton.fire();
-        });
-        usernameField.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.TAB) {
-                passwordField.requestFocus();
-                passwordField.selectAll();
-            }
-        });
-        passwordField.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.TAB) {
-                usernameField.requestFocus();
-                usernameField.selectAll();
-            }
-        });
-        changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> {
-            if(StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText()))
-                submitId(Integer.parseInt(changeUser_AnchorPane_Id.getText()));
-        });
+        changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> submitId());
+        changeUserButton.setOnAction(actionEvent -> changeUser());
         createUserButton.setOnAction(actionEvent -> registration_Admin(null,createUser_AnchorPane_Username.getText(),createUser_AnchorPane_Password.getText(),createUser_AnchorPane_Email.getText(),createUser_AnchorPane_AccessMode_MenuButton.getText()));
+        deleteUserButton.setOnAction(actionEvent -> deleteUsers());
 
         searchField.setPromptText("Search...");
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
@@ -532,6 +572,7 @@ public class MainController {
             if(currentLanguage.equals("Russian"))
                 changeUser_AnchorPane_AccessMode_MenuButton.setText("Администратор");
         });
+
 
         languageItem_English.setOnAction(actionEvent -> {
             try {
@@ -869,7 +910,7 @@ public class MainController {
         loginPane.setVisible(false);
     }
 
-    private void changeUser(int id, String username, String password, String email, int access_mode) {
+    private void changeUser() {
         boolean was = false;
         int enteredId = Integer.parseInt(changeUser_AnchorPane_Id.getText());
         String enteredUsername = changeUser_AnchorPane_Username.getText();
@@ -886,23 +927,27 @@ public class MainController {
                         break;
                     }
 
-                if(!was){
+                if(was){
+                    changeUser_AnchorPane_Id.setText("");
+                    changeUser_AnchorPane_Username.setText("");
+                    changeUser_AnchorPane_Password.setText("");
+                    changeUser_AnchorPane_Email.setText("");
                     try {
-                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
+                        String prepStat = "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ?, `access_mode` = ? WHERE (`id` = ?);";
                         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, enteredUsername);
                         preparedStatement.setString(2, enteredPassword);
+                        preparedStatement.setString(3, enteredEmail);
+                        preparedStatement.setInt(4, enteredAccessMode);
+                        preparedStatement.setInt(5, enteredId);
                         preparedStatement.execute();
                         initUsersData();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
-                    loginWarning.setStyle("-fx-text-fill: #7f8e55");
-                    loginWarning.setText(enteredUsername + " registered.");
                 }
                 else
-                    loginWarning.setText("Username is not free.");
+                    loginWarning.setText("There's no such username.");
             }
             else
                 loginWarning.setText("No connection.");
@@ -911,22 +956,54 @@ public class MainController {
             loginWarning.setText("Username/password must be at least 3 characters");
     }
 
-    private boolean submitId(int id) {
-
-        if(conn.isConnected())
-            for (User u : usersData )
-                if(id == u.getId())
-                {
-                    changeUser_AnchorPane_Username.setText(u.getUsername());
-                    changeUser_AnchorPane_Password.setText(u.getPassword());
-                    changeUser_AnchorPane_Email.setText(u.getEmail());
-                    if(currentLanguage.equals("English"))
-                        changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "User" : "Admin");
-                    if(currentLanguage.equals("Russian"))
-                        changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "Пользователь" : "Администратор");
-                }
-                return false;
+    private void submitId() {
+        int id = 0;
+        if(StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText())) {
+            id = Integer.parseInt(changeUser_AnchorPane_Id.getText());
+            if (conn.isConnected())
+                for (User u : usersData)
+                    if (id == u.getId()) {
+                        changeUser_AnchorPane_Username.setText(u.getUsername());
+                        changeUser_AnchorPane_Password.setText(u.getPassword());
+                        changeUser_AnchorPane_Email.setText(u.getEmail());
+                        if (currentLanguage.equals("English"))
+                            changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "User" : "Admin");
+                        if (currentLanguage.equals("Russian"))
+                            changeUser_AnchorPane_AccessMode_MenuButton.setText((u.getAccessMode() == 0) ? "Пользователь" : "Администратор");
+                    }
+        }
     }
+
+    private void deleteUsers() {
+        if(deleteUserTextField.getText().equals("all")) {
+            deleteUserTextField.setText("");
+            try {
+                String prepStat = "DELETE FROM `test`.`users` WHERE (`id` > -1)";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.execute();
+                initUsersData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String[] ids = deleteUserTextField.getText().split(",");
+        for (String id : ids) {
+            if (StringUtils.isStrictlyNumeric(id)) {
+                deleteUserTextField.setText("");
+                try {
+                    String prepStat = "DELETE FROM `test`.`users` WHERE (`id` = ?)";
+                    PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                    preparedStatement.setInt(1, Integer.parseInt(id));
+                    preparedStatement.execute();
+                    initUsersData();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void registration_Admin(Label warningLabel, String username, String password, String email, String accessMode) {
         int access_mode = accessMode.equals("User") || accessMode.equals("Пользователь") ? 0 : 1;
         if(warningLabel == null)
@@ -943,6 +1020,9 @@ public class MainController {
                     }
 
                 if(!was){
+                    createUser_AnchorPane_Username.setText("");
+                    createUser_AnchorPane_Password.setText("");
+                    createUser_AnchorPane_Email.setText("");
                     try {
                         String prepStat = "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
                         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -965,8 +1045,10 @@ public class MainController {
             else
                 warningLabel.setText("No connection.");
         }
-        else
+        else {
             warningLabel.setText("Username/password must be at least 3 characters");
+
+        }
     }
 
     private void registration_User(Label warningLabel, String username, String password) {

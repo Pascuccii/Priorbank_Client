@@ -1,6 +1,7 @@
 .text-field {
     -fx-background-color: #B8B8B8;
     -fx-font-weight: bold;
+    -fx-prompt-text-fill: #525252;
 }
 
 .table-view{
