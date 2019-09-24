@@ -339,8 +339,16 @@ public class MainController {
     private Label loginWarning;
 
     @FXML
+    private Label settingsWarningLabel;
+
+    @FXML
+    private Label databaseSettingsConnectionStatusLabel;
+
+    @FXML
+    private ProgressIndicator databaseSettingsConnectionProgressIndicator;
+
+    @FXML
     void initialize() throws SQLException {
-        //currentUser = new User(1,1,"","","","Dark","English");
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         translate("English");
         conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
@@ -548,7 +556,37 @@ public class MainController {
                 deleteUserButton.fire();
             }
         });
-
+        accountSettingsSaveButton.setOnAction(actionEvent -> changeAccountData());
+        databaseSettingsURLTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                databaseSettingsConnectButton.fire();
+            }
+        });
+        databaseSettingsUsernameTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                databaseSettingsConnectButton.fire();
+            }
+        });
+        databaseSettingsPasswordTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                databaseSettingsConnectButton.fire();
+            }
+        });
+        accountSettingsUsernameTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                accountSettingsSaveButton.fire();
+            }
+        });
+        accountSettingsPasswordTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                accountSettingsSaveButton.fire();
+            }
+        });
+        accountSettingsEmailTextField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                accountSettingsSaveButton.fire();
+            }
+        });
 
         loginButton.setOnAction(actionEvent -> {
             loginWarning.setStyle("-fx-text-fill: #d85751");
@@ -725,6 +763,7 @@ public class MainController {
                 }
             }
         });
+        databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
 
         loadLastConfig();
         loginBegin();
@@ -957,7 +996,12 @@ public class MainController {
         }
         translate(currentUser.getLanguage());
         setTheme(currentUser.getTheme());
+        currentTheme = currentUser.getTheme();
+        currentLanguage = currentUser.getLanguage();
         currentUserLabel.setText(currentUser.getUsername());
+        accountSettingsUsernameTextField.setText(currentUser.getUsername());
+        accountSettingsPasswordTextField.setText(currentUser.getPassword());
+        accountSettingsEmailTextField.setText(currentUser.getEmail());
 
         loginPane.setVisible(false);
         loginWarning.setText("");
@@ -969,6 +1013,47 @@ public class MainController {
         menuPane3.setVisible(false);
         menuPane4.setVisible(false);
         loginPane.setVisible(false);
+    }
+
+    private void changeAccountData() {
+        boolean was = false;
+        String enteredUsername = accountSettingsUsernameTextField.getText();
+        String enteredPassword = accountSettingsPasswordTextField.getText();
+        String enteredEmail = accountSettingsEmailTextField.getText();
+
+        settingsWarningLabel.setStyle("-fx-text-fill: #d85751");
+        if(!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+            if(conn.isConnected()) {
+                for (User u : usersData )
+                    if(enteredUsername.equals(u.getUsername()) && currentUser.getId()!=u.getId()) {
+                        was = true;
+                        break;
+                    }
+
+                if(!was) {
+                    try {
+                        String prepStat = "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ? WHERE (`id` = ?);";
+                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        preparedStatement.setString(1, enteredUsername);
+                        preparedStatement.setString(2, enteredPassword);
+                        preparedStatement.setString(3, enteredEmail);
+                        preparedStatement.setInt(4, currentUser.getId());
+                        preparedStatement.execute();
+                        initUsersData();
+                        settingsWarningLabel.setStyle("-fx-text-fill: #7f8e55");
+                        settingsWarningLabel.setText("Account information saved");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    settingsWarningLabel.setText("Username is not free");
+            }
+            else
+                settingsWarningLabel.setText("No connection");
+        }
+        else
+            settingsWarningLabel.setText("Username/password must be at least 3 characters");
     }
 
     private void changeUser() {
@@ -1007,14 +1092,8 @@ public class MainController {
                         e.printStackTrace();
                     }
                 }
-                else
-                    loginWarning.setText("There's no such username.");
             }
-            else
-                loginWarning.setText("No connection.");
         }
-        else
-            loginWarning.setText("Username/password must be at least 3 characters");
     }
 
     private void submitId() {
@@ -1098,13 +1177,13 @@ public class MainController {
                     }
 
                     warningLabel.setStyle("-fx-text-fill: #7f8e55");
-                    warningLabel.setText(username + " registered.");
+                    warningLabel.setText(username + " registered");
                 }
                 else
-                    warningLabel.setText("Username is not free.");
+                    warningLabel.setText("Username is not free");
             }
             else
-                warningLabel.setText("No connection.");
+                warningLabel.setText("No connection");
         }
         else {
             warningLabel.setText("Username/password must be at least 3 characters");
@@ -1139,16 +1218,40 @@ public class MainController {
                     }
 
                     warningLabel.setStyle("-fx-text-fill: #7f8e55");
-                    warningLabel.setText(username + " registered.");
+                    warningLabel.setText(username + " registered");
                 }
                 else
-                    warningLabel.setText("Username is not free.");
+                    warningLabel.setText("Username is not free");
             }
             else
-                warningLabel.setText("No connection.");
+                warningLabel.setText("No connection");
         }
         else
             warningLabel.setText("Username/password must be at least 3 characters");
+    }
+
+    private void newConnection() {
+        String enteredURL = databaseSettingsURLTextField.getText();
+        String enteredUsername = databaseSettingsUsernameTextField.getText();
+        String enteredPassword = databaseSettingsPasswordTextField.getText();
+
+        databaseSettingsConnectionStatusLabel.setStyle("-fx-text-fill: #d85751");
+        if(!(enteredUsername.length() < 3 || enteredPassword.length() < 3))
+            switch (conn.setConnection(enteredURL, enteredUsername, enteredPassword)) {
+                case 1:
+                    databaseSettingsConnectionStatusLabel.setStyle("-fx-text-fill: #7f8e55");
+                    databaseSettingsConnectionStatusLabel.setText("Connected!");
+                    break;
+                case 0:
+                    databaseSettingsConnectionStatusLabel.setText("Wrong URL!");
+                    break;
+                case 1045:
+                    databaseSettingsConnectionStatusLabel.setText("Wrong username/password!");
+                    break;
+                case 555:
+                    databaseSettingsConnectionStatusLabel.setText("???");
+                    break;
+            }
     }
 
     private void initUsersData() throws SQLException {
@@ -1181,5 +1284,3 @@ public class MainController {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
     }
 }
-
-//КАРТИНКА ПОИСКА

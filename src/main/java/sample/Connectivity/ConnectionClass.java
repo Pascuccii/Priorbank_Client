@@ -16,25 +16,29 @@ public class ConnectionClass {
     public ConnectionClass (String URL, String USER, String PASS) {
         try {
             connection = DriverManager.getConnection(URL, USER, PASS);
-            //statement.execute("INSERT INTO users (name,password) VALUES ('first','first')");
-//            statement.executeUpdate("UPDATE users SET users.name = 'admin' WHERE id = 4");
-
-//            statement.addBatch("INSERT INTO users (name,password) VALUES ('batch1','pas')");
-//            statement.addBatch("INSERT INTO users (name,password) VALUES ('batch2','pas')");
-//            statement.addBatch("INSERT INTO users (name,password) VALUES ('batch3','pas')");
-//            statement.executeBatch();
-//            statement.clearBatch();
-//            boolean status = statement.isClosed();
-//            System.out.println(status);
             if(!connection.isClosed()) {
                 connected = true;
                 System.out.println("Connection succeed!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getErrorCode());
         }
     }
 
+    public int setConnection (String URL, String USER, String PASS) {
+        try {
+            Connection newCon = DriverManager.getConnection(URL, USER, PASS);
+            if(!newCon.isClosed()) {
+                connected = true;
+                connection = newCon;
+                System.out.println("Connection succeed!");
+                return 1;
+            }
+        } catch (SQLException e) {
+            return e.getErrorCode();
+        }
+        return 555;
+    }
     public Connection getConnection() {
         return connection;
     }

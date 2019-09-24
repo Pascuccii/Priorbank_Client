@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -20,10 +21,10 @@
    <children>
       <AnchorPane fx:id="title" maxHeight="-Infinity" prefHeight="33.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="hideButton" layoutX="517.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="minimizeButton" layoutX="543.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="exitButton" layoutX="569.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
-            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="3.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="hideButton" focusTraversable="false" layoutX="517.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="minimizeButton" focusTraversable="false" layoutX="543.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="exitButton" focusTraversable="false" layoutX="569.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="16.0" layoutY="3.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
             <Label fx:id="currentUserLabel" layoutX="83.0" layoutY="8.0" prefHeight="18.0" prefWidth="254.0" AnchorPane.leftAnchor="83.0" AnchorPane.topAnchor="8.0" />
          </children>
          <padding>
@@ -36,14 +37,14 @@
               <items>
                 <AnchorPane fx:id="leftAnchorPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="210.0">
                      <children>
-                        <FlowPane fx:id="menuAdmin" layoutX="-12.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <FlowPane fx:id="menuAdmin" layoutX="-12.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label fx:id="menuAdminLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="205.0" text="Меню а" textFill="#ffffff">
+                              <Label fx:id="menuAdminLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="43.0" prefWidth="205.0" text="Меню а" textFill="#ffffff">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="menuAdminButton1" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="203.0" text=" 1  User management">
+                              <Button fx:id="menuAdminButton1" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="203.0" text=" 1  User management">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -51,7 +52,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuAdminButton2" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="203.0" text=" 2  Car management">
+                              <Button fx:id="menuAdminButton2" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="203.0" text=" 2  Car management">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -59,7 +60,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuAdminButton3" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="203.0" text=" 3  Settigns">
+                              <Button fx:id="menuAdminButton3" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="203.0" text=" 3  Settigns">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -67,7 +68,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuAdminButton4" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="203.0" text=" 4  Exit">
+                              <Button fx:id="menuAdminButton4" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="203.0" text=" 4  Exit">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -76,14 +77,14 @@
                                  </padding>
                               </Button>
                            </children></FlowPane>
-                        <FlowPane fx:id="menuUser" layoutX="-2.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <FlowPane fx:id="menuUser" layoutX="-2.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label fx:id="menuUserLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="205.0" text="Menu u" textFill="#ffffff">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="menuUserButton1" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 1  User management">
+                              <Button fx:id="menuUserButton1" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 1  User management">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -91,7 +92,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuUserButton2" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 2  Car management">
+                              <Button fx:id="menuUserButton2" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 2  Car management">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -99,7 +100,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuUserButton3" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 3  Settings">
+                              <Button fx:id="menuUserButton3" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 3  Settings">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -107,7 +108,7 @@
                                     <Insets bottom="8.0" left="4.0" top="8.0" />
                                  </padding>
                               </Button>
-                              <Button fx:id="menuUserButton4" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 4  Exit">
+                              <Button fx:id="menuUserButton4" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="205.0" text=" 4  Exit">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />
                                  </FlowPane.margin>
@@ -121,10 +122,11 @@
                   </AnchorPane>
                 <AnchorPane fx:id="rightAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="409.0">
                      <children>
-                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button fx:id="connectionIndicator" layoutX="152.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.topAnchor="11.0" />
-                              <TableView fx:id="usersTable" editable="true" layoutX="14.0" layoutY="43.0" maxWidth="513.0" prefHeight="154.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
+                              <TextField fx:id="searchField" layoutX="221.0" layoutY="12.0" prefHeight="26.0" prefWidth="136.0" AnchorPane.leftAnchor="221.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="12.0" />
+                              <Button fx:id="connectionIndicator" focusTraversable="false" layoutX="152.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.topAnchor="11.0" />
+                              <TableView fx:id="usersTable" editable="true" focusTraversable="false" layoutX="14.0" layoutY="43.0" maxWidth="513.0" prefHeight="154.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0">
                                 <columns>
                                     <TableColumn fx:id="idColumn" prefWidth="30.0" text="ID" />
                                     <TableColumn fx:id="accessModeColumn" prefWidth="75.0" text="Access" />
@@ -139,9 +141,8 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <Label fx:id="menuPane1_DBLabel" layoutX="30.0" layoutY="14.0" text="Database connection" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="15.0" />
-                              <TextField fx:id="searchField" layoutX="221.0" layoutY="12.0" prefHeight="26.0" prefWidth="136.0" AnchorPane.leftAnchor="221.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="12.0" />
-                              <MenuButton fx:id="criteriaButton" layoutX="387.6" layoutY="12.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Username" AnchorPane.rightAnchor="94.0" AnchorPane.topAnchor="12.0">
+                              <Label fx:id="menuPane1_DBLabel" focusTraversable="false" layoutX="30.0" layoutY="14.0" text="Database connection" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="15.0" />
+                              <MenuButton fx:id="criteriaButton" focusTraversable="false" layoutX="387.6" layoutY="12.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="90.0" text="Username" AnchorPane.rightAnchor="94.0" AnchorPane.topAnchor="12.0">
                                 <items>
                                   <MenuItem fx:id="criteriaMenuItem_Id" mnemonicParsing="false" text="Id" />
                                     <MenuItem fx:id="criteriaMenuItem_Access" mnemonicParsing="false" text="Access" />
@@ -150,8 +151,8 @@
                                     <MenuItem fx:id="criteriaMenuItem_Email" mnemonicParsing="false" text="E-mail" />
                                 </items>
                               </MenuButton>
-                              <Button fx:id="searchButton" layoutX="487.0" layoutY="9.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0" />
-                              <Button fx:id="resetSearchButton" layoutX="355.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="11.5" />
+                              <Button fx:id="searchButton" focusTraversable="false" layoutX="487.0" layoutY="9.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0" />
+                              <Button fx:id="resetSearchButton" focusTraversable="false" layoutX="355.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="11.5" />
                               <ImageView fx:id="fixImage" fitHeight="25.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="fixImage" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="52.0">
                                  <image>
                                     <Image url="@../assets/fix-black.png" />
@@ -160,10 +161,10 @@
                               <AnchorPane fx:id="createUser_AnchorPane" layoutX="30.0" layoutY="212.0" prefHeight="82.0" prefWidth="511.0" AnchorPane.leftAnchor="30.0">
                                  <children>
                                     <TextField fx:id="createUser_AnchorPane_Username" layoutX="14.0" layoutY="11.0" prefHeight="26.0" prefWidth="171.0" promptText="Username" />
-                                    <TextField fx:id="createUser_AnchorPane_Email" layoutX="14.0" layoutY="44.0" prefHeight="26.0" prefWidth="171.0" promptText="E-Mail" />
                                     <TextField fx:id="createUser_AnchorPane_Password" layoutX="191.0" layoutY="11.0" prefHeight="26.0" prefWidth="171.0" promptText="Password" />
-                                    <Button fx:id="createUserButton" layoutX="393.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Add" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="23.0" />
-                                    <MenuButton fx:id="createUser_AnchorPane_AccessMode_MenuButton" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
+                                    <TextField fx:id="createUser_AnchorPane_Email" layoutX="14.0" layoutY="44.0" prefHeight="26.0" prefWidth="171.0" promptText="E-Mail" />
+                                    <Button fx:id="createUserButton" focusTraversable="false" layoutX="393.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Add" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="23.0" />
+                                    <MenuButton fx:id="createUser_AnchorPane_AccessMode_MenuButton" focusTraversable="false" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
                                        <items>
                                           <MenuItem fx:id="createUser_AccessMenuItem_User" mnemonicParsing="false" text="User" />
                                           <MenuItem fx:id="createUser_AccessMenuItem_Admin" mnemonicParsing="false" text="Administrator" />
@@ -173,13 +174,13 @@
                               </AnchorPane>
                               <AnchorPane fx:id="changeUser_AnchorPane" layoutX="30.0" layoutY="304.0" prefHeight="82.0" prefWidth="511.0" AnchorPane.bottomAnchor="74.0" AnchorPane.rightAnchor="30.0">
                                  <children>
-                                    <TextField fx:id="changeUser_AnchorPane_Username" layoutX="59.0" layoutY="11.0" prefHeight="26.0" prefWidth="125.0" promptText="Username" />
-                                    <TextField fx:id="changeUser_AnchorPane_Email" layoutX="59.0" layoutY="44.0" prefHeight="26.0" prefWidth="125.0" promptText="E-Mail" />
-                                    <TextField fx:id="changeUser_AnchorPane_Password" layoutX="191.0" layoutY="11.0" prefHeight="26.0" prefWidth="171.0" promptText="Password" />
                                     <TextField fx:id="changeUser_AnchorPane_Id" layoutX="14.0" layoutY="11.0" prefHeight="26.0" prefWidth="39.0" promptText="ID" />
-                                    <Button fx:id="changeUser_AnchorPane_IdSubmitButton" layoutX="14.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="39.0" text="✓" />
-                                    <Button fx:id="changeUserButton" layoutX="393.0" layoutY="22.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Save" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="22.0" />
-                                    <MenuButton fx:id="changeUser_AnchorPane_AccessMode_MenuButton" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
+                                    <TextField fx:id="changeUser_AnchorPane_Username" layoutX="59.0" layoutY="11.0" prefHeight="26.0" prefWidth="125.0" promptText="Username" />
+                                    <TextField fx:id="changeUser_AnchorPane_Password" layoutX="191.0" layoutY="11.0" prefHeight="26.0" prefWidth="171.0" promptText="Password" />
+                                    <TextField fx:id="changeUser_AnchorPane_Email" layoutX="59.0" layoutY="44.0" prefHeight="26.0" prefWidth="125.0" promptText="E-Mail" />
+                                    <Button fx:id="changeUser_AnchorPane_IdSubmitButton" focusTraversable="false" layoutX="14.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="39.0" text="✓" />
+                                    <Button fx:id="changeUserButton" focusTraversable="false" layoutX="393.0" layoutY="22.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Save" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="22.0" />
+                                    <MenuButton fx:id="changeUser_AnchorPane_AccessMode_MenuButton" focusTraversable="false" layoutX="191.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="171.0" text="User">
                                        <items>
                                           <MenuItem fx:id="changeUser_AccessMenuItem_User" mnemonicParsing="false" text="User" />
                                           <MenuItem fx:id="changeUser_AccessMenuItem_Admin" mnemonicParsing="false" text="Admin" />
@@ -190,8 +191,8 @@
                               <AnchorPane fx:id="deleteUser_AnchorPane" layoutX="30.0" layoutY="393.0" prefHeight="52.0" prefWidth="511.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
                                  <children>
                                     <TextField fx:id="deleteUserTextField" layoutX="104.0" layoutY="6.0" prefHeight="26.0" prefWidth="257.0" promptText="8,12,15,22,..." AnchorPane.bottomAnchor="12.600000000000001" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="151.0" />
-                                    <Button fx:id="deleteUserButton" layoutX="393.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Delete" AnchorPane.rightAnchor="30.0" />
-                                    <Label fx:id="deleteUserLabel" layoutX="14.0" layoutY="16.4" text="ID's to delete:" />
+                                    <Button fx:id="deleteUserButton" focusTraversable="false" layoutX="393.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" text="Delete" AnchorPane.rightAnchor="30.0" />
+                                    <Label fx:id="deleteUserLabel" focusTraversable="false" layoutX="14.0" layoutY="16.4" text="ID's to delete:" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
@@ -199,48 +200,51 @@
                            <children>
                               <Label layoutX="186.0" layoutY="172.0" text="2" />
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane fx:id="menuPane31" layoutX="60.0" layoutY="31.0" prefHeight="76.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0">
                                  <children>
-                                    <MenuButton fx:id="languageButton" layoutX="111.0" layoutY="33.0" mnemonicParsing="false" prefWidth="103.0" text="English" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="33.0">
+                                    <MenuButton fx:id="languageButton" focusTraversable="false" layoutX="111.0" layoutY="33.0" mnemonicParsing="false" prefWidth="103.0" text="English" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="33.0">
                                       <items>
                                         <MenuItem fx:id="languageItem_Russian" mnemonicParsing="false" text="Russian" />
                                         <MenuItem fx:id="languageItem_English" mnemonicParsing="false" text="English" />
                                       </items>
                                     </MenuButton>
-                                    <Label fx:id="languageLabel" layoutX="28.0" layoutY="38.0" text="Language:" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="38.0" />
-                                    <Label fx:id="themeLabel" layoutX="309.0" layoutY="38.0" text="Theme:" AnchorPane.leftAnchor="309.0" AnchorPane.topAnchor="38.0" />
-                                    <MenuButton fx:id="themeButton" layoutX="380.0" layoutY="34.0" mnemonicParsing="false" prefWidth="103.0" text="Dark Theme" AnchorPane.leftAnchor="380.0" AnchorPane.topAnchor="34.0">
+                                    <Label fx:id="languageLabel" focusTraversable="false" layoutX="28.0" layoutY="38.0" text="Language:" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="38.0" />
+                                    <Label fx:id="themeLabel" focusTraversable="false" layoutX="309.0" layoutY="38.0" text="Theme:" AnchorPane.leftAnchor="309.0" AnchorPane.topAnchor="38.0" />
+                                    <MenuButton fx:id="themeButton" focusTraversable="false" layoutX="380.0" layoutY="34.0" mnemonicParsing="false" prefWidth="103.0" text="Dark Theme" AnchorPane.leftAnchor="380.0" AnchorPane.topAnchor="34.0">
                                        <items>
                                           <MenuItem fx:id="themeItem_Dark" mnemonicParsing="false" text="Dark Theme" />
                                           <MenuItem fx:id="themeItem_Light" mnemonicParsing="false" text="Light Theme" />
                                        </items>
                                     </MenuButton>
-                                    <Label fx:id="customizationLabel" alignment="CENTER" layoutX="166.0" layoutY="5.0" prefHeight="18.0" prefWidth="180.0" text="Customization" />
+                                    <Label fx:id="customizationLabel" alignment="CENTER" focusTraversable="false" layoutX="166.0" layoutY="5.0" prefHeight="18.0" prefWidth="180.0" text="Customization" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="accountSettingsPane" layoutX="30.0" layoutY="97.0" prefHeight="170.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0">
                                  <children>
-                                    <Label fx:id="accountSettingsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Account" textAlignment="CENTER" />
-                                    <TextField fx:id="accountSettingsUsernameTextField" layoutX="174.0" layoutY="35.0" />
-                                    <TextField fx:id="accountSettingsEmailTextField" layoutX="174.0" layoutY="113.0" prefHeight="25.0" prefWidth="159.0" />
-                                    <Label fx:id="accountSettingsUsernameLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="39.0" text="Username" />
-                                    <Label fx:id="accountSettingsPasswordLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="78.0" text="Password" />
-                                    <Label fx:id="accountSettingsEmailLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="117.0" text="E-Mail" />
-                                    <Button fx:id="accountSettingsSaveButton" layoutX="400.0" layoutY="113.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Save" />
-                                    <PasswordField fx:id="accountSettingsPasswordTextField" layoutX="174.0" layoutY="74.0" />
+                                    <Label fx:id="accountSettingsLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Account" textAlignment="CENTER" />
+                                    <TextField fx:id="accountSettingsUsernameTextField" layoutX="176.0" layoutY="35.0" />
+                                    <PasswordField fx:id="accountSettingsPasswordTextField" layoutX="176.0" layoutY="74.0" />
+                                    <TextField fx:id="accountSettingsEmailTextField" layoutX="176.0" layoutY="113.0" prefHeight="25.0" prefWidth="159.0" />
+                                    <Label fx:id="accountSettingsUsernameLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="80.0" layoutY="39.0" prefWidth="57.0" text="Username" />
+                                    <Label fx:id="accountSettingsPasswordLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="80.0" layoutY="78.0" text="Password" />
+                                    <Label fx:id="accountSettingsEmailLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="80.0" layoutY="117.0" text="E-Mail" />
+                                    <Button fx:id="accountSettingsSaveButton" focusTraversable="false" layoutX="375.0" layoutY="112.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Save" />
+                                    <Label fx:id="settingsWarningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="147.0" prefHeight="18.0" prefWidth="490.0" textAlignment="CENTER" />
                                  </children></AnchorPane>
                               <AnchorPane fx:id="databaseSettingsPane" layoutX="29.0" layoutY="300.0" prefHeight="170.0" prefWidth="513.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="280.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Database connection" textAlignment="CENTER" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Database connection" textAlignment="CENTER" />
                                     <TextField fx:id="databaseSettingsURLTextField" layoutX="43.0" layoutY="35.0" prefHeight="26.0" prefWidth="458.0" text="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;useSSL=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow" />
-                                    <Label fx:id="databaseSettingsURLLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="39.0" text="URL" />
-                                    <Label fx:id="databaseSettingsUsernameLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="78.0" text="Username" />
-                                    <Label fx:id="databaseSettingsPasswordLabel" alignment="TOP_LEFT" layoutX="80.0" layoutY="115.0" text="Password" />
-                                    <Button fx:id="databaseSettingsConnectButton" layoutX="400.0" layoutY="111.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Connect" />
+                                    <Label fx:id="databaseSettingsURLLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="10.0" layoutY="39.0" text="URL" />
+                                    <Label fx:id="databaseSettingsUsernameLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="80.0" layoutY="78.0" text="Username" />
+                                    <Label fx:id="databaseSettingsPasswordLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="80.0" layoutY="115.0" text="Password" />
+                                    <Button fx:id="databaseSettingsConnectButton" focusTraversable="false" layoutX="375.0" layoutY="111.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Connect" />
                                     <TextField fx:id="databaseSettingsUsernameTextField" layoutX="176.0" layoutY="74.0" text="root" />
                                     <PasswordField fx:id="databaseSettingsPasswordTextField" layoutX="176.0" layoutY="111.0" text="root" />
+                                    <Label fx:id="databaseSettingsConnectionStatusLabel" alignment="CENTER" layoutX="357.0" layoutY="77.0" prefHeight="18.0" prefWidth="126.0" />
+                                    <ProgressIndicator fx:id="databaseSettingsConnectionProgressIndicator" layoutX="480.0" layoutY="113.0" prefHeight="65.0" prefWidth="26.0" progress="0.08" visible="false" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
