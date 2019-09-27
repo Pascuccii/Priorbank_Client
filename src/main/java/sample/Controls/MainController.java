@@ -959,6 +959,7 @@ public class MainController {
 
         setAllInvisible();
         pane.setVisible(true);
+        pane.requestFocus();
         if(currentUser.getTheme().equals("Dark"))
             menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
                     "-fx-background-repeat: no-repeat;" +
