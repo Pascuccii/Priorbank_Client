@@ -7,6 +7,9 @@
 }
 
 .text-field {
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
     -fx-background-color: #b1b1b1;
     -fx-prompt-text-fill: #747474;
     -fx-font-weight: bold;
