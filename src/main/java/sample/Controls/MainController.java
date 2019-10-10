@@ -1,29 +1,33 @@
 package sample.Controls;
 
-import java.io.*;
-import java.sql.*;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.mysql.cj.util.StringUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.TableCellSkin;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.Connectivity.ConnectionClass;
 
-public class MainController {
+import java.io.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Iterator;
+
+public class MainController extends Application {
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -35,322 +39,245 @@ public class MainController {
     private int theme = 0;
 
     private ObservableList<User> usersData = FXCollections.observableArrayList();
-
     @FXML
     private TableView<User> usersTable;
-
     @FXML
     private TableColumn<User, Integer> idColumn;
-
     @FXML
     private TableColumn<User, Integer> accessModeColumn;
-
     @FXML
     private TableColumn<User, String> usernameColumn;
-
     @FXML
     private TableColumn<User, String> passwordColumn;
-
     @FXML
     private TableColumn<User, String> emailColumn;
-
     @FXML
     private AnchorPane primaryAnchorPane;
-
     @FXML
     private AnchorPane title;
-
     @FXML
     private Button hideButton;
-
     @FXML
     private Button minimizeButton;
-
     @FXML
     private Button exitButton;
-
     @FXML
     private Button logoutButtonAdmin;
-
     @FXML
     private Button logoutButtonUser;
-
     @FXML
     private Label currentUserLabelAdmin;
-
     @FXML
     private Label currentUserLabelUser;
-
     @FXML
     private AnchorPane workPane;
-
     @FXML
     private AnchorPane leftAnchorPane;
-
     @FXML
     private FlowPane menuAdmin;
-
-
     @FXML
     private Button menuAdminButton1;
-
     @FXML
     private Button menuAdminButton2;
-
     @FXML
     private Button menuAdminButton3;
-
     @FXML
     private Button menuAdminButton4;
-
     @FXML
     private FlowPane menuUser;
-
     @FXML
     private Button menuUserButton1;
-
     @FXML
     private Button menuUserButton2;
-
     @FXML
     private Button menuUserButton3;
-
     @FXML
     private Button menuUserButton4;
-
     @FXML
     private AnchorPane rightAnchorPane;
-
     @FXML
     private AnchorPane menuPane1;
-
     @FXML
     private Button connectionIndicator;
-
     @FXML
     private Label menuPane1_DBLabel;
-
     @FXML
     private TextField searchField;
-
     @FXML
     private MenuButton criteriaButton;
-
     @FXML
     private MenuItem criteriaMenuItem_Id;
-
     @FXML
     private MenuItem criteriaMenuItem_Access;
-
     @FXML
     private MenuItem criteriaMenuItem_Username;
-
     @FXML
     private MenuItem criteriaMenuItem_Password;
-
     @FXML
     private MenuItem criteriaMenuItem_Email;
-
     @FXML
     private Button searchButton;
-
     @FXML
     private Button resetSearchButton;
-
     @FXML
     private ImageView fixImage;
-
     @FXML
     private AnchorPane createUser_AnchorPane;
-
     @FXML
     private TextField createUser_AnchorPane_Username;
-
     @FXML
     private TextField createUser_AnchorPane_Email;
-
     @FXML
     private TextField createUser_AnchorPane_Password;
-
     @FXML
     private Button createUserButton;
-
     @FXML
     private MenuButton createUser_AnchorPane_AccessMode_MenuButton;
-
     @FXML
     private MenuItem createUser_AccessMenuItem_User;
-
     @FXML
     private MenuItem createUser_AccessMenuItem_Admin;
-
     @FXML
     private AnchorPane changeUser_AnchorPane;
-
     @FXML
     private TextField changeUser_AnchorPane_Username;
-
     @FXML
     private TextField changeUser_AnchorPane_Email;
-
     @FXML
     private TextField changeUser_AnchorPane_Password;
-
     @FXML
     private TextField changeUser_AnchorPane_Id;
-
     @FXML
     private Button changeUser_AnchorPane_IdSubmitButton;
-
     @FXML
     private Button changeUserButton;
-
     @FXML
     private MenuButton changeUser_AnchorPane_AccessMode_MenuButton;
-
     @FXML
     private MenuItem changeUser_AccessMenuItem_User;
-
     @FXML
     private MenuItem changeUser_AccessMenuItem_Admin;
-
     @FXML
     private AnchorPane deleteUser_AnchorPane;
-
     @FXML
     private TextField deleteUserTextField;
-
     @FXML
     private Button deleteUserButton;
-
     @FXML
     private Label deleteUserLabel;
-
     @FXML
     private AnchorPane menuPane2;
-
     @FXML
     private AnchorPane menuPane3;
-
     @FXML
     private AnchorPane menuPane31;
-
     @FXML
     private MenuButton languageButton;
-
     @FXML
     private MenuItem languageItem_Russian;
-
     @FXML
     private MenuItem languageItem_English;
-
     @FXML
     private Label languageLabel;
-
     @FXML
     private Label themeLabel;
-
     @FXML
     private MenuButton themeButton;
-
     @FXML
     private MenuItem themeItem_Dark;
-
     @FXML
     private MenuItem themeItem_Light;
-
     @FXML
     private Label customizationLabel;
-
     @FXML
     private AnchorPane accountSettingsPane;
-
     @FXML
     private Label accountSettingsLabel;
-
     @FXML
     private TextField accountSettingsUsernameTextField;
-
     @FXML
     private TextField accountSettingsEmailTextField;
-
     @FXML
     private Label accountSettingsUsernameLabel;
-
     @FXML
     private Label accountSettingsPasswordLabel;
-
     @FXML
     private Label accountSettingsEmailLabel;
-
     @FXML
     private Button accountSettingsSaveButton;
-
     @FXML
     private PasswordField accountSettingsPasswordTextField;
-
     @FXML
     private AnchorPane databaseSettingsPane;
-
     @FXML
     private TextField databaseSettingsURLTextField;
-
     @FXML
     private Label databaseSettingsURLLabel;
-
     @FXML
     private Label databaseSettingsUsernameLabel;
-
     @FXML
     private Label databaseSettingsPasswordLabel;
-
     @FXML
     private Button databaseSettingsConnectButton;
-
     @FXML
     private TextField databaseSettingsUsernameTextField;
-
     @FXML
     private PasswordField databaseSettingsPasswordTextField;
-
     @FXML
     private AnchorPane menuPane4;
-
     @FXML
     private AnchorPane loginPane;
-
     @FXML
     private AnchorPane loginElementsPane;
-
     @FXML
     private TextField usernameField;
-
     @FXML
     private Button loginButton;
-
     @FXML
     private Label loginUsernameLabel;
-
     @FXML
     private Label loginPasswordLabel;
-
     @FXML
     private Button signUpButton;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private Label loginWarning;
-
     @FXML
     private Label settingsWarningLabel;
-
     @FXML
     private Label databaseSettingsConnectionStatusLabel;
-
     @FXML
     private ProgressIndicator databaseSettingsConnectionProgressIndicator;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        System.out.println("Starting...");
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainWindow.fxml"));
+        primaryStage.setTitle("Main");
+        Scene scene = new Scene(root, 800, 500, Color.TRANSPARENT);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        root.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+        root.setOnMouseDragged(mouseEvent -> {
+            primaryStage.setX(mouseEvent.getScreenX() - xOffset);
+            primaryStage.setY(mouseEvent.getScreenY() - yOffset);
+        });
+        primaryStage.setMaximized(false);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Closing...");
+    }
 
     @FXML
     void initialize() throws SQLException {
@@ -426,37 +353,7 @@ public class MainController {
             Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             stage2.setIconified(true);
         });
-        minimizeButton.setOnAction(actionEvent -> {
-            Stage stage = (Stage) minimizeButton.getScene().getWindow();
-            if (stage.isMaximized() && theme == 0) {
-                stage.setMaximized(false);
-                usersTable.setPrefHeight(150d);
-                createUser_AnchorPane.setLayoutY(212);
-                if (currentTheme.equals("Dark"))
-                    minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
-                else
-                    minimizeButton.setStyle("-fx-background-image: url(assets/expand-black.png)");
-                loginElementsPane.setLayoutX(250);
-                loginElementsPane.setLayoutY(176);
-                loginWarning.setLayoutX(45);
-                loginWarning.setLayoutY(117);
-                searchField.setPrefWidth(136);
-            } else {
-                stage.setMaximized(true);
-                usersTable.setPrefHeight(606d);
-                createUser_AnchorPane.setLayoutY(667);
-                if (currentTheme.equals("Dark"))
-                    minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
-                else
-                    minimizeButton.setStyle("-fx-background-image: url(assets/minimize-black.png)");
-                loginElementsPane.setLayoutX(610);
-                loginElementsPane.setLayoutY(350);
-                loginWarning.setLayoutX(405);
-                loginWarning.setLayoutY(290);
-                searchField.setPrefWidth(350);
-
-            }
-        });
+        minimizeButton.setOnAction(actionEvent -> minimize());
         exitButton.setOnAction(actionEvent -> {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             saveLastConfig();
@@ -528,12 +425,12 @@ public class MainController {
             if (keyEvent.getCode() == KeyCode.ENTER)
                 changeUser_AnchorPane_IdSubmitButton.fire();
         });
-        changeUser_AnchorPane_Id.textProperty().addListener((observable, oldValue, newValue) -> {
-                changeUser_AnchorPane_Id.setStyle("-fx-border-color: transparent");});
+        changeUser_AnchorPane_Id.textProperty().addListener((observable, oldValue, newValue) ->
+            changeUser_AnchorPane_Id.setStyle("-fx-border-color: transparent"));
         changeUser_AnchorPane_Id.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (!StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText())  && !changeUser_AnchorPane_Id.getText().equals(""))
+                if (!StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText()) && !changeUser_AnchorPane_Id.getText().equals(""))
                     changeUser_AnchorPane_Id.setStyle("-fx-border-color: rgb(255,13,19)");
         });
 
@@ -543,8 +440,7 @@ public class MainController {
                 changeUserButton.fire();
             changeUser_AnchorPane_Username.setStyle("-fx-border-color: transparent");
         });
-        changeUser_AnchorPane_Username.textProperty().addListener((observable, oldValue, newValue) -> {
-            changeUser_AnchorPane_Username.setStyle("-fx-border-color: transparent");});
+        changeUser_AnchorPane_Username.textProperty().addListener((observable, oldValue, newValue) -> changeUser_AnchorPane_Username.setStyle("-fx-border-color: transparent"));
         changeUser_AnchorPane_Username.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -558,8 +454,7 @@ public class MainController {
                 changeUserButton.fire();
             changeUser_AnchorPane_Password.setStyle("-fx-border-color: transparent");
         });
-        changeUser_AnchorPane_Password.textProperty().addListener((observable, oldValue, newValue) -> {
-            changeUser_AnchorPane_Password.setStyle("-fx-border-color: transparent");});
+        changeUser_AnchorPane_Password.textProperty().addListener((observable, oldValue, newValue) -> changeUser_AnchorPane_Password.setStyle("-fx-border-color: transparent"));
         changeUser_AnchorPane_Password.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -572,12 +467,11 @@ public class MainController {
                 changeUserButton.fire();
             changeUser_AnchorPane_Email.setStyle("-fx-border-color: transparent");
         });
-        changeUser_AnchorPane_Email.textProperty().addListener((observable, oldValue, newValue) -> {
-            changeUser_AnchorPane_Email.setStyle("-fx-border-color: transparent");});
+        changeUser_AnchorPane_Email.textProperty().addListener((observable, oldValue, newValue) -> changeUser_AnchorPane_Email.setStyle("-fx-border-color: transparent"));
         changeUser_AnchorPane_Email.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (!changeUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])") && !changeUser_AnchorPane_Email.getText().equals(""))
+                if (!changeUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !changeUser_AnchorPane_Email.getText().equals(""))
                     changeUser_AnchorPane_Email.setStyle("-fx-border-color: rgb(255,13,19)");
         });
 
@@ -586,8 +480,7 @@ public class MainController {
                 createUserButton.fire();
             createUser_AnchorPane_Username.setStyle("-fx-border-color: transparent");
         });
-        createUser_AnchorPane_Username.textProperty().addListener((observable, oldValue, newValue) -> {
-            createUser_AnchorPane_Username.setStyle("-fx-border-color: transparent");});
+        createUser_AnchorPane_Username.textProperty().addListener((observable, oldValue, newValue) -> createUser_AnchorPane_Username.setStyle("-fx-border-color: transparent"));
         createUser_AnchorPane_Username.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -600,8 +493,7 @@ public class MainController {
                 createUserButton.fire();
             createUser_AnchorPane_Password.setStyle("-fx-border-color: transparent");
         });
-        createUser_AnchorPane_Password.textProperty().addListener((observable, oldValue, newValue) -> {
-            createUser_AnchorPane_Password.setStyle("-fx-border-color: transparent");});
+        createUser_AnchorPane_Password.textProperty().addListener((observable, oldValue, newValue) -> createUser_AnchorPane_Password.setStyle("-fx-border-color: transparent"));
         createUser_AnchorPane_Password.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -614,12 +506,11 @@ public class MainController {
                 createUserButton.fire();
             createUser_AnchorPane_Email.setStyle("-fx-border-color: transparent");
         });
-        createUser_AnchorPane_Email.textProperty().addListener((observable, oldValue, newValue) -> {
-            createUser_AnchorPane_Email.setStyle("-fx-border-color: transparent");});
+        createUser_AnchorPane_Email.textProperty().addListener((observable, oldValue, newValue) -> createUser_AnchorPane_Email.setStyle("-fx-border-color: transparent"));
         createUser_AnchorPane_Email.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (!createUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])") && !createUser_AnchorPane_Email.getText().equals(""))
+                if (!createUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !createUser_AnchorPane_Email.getText().equals(""))
                     createUser_AnchorPane_Email.setStyle("-fx-border-color: rgb(255,13,19)");
         });
 
@@ -628,8 +519,7 @@ public class MainController {
                 deleteUserButton.fire();
             deleteUserTextField.setStyle("-fx-border-color: transparent");
         });
-        deleteUserTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            deleteUserTextField.setStyle("-fx-border-color: transparent");});
+        deleteUserTextField.textProperty().addListener((observable, oldValue, newValue) -> deleteUserTextField.setStyle("-fx-border-color: transparent"));
         deleteUserTextField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -1165,9 +1055,8 @@ public class MainController {
     }
 
     private boolean submitId() {
-        int id = 0;
         if (StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText())) {
-            id = Integer.parseInt(changeUser_AnchorPane_Id.getText());
+            int id = Integer.parseInt(changeUser_AnchorPane_Id.getText());
             if (conn.isConnected())
                 for (User u : usersData)
                     if (id == u.getId()) {
@@ -1316,6 +1205,37 @@ public class MainController {
                     databaseSettingsConnectionStatusLabel.setText("???");
                     break;
             }
+    }
+
+    private void minimize() {
+        Stage stage = (Stage) minimizeButton.getScene().getWindow();
+        if (stage.isMaximized() && theme == 0) {
+            stage.setMaximized(false);
+            usersTable.setPrefHeight(150d);
+            createUser_AnchorPane.setLayoutY(212);
+            if (currentTheme.equals("Dark"))
+                minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
+            else
+                minimizeButton.setStyle("-fx-background-image: url(assets/expand-black.png)");
+            loginElementsPane.setLayoutX(250);
+            loginElementsPane.setLayoutY(176);
+            loginWarning.setLayoutX(45);
+            loginWarning.setLayoutY(117);
+            searchField.setPrefWidth(136);
+        } else {
+            stage.setMaximized(true);
+            usersTable.setPrefHeight(606d);
+            createUser_AnchorPane.setLayoutY(667);
+            if (currentTheme.equals("Dark"))
+                minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
+            else
+                minimizeButton.setStyle("-fx-background-image: url(assets/minimize-black.png)");
+            loginElementsPane.setLayoutX(610);
+            loginElementsPane.setLayoutY(350);
+            loginWarning.setLayoutX(405);
+            loginWarning.setLayoutY(290);
+            searchField.setPrefWidth(350);
+        }
     }
 
     private void initUsersData() throws SQLException {
