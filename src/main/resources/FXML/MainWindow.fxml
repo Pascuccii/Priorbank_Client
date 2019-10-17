@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -212,11 +213,11 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane2" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="186.0" layoutY="172.0" text="2" />
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane fx:id="menuPane31" layoutX="60.0" layoutY="31.0" prefHeight="76.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0">
                                  <children>
@@ -251,7 +252,7 @@
                                  </children></AnchorPane>
                               <AnchorPane fx:id="databaseSettingsPane" layoutX="29.0" layoutY="300.0" prefHeight="170.0" prefWidth="513.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="280.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Database connection" textAlignment="CENTER" />
+                                    <Label fx:id="databaseSettingsLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="170.0" layoutY="7.0" prefHeight="18.0" prefWidth="171.0" text="Database connection" textAlignment="CENTER" />
                                     <TextField fx:id="databaseSettingsURLTextField" layoutX="136.0" layoutY="34.0" prefHeight="26.0" prefWidth="240.0" text="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;useSSL=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow" />
                                     <Label fx:id="databaseSettingsURLLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="50.0" layoutY="39.0" text="URL" />
                                     <Label fx:id="databaseSettingsUsernameLabel" alignment="TOP_LEFT" focusTraversable="false" layoutX="50.0" layoutY="78.0" text="Username" />
@@ -267,7 +268,19 @@
                         <AnchorPane fx:id="menuPane4" layoutX="20.0" layoutY="20.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label layoutX="196.0" layoutY="171.0" text="4" />
+                              
                            </children></AnchorPane>
+                        <ScrollPane fx:id="clientManagementScrollPane" layoutX="155.0" layoutY="69.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <content>
+                            <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="824.0" prefWidth="1334.0">
+                                 <children>
+                                    <Label layoutX="86.0" layoutY="57.0" text="Label" />
+                                    <Label layoutX="102.0" layoutY="544.0" text="Label" />
+                                    <Label layoutX="1104.0" layoutY="731.0" text="Label" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </items>

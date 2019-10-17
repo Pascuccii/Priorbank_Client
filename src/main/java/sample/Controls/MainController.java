@@ -192,7 +192,13 @@ public class MainController extends Application {
     @FXML
     private AnchorPane accountSettingsPane;
     @FXML
+    private ScrollPane clientManagementScrollPane;
+    @FXML
+    private AnchorPane clientManagementAnchorPane;
+    @FXML
     private Label accountSettingsLabel;
+    @FXML
+    private Label databaseSettingsLabel;
     @FXML
     private TextField accountSettingsUsernameTextField;
     @FXML
@@ -343,7 +349,11 @@ public class MainController extends Application {
         createUser_AnchorPane.getStyleClass().add("elementsPane");
         changeUser_AnchorPane.getStyleClass().add("elementsPane");
         deleteUser_AnchorPane.getStyleClass().add("elementsPane");
+        clientManagementAnchorPane.getStyleClass().add("clientManagementScrollPane");
+        clientManagementScrollPane.getStyleClass().add("clientManagementScrollPane");
+        clientManagementScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         fixImage.getStyleClass().add("fixImage");
+
 
         hideButton.getStyleClass().add("hideButton");
         minimizeButton.getStyleClass().add("minimizeButton");
@@ -367,6 +377,7 @@ public class MainController extends Application {
         exitButton.setFocusTraversable(false);
         logoutButtonAdmin.setFocusTraversable(false);
         logoutButtonUser.setFocusTraversable(false);
+        clientManagementScrollPane.setFocusTraversable(false);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("accessMode"));
@@ -793,6 +804,12 @@ public class MainController extends Application {
                 languageItem_Russian.setText("Russian");
                 languageItem_English.setText("English");
                 themeLabel.setText("Theme");
+                customizationLabel.setText("Customization");
+                accountSettingsLabel.setText("Account");
+                databaseSettingsLabel.setText("Database connection");
+                accountSettingsSaveButton.setText("Save");
+                databaseSettingsConnectButton.setText("Connect");
+
 
                 createUser_AnchorPane_Username.setPromptText("Username");
                 if (createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Пользователь")
@@ -846,6 +863,11 @@ public class MainController extends Application {
                 languageItem_Russian.setText("Русский");
                 languageItem_English.setText("Английский");
                 themeLabel.setText("Тема");
+                customizationLabel.setText("Кастомизация");
+                accountSettingsLabel.setText("Аккаунт");
+                databaseSettingsLabel.setText("Соединение с БД");
+                accountSettingsSaveButton.setText("Сохранить");
+                databaseSettingsConnectButton.setText("Подключить");
 
                 createUser_AnchorPane_Username.setPromptText("Имя пользователя");
                 if (createUser_AnchorPane_AccessMode_MenuButton.getText().equals("Пользователь")
@@ -913,8 +935,14 @@ public class MainController extends Application {
         menuUserButton4.setStyle("");
 
         setAllInvisible();
-        pane.setVisible(true);
-        pane.requestFocus();
+        if(pane == menuPane2) {
+            menuPane2.setVisible(true);
+            clientManagementScrollPane.setVisible(true);
+            clientManagementAnchorPane.requestFocus();
+        } else {
+            pane.setVisible(true);
+            pane.requestFocus();
+        }
         if (currentUser.getTheme().equals("Dark"))
             menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
                     "-fx-background-repeat: no-repeat;" +
@@ -970,6 +998,7 @@ public class MainController extends Application {
         menuPane2.setVisible(false);
         menuPane3.setVisible(false);
         menuPane4.setVisible(false);
+        clientManagementScrollPane.setVisible(false);
         loginPane.setVisible(false);
     }
 
@@ -1222,6 +1251,8 @@ public class MainController extends Application {
             loginWarning.setLayoutX(45);
             loginWarning.setLayoutY(117);
             searchField.setPrefWidth(136);
+
+            clientManagementScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
@@ -1235,6 +1266,8 @@ public class MainController extends Application {
             loginWarning.setLayoutX(405);
             loginWarning.setLayoutY(290);
             searchField.setPrefWidth(350);
+
+            clientManagementScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         }
     }
 

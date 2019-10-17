@@ -265,6 +265,10 @@
     -fx-background-image: url(../assets/exit-black.png);
 }
 
+.clientManagementScrollPane {
+    -fx-background-color: #383838;
+}
+
 .elementsPane {
     -fx-border-color: #7d7d7d;
 }
