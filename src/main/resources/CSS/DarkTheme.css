@@ -53,10 +53,10 @@
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color, -fx-cell-focus-inner-border, -fx-selection-bar;
+    -fx-background-color: red;
     -fx-background-insets: 0, 1, 2;
-    -fx-background: -fx-accent;
-    -fx-text-fill: -fx-selection-bar-text;
+    -fx-background: red;
+    -fx-text-fill: red;
 }
 
 .table-view > .virtual-flow > .scroll-bar:vertical,
@@ -65,20 +65,20 @@
 .table-view > .virtual-flow > .scroll-bar:horizontal,
 .table-view > .virtual-flow > .scroll-bar:horizontal > .track,
 .table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
-    -fx-background-color: transparent;
+    -fx-background-color: #383838;
 }
 
-.table-view *.scroll-bar:horizontal *.increment-button,
-.table-view *.scroll-bar:horizontal *.decrement-button {
-    -fx-background-color: null;
+.usersTable *.scroll-bar:horizontal *.increment-button,
+.usersTable *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: blue;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 
-.table-view *.scroll-bar:horizontal *.increment-arrow,
-.table-view *.scroll-bar:horizontal *.decrement-arrow {
-    -fx-background-color: null;
+.usersTable *.scroll-bar:horizontal *.increment-arrow,
+.usersTable *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: blue;
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-padding: 0;

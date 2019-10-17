@@ -213,9 +213,87 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane2" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label layoutX="186.0" layoutY="172.0" text="2" />
+                              <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <content>
+                                  <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="1218.0" prefWidth="1334.0">
+                                       <children>
+                                          <Label layoutX="35.0" layoutY="407.0" text="Name*" />
+                                          <Label layoutX="34.0" layoutY="443.0" text="Surname*" />
+                                          <Label layoutX="33.0" layoutY="475.0" text="Patronymic*" />
+                                          <Label layoutX="34.0" layoutY="515.0" text="Birth date*" />
+                                          <Label layoutX="33.0" layoutY="551.0" text="Birth place*" />
+                                          <Label layoutX="32.0" layoutY="583.0" text="Passport series*" />
+                                          <Label layoutX="32.0" layoutY="621.0" text="Passport number*" />
+                                          <Label layoutX="31.0" layoutY="657.0" text="Issued by*" />
+                                          <Label layoutX="30.0" layoutY="689.0" text="Issued date*" />
+                                          <Label layoutX="31.0" layoutY="729.0" text="Home phone" />
+                                          <Label layoutX="30.0" layoutY="765.0" text="Mobile phone" />
+                                          <Label layoutX="319.0" layoutY="403.0" text="Email" />
+                                          <Label layoutX="318.0" layoutY="439.0" text="Job" />
+                                          <Label layoutX="317.0" layoutY="471.0" text="Position" />
+                                          <Label layoutX="318.0" layoutY="511.0" text="Registration city*" />
+                                          <Label layoutX="317.0" layoutY="547.0" text="Actual residence sity*" />
+                                          <Label layoutX="316.0" layoutY="579.0" text="Marital status*" />
+                                          <Label layoutX="316.0" layoutY="617.0" text="Citizenship*" />
+                                          <Label layoutX="315.0" layoutY="653.0" text="Disability*" />
+                                          <Label layoutX="314.0" layoutY="685.0" text="Retiree*" />
+                                          <Label layoutX="315.0" layoutY="725.0" text="Monthly income" />
+                                          <Label layoutX="314.0" layoutY="761.0" text="Id number" />
+                                          <TextField layoutX="112.0" layoutY="403.0" />
+                                          <TextField layoutX="112.0" layoutY="438.0" />
+                                          <TextField layoutX="112.0" layoutY="470.0" />
+                                          <TextField layoutX="112.0" layoutY="546.0" />
+                                          <TextField layoutX="122.0" layoutY="578.0" />
+                                          <TextField layoutX="132.0" layoutY="616.0" />
+                                          <TextField layoutX="105.0" layoutY="652.0" />
+                                          <TextField layoutX="105.0" layoutY="684.0" />
+                                          <TextField layoutX="112.0" layoutY="724.0" />
+                                          <TextField layoutX="112.0" layoutY="760.0" />
+                                          <TextField layoutX="378.0" layoutY="398.0" />
+                                          <TextField layoutX="378.0" layoutY="434.0" />
+                                          <TextField layoutX="378.0" layoutY="466.0" />
+                                          <TextField layoutX="391.0" layoutY="506.0" />
+                                          <TextField layoutX="391.0" layoutY="542.0" />
+                                          <TextField layoutX="391.0" layoutY="578.0" />
+                                          <TextField layoutX="391.0" layoutY="612.0" />
+                                          <TextField layoutX="391.0" layoutY="643.0" />
+                                          <TextField layoutX="391.0" layoutY="675.0" />
+                                          <TextField layoutX="391.0" layoutY="715.0" />
+                                          <TextField layoutX="391.0" layoutY="751.0" />
+                                          <TableView fx:id="clientsTable" layoutX="22.0" layoutY="14.0" prefHeight="251.0" prefWidth="513.0" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="14.0">
+                                            <columns>
+                                              <TableColumn fx:id="idClientColumn" prefWidth="75.0" text="ID" />
+                                                <TableColumn fx:id="name" prefWidth="75.0" text="Name" />
+                                              <TableColumn fx:id="surname" prefWidth="75.0" text="Surname" />
+                                                <TableColumn fx:id="patronymic" prefWidth="75.0" text="Patronymic" />
+                                                <TableColumn fx:id="birthDate" prefWidth="75.0" text="BirthDate" />
+                                                <TableColumn fx:id="passportSeries" prefWidth="104.79998779296875" text="Passport series" />
+                                                <TableColumn fx:id="passportNumber" prefWidth="45.5999755859375" text="Passport number" />
+                                                <TableColumn fx:id="issuedBy" prefWidth="75.0" text="Issued by" />
+                                                <TableColumn fx:id="issuedDate" prefWidth="75.0" text="Issued date" />
+                                                <TableColumn fx:id="birthPlace" prefWidth="75.0" text="Birth place" />
+                                                <TableColumn fx:id="actualResidenceCity" prefWidth="75.0" text="Act. City" />
+                                                <TableColumn fx:id="actualResidenceAddress" prefWidth="75.0" text="Act. Address" />
+                                                <TableColumn fx:id="homeNumber" prefWidth="75.0" text="Home number" />
+                                                <TableColumn fx:id="mobileNumber" prefWidth="75.0" text="Mobile number" />
+                                                <TableColumn fx:id="email" prefWidth="75.0" text="Email" />
+                                                <TableColumn fx:id="job" prefWidth="75.0" text="Job" />
+                                                <TableColumn fx:id="position" prefWidth="75.0" text="Position" />
+                                                <TableColumn fx:id="registrationCity" prefWidth="75.0" text="Reg. City" />
+                                                <TableColumn fx:id="maritalStatus" prefWidth="75.0" text="Marital status" />
+                                                <TableColumn fx:id="citizenship" prefWidth="75.0" text="Citizenship" />
+                                                <TableColumn fx:id="disability" prefWidth="75.0" text="Disability" />
+                                                <TableColumn fx:id="retiree" prefWidth="75.0" text="Retiree" />
+                                                <TableColumn fx:id="monthlyIncome" prefWidth="75.0" text="Monthly income" />
+                                                <TableColumn fx:id="idNumber" prefWidth="75.0" text="Id number" />
+                                            </columns>
+                                          </TableView>
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
                            </children></AnchorPane>
                         <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -270,17 +348,6 @@
                               <Label layoutX="196.0" layoutY="171.0" text="4" />
                               
                            </children></AnchorPane>
-                        <ScrollPane fx:id="clientManagementScrollPane" layoutX="155.0" layoutY="69.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <content>
-                            <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="824.0" prefWidth="1334.0">
-                                 <children>
-                                    <Label layoutX="86.0" layoutY="57.0" text="Label" />
-                                    <Label layoutX="102.0" layoutY="544.0" text="Label" />
-                                    <Label layoutX="1104.0" layoutY="731.0" text="Label" />
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </items>

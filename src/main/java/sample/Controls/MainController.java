@@ -19,12 +19,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.Connectivity.ConnectionClass;
+import sample.enums.City;
+import sample.enums.Country;
+import sample.enums.Disability;
+import sample.enums.MaritalStatus;
 
 import java.io.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Iterator;
 
 public class MainController extends Application {
@@ -51,6 +52,58 @@ public class MainController extends Application {
     private TableColumn<User, String> passwordColumn;
     @FXML
     private TableColumn<User, String> emailColumn;
+    
+    private ObservableList<Client> clientsData = FXCollections.observableArrayList();
+    @FXML
+    private TableView<Client> clientsTable;
+    @FXML
+    private TableColumn<Client,  Integer> idClientColumn;
+    @FXML
+    private TableColumn<Client,  String> name;
+    @FXML
+    private TableColumn<Client,  String> surname;
+    @FXML
+    private TableColumn<Client,  String> patronymic;
+    @FXML
+    private TableColumn<Client,  Date> birthDate;
+    @FXML
+    private TableColumn<Client,  String> passportSeries;
+    @FXML
+    private TableColumn<Client,  String> passportNumber;
+    @FXML
+    private TableColumn<Client,  String> issuedBy;
+    @FXML
+    private TableColumn<Client,  Date> issuedDate;
+    @FXML
+    private TableColumn<Client,  String> birthPlace;
+    @FXML
+    private TableColumn<Client,  City> actualResidenceCity;
+    @FXML
+    private TableColumn<Client,  String> actualResidenceAddress;
+    @FXML
+    private TableColumn<Client,  String> homeNumber;
+    @FXML
+    private TableColumn<Client,  String> mobileNumber;
+    @FXML
+    private TableColumn<Client,  String> email;
+    @FXML
+    private TableColumn<Client,  String> job;
+    @FXML
+    private TableColumn<Client,  String> position;
+    @FXML
+    private TableColumn<Client,  City> registrationCity;
+    @FXML
+    private TableColumn<Client,  MaritalStatus> maritalStatus;
+    @FXML
+    private TableColumn<Client,  Country> citizenship;
+    @FXML
+    private TableColumn<Client,  Disability> disability;
+    @FXML
+    private TableColumn<Client,  Boolean> retiree;
+    @FXML
+    private TableColumn<Client,  Double> monthlyIncome;
+    @FXML
+    private TableColumn<Client,  String> idNumber;
     @FXML
     private AnchorPane primaryAnchorPane;
     @FXML
@@ -292,6 +345,7 @@ public class MainController extends Application {
         conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         initUsersData();
+        initClientsData();
 
         //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
@@ -412,6 +466,7 @@ public class MainController extends Application {
         loginButton.getStyleClass().add("loginButton");
         logoutButtonAdmin.getStyleClass().add("logoutButton");
         logoutButtonUser.getStyleClass().add("logoutButton");
+        usersTable.getStyleClass().add("usersTable");
 
         loginPane.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER && !(usernameField.getText().equals("") || passwordField.getText().equals("")))
@@ -1241,6 +1296,7 @@ public class MainController extends Application {
         if (stage.isMaximized() && theme == 0) {
             stage.setMaximized(false);
             usersTable.setPrefHeight(150d);
+            clientsTable.setPrefWidth(513d);
             createUser_AnchorPane.setLayoutY(212);
             if (currentTheme.equals("Dark"))
                 minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
@@ -1256,6 +1312,7 @@ public class MainController extends Application {
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
+            clientsTable.setPrefWidth(1250d);
             createUser_AnchorPane.setLayoutY(667);
             if (currentTheme.equals("Dark"))
                 minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
@@ -1296,6 +1353,26 @@ public class MainController extends Application {
                     }
                 usersData.add(user);
                 System.out.println(user);
+            }
+        } else
+            connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
+    }
+    private void initClientsData() throws SQLException {
+        if (conn.isConnected()) {
+            connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
+            Statement statement = conn.getConnection().createStatement();
+            Statement statement2 = conn.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT  * FROM clients");
+            clientsTable.setItems(clientsData);
+            clientsData.clear();
+
+            System.out.println();
+            while (resultSet.next()) {
+                Client client = new Client();
+                client.setId(resultSet.getInt("Id"));
+                client.setName(resultSet.getString("Name"));
+                clientsData.add(client);
+                System.out.println(client); //информация выводится но невидимым шрифтом
             }
         } else
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
