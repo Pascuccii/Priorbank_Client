@@ -344,8 +344,41 @@ public class MainController extends Application {
         translate("English");
         conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
+        accessModeColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("access_mode"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+
+        idClientColumn.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
+        surname.setCellValueFactory(new PropertyValueFactory<Client, String>("surname"));
+        patronymic.setCellValueFactory(new PropertyValueFactory<Client, String>("patronymic"));
+        birthDate.setCellValueFactory(new PropertyValueFactory<Client, Date>("birthDate"));
+        passportSeries.setCellValueFactory(new PropertyValueFactory<Client, String>("passportSeries"));
+        passportNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("passportNumber"));
+        issuedBy.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedBy"));
+        issuedDate.setCellValueFactory(new PropertyValueFactory<Client, Date>("issuedDate"));
+        birthPlace.setCellValueFactory(new PropertyValueFactory<Client, String>("birthPlace"));
+        actualResidenceCity.setCellValueFactory(new PropertyValueFactory<Client, City>("actualResidenceCity"));
+        actualResidenceAddress.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceAddress"));
+        homeNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("homeNumber"));
+        mobileNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("mobileNumber"));
+        email.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
+        job.setCellValueFactory(new PropertyValueFactory<Client, String>("job"));
+        position.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
+        registrationCity.setCellValueFactory(new PropertyValueFactory<Client, City>("registrationCity"));
+        maritalStatus.setCellValueFactory(new PropertyValueFactory<Client, MaritalStatus>("maritalStatus"));
+        citizenship.setCellValueFactory(new PropertyValueFactory<Client, Country>("citizenship"));
+        disability.setCellValueFactory(new PropertyValueFactory<Client, Disability>("disability"));
+        retiree.setCellValueFactory(new PropertyValueFactory<Client, Boolean>("retiree"));
+        monthlyIncome.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
+        idNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
+        
         initUsersData();
         initClientsData();
+
 
         //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
@@ -1362,7 +1395,7 @@ public class MainController extends Application {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             Statement statement = conn.getConnection().createStatement();
             Statement statement2 = conn.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT  * FROM clients");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM clients");
             clientsTable.setItems(clientsData);
             clientsData.clear();
 
@@ -1371,6 +1404,28 @@ public class MainController extends Application {
                 Client client = new Client();
                 client.setId(resultSet.getInt("Id"));
                 client.setName(resultSet.getString("Name"));
+                client.setSurname(resultSet.getString("Surname"));
+                client.setPatronymic(resultSet.getString("Patronymic"));
+                client.setBirthDate(resultSet.getDate("Birth_date"));
+                client.setPassportSeries(resultSet.getString("Passport_series"));
+                client.setPassportNumber(resultSet.getString("Passport_number"));
+                client.setIssuedBy(resultSet.getString("Issued_by"));
+                client.setIssuedDate(resultSet.getDate("Issued_date"));
+                client.setBirthPlace(resultSet.getString("Birth_place"));
+                client.setActualResidenceCity(City.valueOf(resultSet.getString("Actual_residence_city")));
+                client.setActualResidenceAddress(resultSet.getString("Actual_residence_address"));
+                client.setHomeNumber(resultSet.getString("Home_number"));
+                client.setMobileNumber(resultSet.getString("Mobile_number"));
+                client.setEmail(resultSet.getString("Email"));
+                client.setJob(resultSet.getString("Job"));
+                client.setPosition(resultSet.getString("Position"));
+                client.setRegistrationCity(City.valueOf(resultSet.getString("Registration_city")));
+                client.setMaritalStatus(MaritalStatus.valueOf(resultSet.getString("Marital_status")));
+                client.setCitizenship(Country.valueOf(resultSet.getString("Citizenship")));
+                client.setDisability(Disability.valueOf(resultSet.getString("Disability")));
+                client.setRetiree(resultSet.getBoolean("Is_retiree"));
+                client.setMonthlyIncome(resultSet.getDouble("Monthly_income"));
+                client.setIdNumber(resultSet.getString("Id_number"));
                 clientsData.add(client);
                 System.out.println(client); //информация выводится но невидимым шрифтом
             }
