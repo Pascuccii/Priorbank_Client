@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.Connectivity.ConnectionClass;
@@ -35,10 +36,8 @@ public class MainController extends Application {
     private User currentUser;
     private String currentTheme;
     private String currentLanguage;
-
     private ConnectionClass conn;
     private int theme = 0;
-
     private ObservableList<User> usersData = FXCollections.observableArrayList();
     @FXML
     private TableView<User> usersTable;
@@ -52,58 +51,57 @@ public class MainController extends Application {
     private TableColumn<User, String> passwordColumn;
     @FXML
     private TableColumn<User, String> emailColumn;
-    
     private ObservableList<Client> clientsData = FXCollections.observableArrayList();
     @FXML
     private TableView<Client> clientsTable;
     @FXML
-    private TableColumn<Client,  Integer> idClientColumn;
+    private TableColumn<Client, Integer> idClientColumn;
     @FXML
-    private TableColumn<Client,  String> name;
+    private TableColumn<Client, String> nameColumn;
     @FXML
-    private TableColumn<Client,  String> surname;
+    private TableColumn<Client, String> surnameColumn;
     @FXML
-    private TableColumn<Client,  String> patronymic;
+    private TableColumn<Client, String> patronymicColumn;
     @FXML
-    private TableColumn<Client,  Date> birthDate;
+    private TableColumn<Client, Date> birthDateColumn;
     @FXML
-    private TableColumn<Client,  String> passportSeries;
+    private TableColumn<Client, String> birthPlaceColumn;
     @FXML
-    private TableColumn<Client,  String> passportNumber;
+    private TableColumn<Client, String> passportSeriesColumn;
     @FXML
-    private TableColumn<Client,  String> issuedBy;
+    private TableColumn<Client, String> passportNumberColumn;
     @FXML
-    private TableColumn<Client,  Date> issuedDate;
+    private TableColumn<Client, String> issuedByColumn;
     @FXML
-    private TableColumn<Client,  String> birthPlace;
+    private TableColumn<Client, Date> issuedDateColumn;
     @FXML
-    private TableColumn<Client,  City> actualResidenceCity;
+    private TableColumn<Client, City> actualResidenceCityColumn;
     @FXML
-    private TableColumn<Client,  String> actualResidenceAddress;
+    private TableColumn<Client, String> actualResidenceAddressColumn;
     @FXML
-    private TableColumn<Client,  String> homeNumber;
+    private TableColumn<Client, String> homeNumberColumn;
     @FXML
-    private TableColumn<Client,  String> mobileNumber;
+    private TableColumn<Client, String> mobileNumberColumn;
     @FXML
-    private TableColumn<Client,  String> email;
+    private TableColumn<Client, String> emailClientColumn;
     @FXML
-    private TableColumn<Client,  String> job;
+    private TableColumn<Client, String> jobColumn;
     @FXML
-    private TableColumn<Client,  String> position;
+    private TableColumn<Client, String> positionColumn;
     @FXML
-    private TableColumn<Client,  City> registrationCity;
+    private TableColumn<Client, City> registrationCityColumn;
     @FXML
-    private TableColumn<Client,  MaritalStatus> maritalStatus;
+    private TableColumn<Client, MaritalStatus> maritalStatusColumn;
     @FXML
-    private TableColumn<Client,  Country> citizenship;
+    private TableColumn<Client, Country> citizenshipColumn;
     @FXML
-    private TableColumn<Client,  Disability> disability;
+    private TableColumn<Client, Disability> disabilityColumn;
     @FXML
-    private TableColumn<Client,  Boolean> retiree;
+    private TableColumn<Client, Boolean> retireeColumn;
     @FXML
-    private TableColumn<Client,  Double> monthlyIncome;
+    private TableColumn<Client, Double> monthlyIncomeColumn;
     @FXML
-    private TableColumn<Client,  String> idNumber;
+    private TableColumn<Client, String> idNumberColumn;
     @FXML
     private AnchorPane primaryAnchorPane;
     @FXML
@@ -313,6 +311,30 @@ public class MainController extends Application {
         launch(args);
     }
 
+    public static void autoResizeColumns(TableView<?> table) {
+        //Set the right policy
+        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        table.getColumns().stream().forEach((column) ->
+        {
+            //Minimal width = columnheader
+            Text t = new Text(column.getText());
+            double max = t.getLayoutBounds().getWidth();
+            for (int i = 0; i < table.getItems().size(); i++) {
+                //cell must not be empty
+                if (column.getCellData(i) != null) {
+                    t = new Text(column.getCellData(i).toString());
+                    double calcwidth = t.getLayoutBounds().getWidth();
+                    //remember new max-width
+                    if (calcwidth > max) {
+                        max = calcwidth;
+                    }
+                }
+            }
+            //set the new max-widht with some extra space
+            column.setPrefWidth(max + 10.0d);
+        });
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting...");
@@ -342,8 +364,9 @@ public class MainController extends Application {
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         translate("English");
-        conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
-                "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
+        conn =
+                new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+                        "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
 
         idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
         accessModeColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("access_mode"));
@@ -352,42 +375,44 @@ public class MainController extends Application {
         emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         idClientColumn.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
-        name.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-        surname.setCellValueFactory(new PropertyValueFactory<Client, String>("surname"));
-        patronymic.setCellValueFactory(new PropertyValueFactory<Client, String>("patronymic"));
-        birthDate.setCellValueFactory(new PropertyValueFactory<Client, Date>("birthDate"));
-        passportSeries.setCellValueFactory(new PropertyValueFactory<Client, String>("passportSeries"));
-        passportNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("passportNumber"));
-        issuedBy.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedBy"));
-        issuedDate.setCellValueFactory(new PropertyValueFactory<Client, Date>("issuedDate"));
-        birthPlace.setCellValueFactory(new PropertyValueFactory<Client, String>("birthPlace"));
-        actualResidenceCity.setCellValueFactory(new PropertyValueFactory<Client, City>("actualResidenceCity"));
-        actualResidenceAddress.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceAddress"));
-        homeNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("homeNumber"));
-        mobileNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("mobileNumber"));
-        email.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
-        job.setCellValueFactory(new PropertyValueFactory<Client, String>("job"));
-        position.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
-        registrationCity.setCellValueFactory(new PropertyValueFactory<Client, City>("registrationCity"));
-        maritalStatus.setCellValueFactory(new PropertyValueFactory<Client, MaritalStatus>("maritalStatus"));
-        citizenship.setCellValueFactory(new PropertyValueFactory<Client, Country>("citizenship"));
-        disability.setCellValueFactory(new PropertyValueFactory<Client, Disability>("disability"));
-        retiree.setCellValueFactory(new PropertyValueFactory<Client, Boolean>("retiree"));
-        monthlyIncome.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
-        idNumber.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
-        
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("surname"));
+        patronymicColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("patronymic"));
+        birthDateColumn.setCellValueFactory(new PropertyValueFactory<Client, Date>("birthDate"));
+        passportSeriesColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportSeries"));
+        passportNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportNumber"));
+        issuedByColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedBy"));
+        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<Client, Date>("issuedDate"));
+        birthPlaceColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("birthPlace"));
+        actualResidenceCityColumn.setCellValueFactory(new PropertyValueFactory<Client, City>("actualResidenceCity"));
+        actualResidenceAddressColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceAddress"));
+        homeNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("homeNumber"));
+        mobileNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("mobileNumber"));
+        emailClientColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
+        jobColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("job"));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
+        registrationCityColumn.setCellValueFactory(new PropertyValueFactory<Client, City>("registrationCity"));
+        maritalStatusColumn.setCellValueFactory(new PropertyValueFactory<Client, MaritalStatus>("maritalStatus"));
+        citizenshipColumn.setCellValueFactory(new PropertyValueFactory<Client, Country>("citizenship"));
+        disabilityColumn.setCellValueFactory(new PropertyValueFactory<Client, Disability>("disability"));
+        retireeColumn.setCellValueFactory(new PropertyValueFactory<Client, Boolean>("retiree"));
+        monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
+        idNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
+        clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         initUsersData();
         initClientsData();
-
+        clientsTableFitCells();
 
         //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
             try {
-                conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
-                        "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
+                conn =
+                        new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+                                "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
                 initUsersData();
+                initClientsData();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -525,7 +550,7 @@ public class MainController extends Application {
                 changeUser_AnchorPane_IdSubmitButton.fire();
         });
         changeUser_AnchorPane_Id.textProperty().addListener((observable, oldValue, newValue) ->
-            changeUser_AnchorPane_Id.setStyle("-fx-border-color: transparent"));
+                changeUser_AnchorPane_Id.setStyle("-fx-border-color: transparent"));
         changeUser_AnchorPane_Id.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
@@ -827,7 +852,7 @@ public class MainController extends Application {
 
         loadLastConfig();
         loginBegin();
-    }
+    } //INITIALIZE
 
     private void loadLastConfig() {
         try {
@@ -923,6 +948,30 @@ public class MainController extends Application {
                 deleteUserLabel.setText("ID's to delete:");
                 deleteUserButton.setText("Delete");
 
+                nameColumn.setText("Name");
+                surnameColumn.setText("Surname");
+                patronymicColumn.setText("Patronymic");
+                birthDateColumn.setText("Birth date");
+                birthPlaceColumn.setText("Birth place");
+                passportSeriesColumn.setText("Passport series");
+                passportNumberColumn.setText("Passport number");
+                issuedByColumn.setText("Issued by");
+                issuedDateColumn.setText("Issued date");
+                actualResidenceCityColumn.setText("Act. residence city");
+                actualResidenceAddressColumn.setText("Act. residence address");
+                homeNumberColumn.setText("Home phone");
+                mobileNumberColumn.setText("Mobile phone");
+                emailClientColumn.setText("E-Mail");
+                jobColumn.setText("Job");
+                positionColumn.setText("Position");
+                registrationCityColumn.setText("Registration city");
+                maritalStatusColumn.setText("Marital status");
+                citizenshipColumn.setText("Citizenship");
+                disabilityColumn.setText("Disability");
+                retireeColumn.setText("Retiree");
+                monthlyIncomeColumn.setText("Monthly income");
+                idNumberColumn.setText("ID number");
+
                 break;
             case "Russian":
                 currentLanguage = "Russian";
@@ -981,6 +1030,29 @@ public class MainController extends Application {
                 deleteUserLabel.setText("Удаляемые ID:");
                 deleteUserButton.setText("Удалить");
 
+                nameColumn.setText("Имя");
+                surnameColumn.setText("Фамииля");
+                patronymicColumn.setText("Отчество");
+                birthDateColumn.setText("Дата рождения");
+                birthPlaceColumn.setText("Место рождения");
+                passportSeriesColumn.setText("Серия паспорта");
+                passportNumberColumn.setText("Номер паспорта");
+                issuedByColumn.setText("Орган выдачи");
+                issuedDateColumn.setText("Дата выдачи");
+                actualResidenceCityColumn.setText("Город проживания");
+                actualResidenceAddressColumn.setText("Адрес проживания");
+                homeNumberColumn.setText("Домашний телефон");
+                mobileNumberColumn.setText("Мобильный телефон");
+                emailClientColumn.setText("E-Mail");
+                jobColumn.setText("Место работы");
+                positionColumn.setText("Должность");
+                registrationCityColumn.setText("Город прописки");
+                maritalStatusColumn.setText("Семейное положение");
+                citizenshipColumn.setText("Гражданство");
+                disabilityColumn.setText("Инвалидность");
+                retireeColumn.setText("Пенсионер");
+                monthlyIncomeColumn.setText("Месячный доход");
+                idNumberColumn.setText("Идент. номер");
                 break;
         }
     }
@@ -1023,7 +1095,7 @@ public class MainController extends Application {
         menuUserButton4.setStyle("");
 
         setAllInvisible();
-        if(pane == menuPane2) {
+        if (pane == menuPane2) {
             menuPane2.setVisible(true);
             clientManagementScrollPane.setVisible(true);
             clientManagementAnchorPane.requestFocus();
@@ -1107,7 +1179,8 @@ public class MainController extends Application {
 
                 if (!was) {
                     try {
-                        String prepStat = "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ? WHERE (`id` = ?);";
+                        String prepStat =
+                                "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ? WHERE (`id` = ?);";
                         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, enteredUsername);
                         preparedStatement.setString(2, enteredPassword);
@@ -1152,7 +1225,8 @@ public class MainController extends Application {
                         changeUser_AnchorPane_Password.setText("");
                         changeUser_AnchorPane_Email.setText("");
                         try {
-                            String prepStat = "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ?, `access_mode` = ? WHERE (`id` = ?);";
+                            String prepStat =
+                                    "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ?, `access_mode` = ? WHERE (`id` = ?);";
                             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
                             preparedStatement.setString(1, enteredUsername);
                             preparedStatement.setString(2, enteredPassword);
@@ -1241,7 +1315,8 @@ public class MainController extends Application {
                     createUser_AnchorPane_Password.setText("");
                     createUser_AnchorPane_Email.setText("");
                     try {
-                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
+                        String prepStat =
+                                "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
                         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, username);
                         preparedStatement.setString(2, password);
@@ -1390,6 +1465,7 @@ public class MainController extends Application {
         } else
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
     }
+
     private void initClientsData() throws SQLException {
         if (conn.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
@@ -1427,9 +1503,137 @@ public class MainController extends Application {
                 client.setMonthlyIncome(resultSet.getDouble("Monthly_income"));
                 client.setIdNumber(resultSet.getString("Id_number"));
                 clientsData.add(client);
-                System.out.println(client); //информация выводится но невидимым шрифтом
+                autoResizeColumns(clientsTable);
+                System.out.println(client);
             }
         } else
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
+    }
+
+    private void clientsTableFitCells() {
+        double k = 8.5;
+        String data;
+        Date dateData;
+        Double doubleData;
+        Integer integerData;
+        Boolean booleanData;
+        City cityData;
+        Country countyData;
+        Disability disabilityData;
+        MaritalStatus maritalStatusData;
+        double[] prefMinWidths = new double[23];
+        for (int j = 0; j < 23; j++)
+            prefMinWidths[j] = clientsTable.getColumns().get(j).getMinWidth();
+        for (int j = 0; j < 23; j++)
+            System.out.println(prefMinWidths[j]);
+
+        double idClientColumnWidth = idClientColumn.getMinWidth();
+        double nameColumnWidth = nameColumn.getMinWidth();
+        double surnameColumnWidth = surnameColumn.getMinWidth();
+        double patronymicColumnWidth = patronymicColumn.getMinWidth();
+        double birthDateColumnWidth = birthDateColumn.getMinWidth();
+        double birthPlaceColumnWidth = birthPlaceColumn.getMinWidth();
+        double passportSeriesColumnWidth = passportSeriesColumn.getMinWidth();
+        double passportNumberColumnWidth = passportNumberColumn.getMinWidth();
+        double issuedByColumnWidth = issuedByColumn.getMinWidth();
+        double issuedDateColumnWidth = issuedDateColumn.getMinWidth();
+        double actualResidenceCityColumnWidth = actualResidenceCityColumn.getMinWidth();
+        double actualResidenceAddressColumnWidth = actualResidenceAddressColumn.getMinWidth();
+        double homeNumberColumnWidth = homeNumberColumn.getMinWidth();
+        double mobileNumberColumnWidth = mobileNumberColumn.getMinWidth();
+        double emailClientColumnWidth = emailClientColumn.getMinWidth();
+        double jobColumnWidth = jobColumn.getMinWidth();
+        double positionColumnWidth = positionColumn.getMinWidth();
+        double registrationCityColumnWidth = registrationCityColumn.getMinWidth();
+        double maritalStatusColumnWidth = maritalStatusColumn.getMinWidth();
+        double citizenshipColumnWidth = citizenshipColumn.getMinWidth();
+        double disabilityColumnWidth = disabilityColumn.getMinWidth();
+        double retireeColumnWidth = retireeColumn.getMinWidth();
+        double monthlyIncomeColumnWidth = monthlyIncomeColumn.getMinWidth();
+        double idNumberColumnWidth = idNumberColumn.getMinWidth();
+
+        for (int i = 0; i < clientsData.size(); i++) {
+            Client item = clientsTable.getItems().get(i);
+            for (int j = 0; j < 23; j++) {
+                TableColumn col = clientsTable.getColumns().get(j);
+                if (col.getCellObservableValue(item).getValue() instanceof String) {
+                    data = (String) col.getCellObservableValue(item).getValue();
+                    System.out.print("[" + data + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Date) {
+                    dateData = (Date) col.getCellObservableValue(item).getValue();
+                    data = dateData.toString();
+                    System.out.print("[" + dateData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Double) {
+                    doubleData = (Double) col.getCellObservableValue(item).getValue();
+                    data = doubleData.toString();
+                    System.out.print("[" + doubleData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Integer) {
+                    integerData = (Integer) col.getCellObservableValue(item).getValue();
+                    data = integerData.toString();
+                    System.out.print("[" + integerData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Boolean) {
+                    booleanData = (Boolean) col.getCellObservableValue(item).getValue();
+                    data = booleanData.toString();
+                    System.out.print("[" + booleanData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof City) {
+                    cityData = (City) col.getCellObservableValue(item).getValue();
+                    data = cityData.toString();
+                    System.out.print("[" + cityData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Country) {
+                    countyData = (Country) col.getCellObservableValue(item).getValue();
+                    data = countyData.toString();
+                    System.out.print("[" + countyData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof Disability) {
+                    disabilityData = (Disability) col.getCellObservableValue(item).getValue();
+                    data = disabilityData.toString();
+                    System.out.print("[" + disabilityData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+                if (col.getCellObservableValue(item).getValue() instanceof MaritalStatus) {
+                    maritalStatusData = (MaritalStatus) col.getCellObservableValue(item).getValue();
+                    data = maritalStatusData.toString();
+                    System.out.print("[" + maritalStatusData + "]:");
+                    System.out.print(data.length() * k + "   ");
+                    if ((data.length() * k) > prefMinWidths[j])
+                        prefMinWidths[j] = data.length() * k;
+                }
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < 23; i++) {
+            System.out.println(prefMinWidths[i]);
+        }
+        for (int j = 0; j < 23; j++)
+            clientsTable.getColumns().get(j).setPrefWidth(prefMinWidths[j]);
     }
 }

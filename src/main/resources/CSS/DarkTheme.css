@@ -53,10 +53,10 @@
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: red;
+    -fx-background-color: transparent;
     -fx-background-insets: 0, 1, 2;
-    -fx-background: red;
-    -fx-text-fill: red;
+    -fx-background: transparent;
+    -fx-text-fill: transparent;
 }
 
 .table-view > .virtual-flow > .scroll-bar:vertical,
@@ -267,6 +267,7 @@
 
 .clientManagementScrollPane {
     -fx-background-color: #383838;
+    -fx-border-color: #383838;
 }
 
 .elementsPane {

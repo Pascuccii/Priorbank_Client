@@ -264,30 +264,30 @@
                                           <TextField layoutX="391.0" layoutY="751.0" />
                                           <TableView fx:id="clientsTable" layoutX="22.0" layoutY="14.0" prefHeight="251.0" prefWidth="513.0" AnchorPane.leftAnchor="22.0" AnchorPane.topAnchor="14.0">
                                             <columns>
-                                              <TableColumn fx:id="idClientColumn" prefWidth="75.0" text="ID" />
-                                                <TableColumn fx:id="name" prefWidth="90.0" text="Name" />
-                                              <TableColumn fx:id="surname" prefWidth="90.0" text="Surname" />
-                                                <TableColumn fx:id="patronymic" prefWidth="90.0" text="Patronymic" />
-                                                <TableColumn fx:id="birthDate" prefWidth="90.0" text="BirthDate" />
-                                                <TableColumn fx:id="passportSeries" prefWidth="90.0" text="Passport series" />
-                                                <TableColumn fx:id="passportNumber" prefWidth="90.0" text="Passport number" />
-                                                <TableColumn fx:id="issuedBy" prefWidth="90.0" text="Issued by" />
-                                                <TableColumn fx:id="issuedDate" prefWidth="90.0" text="Issued date" />
-                                                <TableColumn fx:id="birthPlace" prefWidth="90.0" text="Birth place" />
-                                                <TableColumn fx:id="actualResidenceCity" prefWidth="90.0" text="Act. City" />
-                                                <TableColumn fx:id="actualResidenceAddress" prefWidth="90.0" text="Act. Address" />
-                                                <TableColumn fx:id="homeNumber" prefWidth="90.0" text="Home number" />
-                                                <TableColumn fx:id="mobileNumber" prefWidth="90.0" text="Mobile number" />
-                                                <TableColumn fx:id="email" prefWidth="90.0" text="Email" />
-                                                <TableColumn fx:id="job" prefWidth="90.0" text="Job" />
-                                                <TableColumn fx:id="position" prefWidth="90.0" text="Position" />
-                                                <TableColumn fx:id="registrationCity" prefWidth="90.0" text="Reg. City" />
-                                                <TableColumn fx:id="maritalStatus" prefWidth="90.0" text="Marital status" />
-                                                <TableColumn fx:id="citizenship" prefWidth="90.0" text="Citizenship" />
-                                                <TableColumn fx:id="disability" prefWidth="90.0" text="Disability" />
-                                                <TableColumn fx:id="retiree" prefWidth="90.0" text="Retiree" />
-                                                <TableColumn fx:id="monthlyIncome" prefWidth="90.0" text="Monthly income" />
-                                                <TableColumn fx:id="idNumber" prefWidth="90.0" text="Id number" />
+                                              <TableColumn fx:id="idClientColumn" minWidth="30.0" prefWidth="30.0" text="ID" />
+                                                <TableColumn fx:id="nameColumn" minWidth="110.0" prefWidth="110.0" text="Name" />
+                                              <TableColumn fx:id="surnameColumn" minWidth="110.0" prefWidth="110.0" text="Surname" />
+                                                <TableColumn fx:id="patronymicColumn" minWidth="120.0" prefWidth="120.0" text="Patronymic" />
+                                                <TableColumn fx:id="birthDateColumn" minWidth="110.0" prefWidth="110.0" text="BirthDate" />
+                                                <TableColumn fx:id="passportSeriesColumn" minWidth="110.0" prefWidth="110.0" text="Passport series" />
+                                                <TableColumn fx:id="passportNumberColumn" minWidth="110.0" prefWidth="110.0" text="Passport number" />
+                                                <TableColumn fx:id="issuedByColumn" minWidth="110.0" prefWidth="110.0" text="Issued by" />
+                                                <TableColumn fx:id="issuedDateColumn" minWidth="110.0" prefWidth="110.0" text="Issued date" />
+                                                <TableColumn fx:id="birthPlaceColumn" minWidth="110.0" prefWidth="110.0" text="Birth place" />
+                                                <TableColumn fx:id="actualResidenceCityColumn" minWidth="120.0" prefWidth="120.0" text="Act. City" />
+                                                <TableColumn fx:id="actualResidenceAddressColumn" minWidth="110.0" prefWidth="110.0" text="Act. Address" />
+                                                <TableColumn fx:id="homeNumberColumn" minWidth="130.0" prefWidth="130.0" text="Home number" />
+                                                <TableColumn fx:id="mobileNumberColumn" minWidth="130.0" prefWidth="130.0" text="Mobile number" />
+                                                <TableColumn fx:id="emailClientColumn" minWidth="110.0" prefWidth="110.0" text="Email" />
+                                                <TableColumn fx:id="jobColumn" minWidth="110.0" prefWidth="110.0" text="Job" />
+                                                <TableColumn fx:id="positionColumn" minWidth="110.0" prefWidth="110.0" text="Position" />
+                                                <TableColumn fx:id="registrationCityColumn" minWidth="110.0" prefWidth="110.0" text="Reg. City" />
+                                                <TableColumn fx:id="maritalStatusColumn" minWidth="140.0" prefWidth="140.0" text="Marital status" />
+                                                <TableColumn fx:id="citizenshipColumn" minWidth="110.0" prefWidth="110.0" text="Citizenship" />
+                                                <TableColumn fx:id="disabilityColumn" minWidth="110.0" prefWidth="110.0" text="Disability" />
+                                                <TableColumn fx:id="retireeColumn" minWidth="110.0" prefWidth="110.0" text="Retiree" />
+                                                <TableColumn fx:id="monthlyIncomeColumn" minWidth="110.0" prefWidth="110.0" text="Monthly income" />
+                                                <TableColumn fx:id="idNumberColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Id number" />
                                             </columns>
                                           </TableView>
                                        </children>
