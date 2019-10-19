@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -39,273 +40,174 @@ public class MainController extends Application {
     private ConnectionClass conn;
     private int theme = 0;
     private ObservableList<User> usersData = FXCollections.observableArrayList();
-    @FXML
-    private TableView<User> usersTable;
-    @FXML
-    private TableColumn<User, Integer> idColumn;
-    @FXML
-    private TableColumn<User, Integer> accessModeColumn;
-    @FXML
-    private TableColumn<User, String> usernameColumn;
-    @FXML
-    private TableColumn<User, String> passwordColumn;
-    @FXML
-    private TableColumn<User, String> emailColumn;
+    @FXML private TableView<User> usersTable;
+    @FXML private TableColumn<User, Integer> idColumn;
+    @FXML private TableColumn<User, Integer> accessModeColumn;
+    @FXML private TableColumn<User, String> usernameColumn;
+    @FXML private TableColumn<User, String> passwordColumn;
+    @FXML private TableColumn<User, String> emailColumn;
     private ObservableList<Client> clientsData = FXCollections.observableArrayList();
-    @FXML
-    private TableView<Client> clientsTable;
-    @FXML
-    private TableColumn<Client, Integer> idClientColumn;
-    @FXML
-    private TableColumn<Client, String> nameColumn;
-    @FXML
-    private TableColumn<Client, String> surnameColumn;
-    @FXML
-    private TableColumn<Client, String> patronymicColumn;
-    @FXML
-    private TableColumn<Client, Date> birthDateColumn;
-    @FXML
-    private TableColumn<Client, String> birthPlaceColumn;
-    @FXML
-    private TableColumn<Client, String> passportSeriesColumn;
-    @FXML
-    private TableColumn<Client, String> passportNumberColumn;
-    @FXML
-    private TableColumn<Client, String> issuedByColumn;
-    @FXML
-    private TableColumn<Client, Date> issuedDateColumn;
-    @FXML
-    private TableColumn<Client, City> actualResidenceCityColumn;
-    @FXML
-    private TableColumn<Client, String> actualResidenceAddressColumn;
-    @FXML
-    private TableColumn<Client, String> homeNumberColumn;
-    @FXML
-    private TableColumn<Client, String> mobileNumberColumn;
-    @FXML
-    private TableColumn<Client, String> emailClientColumn;
-    @FXML
-    private TableColumn<Client, String> jobColumn;
-    @FXML
-    private TableColumn<Client, String> positionColumn;
-    @FXML
-    private TableColumn<Client, City> registrationCityColumn;
-    @FXML
-    private TableColumn<Client, MaritalStatus> maritalStatusColumn;
-    @FXML
-    private TableColumn<Client, Country> citizenshipColumn;
-    @FXML
-    private TableColumn<Client, Disability> disabilityColumn;
-    @FXML
-    private TableColumn<Client, Boolean> retireeColumn;
-    @FXML
-    private TableColumn<Client, Double> monthlyIncomeColumn;
-    @FXML
-    private TableColumn<Client, String> idNumberColumn;
-    @FXML
-    private AnchorPane primaryAnchorPane;
-    @FXML
-    private AnchorPane title;
-    @FXML
-    private Button hideButton;
-    @FXML
-    private Button minimizeButton;
-    @FXML
-    private Button exitButton;
-    @FXML
-    private Button logoutButtonAdmin;
-    @FXML
-    private Button logoutButtonUser;
-    @FXML
-    private Label currentUserLabelAdmin;
-    @FXML
-    private Label currentUserLabelUser;
-    @FXML
-    private AnchorPane workPane;
-    @FXML
-    private AnchorPane leftAnchorPane;
-    @FXML
-    private FlowPane menuAdmin;
-    @FXML
-    private Button menuAdminButton1;
-    @FXML
-    private Button menuAdminButton2;
-    @FXML
-    private Button menuAdminButton3;
-    @FXML
-    private Button menuAdminButton4;
-    @FXML
-    private FlowPane menuUser;
-    @FXML
-    private Button menuUserButton1;
-    @FXML
-    private Button menuUserButton2;
-    @FXML
-    private Button menuUserButton3;
-    @FXML
-    private Button menuUserButton4;
-    @FXML
-    private AnchorPane rightAnchorPane;
-    @FXML
-    private AnchorPane menuPane1;
-    @FXML
-    private Button connectionIndicator;
-    @FXML
-    private Label menuPane1_DBLabel;
-    @FXML
-    private TextField searchField;
-    @FXML
-    private MenuButton criteriaButton;
-    @FXML
-    private MenuItem criteriaMenuItem_Id;
-    @FXML
-    private MenuItem criteriaMenuItem_Access;
-    @FXML
-    private MenuItem criteriaMenuItem_Username;
-    @FXML
-    private MenuItem criteriaMenuItem_Password;
-    @FXML
-    private MenuItem criteriaMenuItem_Email;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private Button resetSearchButton;
-    @FXML
-    private ImageView fixImage;
-    @FXML
-    private AnchorPane createUser_AnchorPane;
-    @FXML
-    private TextField createUser_AnchorPane_Username;
-    @FXML
-    private TextField createUser_AnchorPane_Email;
-    @FXML
-    private TextField createUser_AnchorPane_Password;
-    @FXML
-    private Button createUserButton;
-    @FXML
-    private MenuButton createUser_AnchorPane_AccessMode_MenuButton;
-    @FXML
-    private MenuItem createUser_AccessMenuItem_User;
-    @FXML
-    private MenuItem createUser_AccessMenuItem_Admin;
-    @FXML
-    private AnchorPane changeUser_AnchorPane;
-    @FXML
-    private TextField changeUser_AnchorPane_Username;
-    @FXML
-    private TextField changeUser_AnchorPane_Email;
-    @FXML
-    private TextField changeUser_AnchorPane_Password;
-    @FXML
-    private TextField changeUser_AnchorPane_Id;
-    @FXML
-    private Button changeUser_AnchorPane_IdSubmitButton;
-    @FXML
-    private Button changeUserButton;
-    @FXML
-    private MenuButton changeUser_AnchorPane_AccessMode_MenuButton;
-    @FXML
-    private MenuItem changeUser_AccessMenuItem_User;
-    @FXML
-    private MenuItem changeUser_AccessMenuItem_Admin;
-    @FXML
-    private AnchorPane deleteUser_AnchorPane;
-    @FXML
-    private TextField deleteUserTextField;
-    @FXML
-    private Button deleteUserButton;
-    @FXML
-    private Label deleteUserLabel;
-    @FXML
-    private AnchorPane menuPane2;
-    @FXML
-    private AnchorPane menuPane3;
-    @FXML
-    private AnchorPane menuPane31;
-    @FXML
-    private MenuButton languageButton;
-    @FXML
-    private MenuItem languageItem_Russian;
-    @FXML
-    private MenuItem languageItem_English;
-    @FXML
-    private Label languageLabel;
-    @FXML
-    private Label themeLabel;
-    @FXML
-    private MenuButton themeButton;
-    @FXML
-    private MenuItem themeItem_Dark;
-    @FXML
-    private MenuItem themeItem_Light;
-    @FXML
-    private Label customizationLabel;
-    @FXML
-    private AnchorPane accountSettingsPane;
-    @FXML
-    private ScrollPane clientManagementScrollPane;
-    @FXML
-    private AnchorPane clientManagementAnchorPane;
-    @FXML
-    private Label accountSettingsLabel;
-    @FXML
-    private Label databaseSettingsLabel;
-    @FXML
-    private TextField accountSettingsUsernameTextField;
-    @FXML
-    private TextField accountSettingsEmailTextField;
-    @FXML
-    private Label accountSettingsUsernameLabel;
-    @FXML
-    private Label accountSettingsPasswordLabel;
-    @FXML
-    private Label accountSettingsEmailLabel;
-    @FXML
-    private Button accountSettingsSaveButton;
-    @FXML
-    private PasswordField accountSettingsPasswordTextField;
-    @FXML
-    private AnchorPane databaseSettingsPane;
-    @FXML
-    private TextField databaseSettingsURLTextField;
-    @FXML
-    private Label databaseSettingsURLLabel;
-    @FXML
-    private Label databaseSettingsUsernameLabel;
-    @FXML
-    private Label databaseSettingsPasswordLabel;
-    @FXML
-    private Button databaseSettingsConnectButton;
-    @FXML
-    private TextField databaseSettingsUsernameTextField;
-    @FXML
-    private PasswordField databaseSettingsPasswordTextField;
-    @FXML
-    private AnchorPane menuPane4;
-    @FXML
-    private AnchorPane loginPane;
-    @FXML
-    private AnchorPane loginElementsPane;
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Label loginUsernameLabel;
-    @FXML
-    private Label loginPasswordLabel;
-    @FXML
-    private Button signUpButton;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Label loginWarning;
-    @FXML
-    private Label settingsWarningLabel;
-    @FXML
-    private Label databaseSettingsConnectionStatusLabel;
-    @FXML
-    private ProgressIndicator databaseSettingsConnectionProgressIndicator;
+    @FXML private TableView<Client> clientsTable;
+    @FXML private TableColumn<Client, Integer> idClientColumn;
+    @FXML private TableColumn<Client, String> nameColumn;
+    @FXML private TableColumn<Client, String> surnameColumn;
+    @FXML private TableColumn<Client, String> patronymicColumn;
+    @FXML private TableColumn<Client, Date> birthDateColumn;
+    @FXML private TableColumn<Client, String> birthPlaceColumn;
+    @FXML private TableColumn<Client, String> passportSeriesColumn;
+    @FXML private TableColumn<Client, String> passportNumberColumn;
+    @FXML private TableColumn<Client, String> issuedByColumn;
+    @FXML private TableColumn<Client, Date> issuedDateColumn;
+    @FXML private TableColumn<Client, City> actualResidenceCityColumn;
+    @FXML private TableColumn<Client, String> actualResidenceAddressColumn;
+    @FXML private TableColumn<Client, String> homeNumberColumn;
+    @FXML private TableColumn<Client, String> mobileNumberColumn;
+    @FXML private TableColumn<Client, String> emailClientColumn;
+    @FXML private TableColumn<Client, String> jobColumn;
+    @FXML private TableColumn<Client, String> positionColumn;
+    @FXML private TableColumn<Client, City> registrationCityColumn;
+    @FXML private TableColumn<Client, MaritalStatus> maritalStatusColumn;
+    @FXML private TableColumn<Client, Country> citizenshipColumn;
+    @FXML private TableColumn<Client, Disability> disabilityColumn;
+    @FXML private TableColumn<Client, Boolean> retireeColumn;
+    @FXML private TableColumn<Client, Double> monthlyIncomeColumn;
+    @FXML private TableColumn<Client, String> idNumberColumn;
+    @FXML private AnchorPane primaryAnchorPane;
+    @FXML private AnchorPane title;
+    @FXML private Button hideButton;
+    @FXML private Button minimizeButton;
+    @FXML private Button exitButton;
+    @FXML private Button logoutButtonAdmin;
+    @FXML private Button logoutButtonUser;
+    @FXML private Label currentUserLabelAdmin;
+    @FXML private Label currentUserLabelUser;
+    @FXML private AnchorPane workPane;
+    @FXML private AnchorPane leftAnchorPane;
+    @FXML private FlowPane menuAdmin;
+    @FXML private Button menuAdminButton1;
+    @FXML private Button menuAdminButton2;
+    @FXML private Button menuAdminButton3;
+    @FXML private Button menuAdminButton4;
+    @FXML private FlowPane menuUser;
+    @FXML private Button menuUserButton1;
+    @FXML private Button menuUserButton2;
+    @FXML private Button menuUserButton3;
+    @FXML private Button menuUserButton4;
+    @FXML private AnchorPane rightAnchorPane;
+    @FXML private AnchorPane menuPane1;
+    @FXML private Button connectionIndicator;
+    @FXML private Label menuPane1_DBLabel;
+    @FXML private TextField searchField;
+    @FXML private MenuButton criteriaButton;
+    @FXML private MenuItem criteriaMenuItem_Id;
+    @FXML private MenuItem criteriaMenuItem_Access;
+    @FXML private MenuItem criteriaMenuItem_Username;
+    @FXML private MenuItem criteriaMenuItem_Password;
+    @FXML private MenuItem criteriaMenuItem_Email;
+    @FXML private Button searchButton;
+    @FXML private Button resetSearchButton;
+    @FXML private TextField searchFieldClient;
+    @FXML private MenuButton criteriaButtonClient;
+    @FXML private MenuItem criteriaClientName;
+    @FXML private MenuItem criteriaClientSurname;
+    @FXML private MenuItem criteriaClientPatronymic;
+    @FXML private MenuItem criteriaClientPassportSeries;
+    @FXML private MenuItem criteriaClientPassportNumber;
+    @FXML private MenuItem criteriaClientIssuedBy;
+    @FXML private MenuItem criteriaClientIssuedDate;
+    @FXML private MenuItem criteriaClientBirthDate;
+    @FXML private MenuItem criteriaClientBirthPlace;
+    @FXML private MenuItem criteriaClientActCity;
+    @FXML private MenuItem criteriaClientActAddress;
+    @FXML private MenuItem criteriaClientRegCity;
+    @FXML private MenuItem criteriaClientJob;
+    @FXML private MenuItem criteriaClientPosition;
+    @FXML private MenuItem criteriaClientEmail;
+    @FXML private MenuItem criteriaClientHomePhone;
+    @FXML private MenuItem criteriaClientMobilePhone;
+    @FXML private MenuItem criteriaClientDisability;
+    @FXML private MenuItem criteriaClientRetiree;
+    @FXML private MenuItem criteriaClientMonthlyIncome;
+    @FXML private MenuItem criteriaClientIDNumber;
+    @FXML private MenuItem criteriaClientMaritalStatus;
+    @FXML private MenuItem criteriaClientID;
+    @FXML private MenuItem criteriaClientCitizenship;
+    @FXML private MenuItem criteriaClientMenuFIO;
+    @FXML private MenuItem criteriaClientMenuPassport;
+    @FXML private MenuItem criteriaClientMenuResidence;
+    @FXML private MenuItem criteriaClientMenuJob;
+    @FXML private MenuItem criteriaClientMenuContacts;
+    @FXML private MenuItem criteriaClientMenuOther;
+    @FXML private Button searchButtonClient;
+    @FXML private Button resetSearchButtonClient;
+    @FXML private ImageView fixImage;
+    @FXML private AnchorPane createUser_AnchorPane;
+    @FXML private TextField createUser_AnchorPane_Username;
+    @FXML private TextField createUser_AnchorPane_Email;
+    @FXML private TextField createUser_AnchorPane_Password;
+    @FXML private Button createUserButton;
+    @FXML private MenuButton createUser_AnchorPane_AccessMode_MenuButton;
+    @FXML private MenuItem createUser_AccessMenuItem_User;
+    @FXML private MenuItem createUser_AccessMenuItem_Admin;
+    @FXML private AnchorPane changeUser_AnchorPane;
+    @FXML private TextField changeUser_AnchorPane_Username;
+    @FXML private TextField changeUser_AnchorPane_Email;
+    @FXML private TextField changeUser_AnchorPane_Password;
+    @FXML private TextField changeUser_AnchorPane_Id;
+    @FXML private Button changeUser_AnchorPane_IdSubmitButton;
+    @FXML private Button changeUserButton;
+    @FXML private MenuButton changeUser_AnchorPane_AccessMode_MenuButton;
+    @FXML private MenuItem changeUser_AccessMenuItem_User;
+    @FXML private MenuItem changeUser_AccessMenuItem_Admin;
+    @FXML private AnchorPane deleteUser_AnchorPane;
+    @FXML private TextField deleteUserTextField;
+    @FXML private Button deleteUserButton;
+    @FXML private Label deleteUserLabel;
+    @FXML private AnchorPane menuPane2;
+    @FXML private AnchorPane menuPane3;
+    @FXML private AnchorPane menuPane31;
+    @FXML private MenuButton languageButton;
+    @FXML private MenuItem languageItem_Russian;
+    @FXML private MenuItem languageItem_English;
+    @FXML private Label languageLabel;
+    @FXML private Label themeLabel;
+    @FXML private MenuButton themeButton;
+    @FXML private MenuItem themeItem_Dark;
+    @FXML private MenuItem themeItem_Light;
+    @FXML private Label customizationLabel;
+    @FXML private AnchorPane accountSettingsPane;
+    @FXML private ScrollPane clientManagementScrollPane;
+    @FXML private AnchorPane clientManagementAnchorPane;
+    @FXML private Label accountSettingsLabel;
+    @FXML private Label databaseSettingsLabel;
+    @FXML private TextField accountSettingsUsernameTextField;
+    @FXML private TextField accountSettingsEmailTextField;
+    @FXML private Label accountSettingsUsernameLabel;
+    @FXML private Label accountSettingsPasswordLabel;
+    @FXML private Label accountSettingsEmailLabel;
+    @FXML private Button accountSettingsSaveButton;
+    @FXML private PasswordField accountSettingsPasswordTextField;
+    @FXML private AnchorPane databaseSettingsPane;
+    @FXML private TextField databaseSettingsURLTextField;
+    @FXML private Label databaseSettingsURLLabel;
+    @FXML private Label databaseSettingsUsernameLabel;
+    @FXML private Label databaseSettingsPasswordLabel;
+    @FXML private Button databaseSettingsConnectButton;
+    @FXML private TextField databaseSettingsUsernameTextField;
+    @FXML private PasswordField databaseSettingsPasswordTextField;
+    @FXML private AnchorPane menuPane4;
+    @FXML private AnchorPane loginPane;
+    @FXML private AnchorPane loginElementsPane;
+    @FXML private TextField usernameField;
+    @FXML private Button loginButton;
+    @FXML private Label loginUsernameLabel;
+    @FXML private Label loginPasswordLabel;
+    @FXML private Button signUpButton;
+    @FXML private PasswordField passwordField;
+    @FXML private Label loginWarning;
+    @FXML private Label settingsWarningLabel;
+    @FXML private Label databaseSettingsConnectionStatusLabel;
+    @FXML private ProgressIndicator databaseSettingsConnectionProgressIndicator;
 
     public static void main(String[] args) {
         launch(args);
@@ -364,8 +266,7 @@ public class MainController extends Application {
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         translate("English");
-        conn =
-                new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+        conn = new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
 
         idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
@@ -399,10 +300,19 @@ public class MainController extends Application {
         monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
         idNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        nameColumn.setCellFactory(
+                TextFieldTableCell.forTableColumn());
+
+        nameColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) ->
+                        ( t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())
+                        ).setNameDB(conn,t.getNewValue())
+        );
         initUsersData();
         initClientsData();
         clientsTableFitCells();
-
         //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
         connectionIndicator.getStyleClass().add("connectionIndicator");
@@ -725,12 +635,37 @@ public class MainController extends Application {
         createUserButton.setOnAction(actionEvent -> registration_Admin(null, createUser_AnchorPane_Username.getText(), createUser_AnchorPane_Password.getText(), createUser_AnchorPane_Email.getText(), createUser_AnchorPane_AccessMode_MenuButton.getText()));
         deleteUserButton.setOnAction(actionEvent -> deleteUsers());
 
-        searchField.setPromptText("Search...");
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
         criteriaMenuItem_Access.setOnAction(actionEvent -> criteriaButton.setText("Access"));
         criteriaMenuItem_Username.setOnAction(actionEvent -> criteriaButton.setText("Username"));
         criteriaMenuItem_Password.setOnAction(actionEvent -> criteriaButton.setText("Password"));
         criteriaMenuItem_Email.setOnAction(actionEvent -> criteriaButton.setText("E-mail"));
+
+        criteriaClientName.setOnAction(actionEvent -> criteriaButtonClient.setText("Name"));;
+        criteriaClientSurname.setOnAction(actionEvent -> criteriaButtonClient.setText("Surname"));;
+        criteriaClientPatronymic.setOnAction(actionEvent -> criteriaButtonClient.setText("Patronymic"));;
+        criteriaClientPassportSeries.setOnAction(actionEvent -> criteriaButtonClient.setText("Passport Series"));;
+        criteriaClientPassportNumber.setOnAction(actionEvent -> criteriaButtonClient.setText("Passport Number"));;
+        criteriaClientIssuedBy.setOnAction(actionEvent -> criteriaButtonClient.setText("Issued By"));;
+        criteriaClientIssuedDate.setOnAction(actionEvent -> criteriaButtonClient.setText("Issued Date"));;
+        criteriaClientBirthDate.setOnAction(actionEvent -> criteriaButtonClient.setText("Birth Date"));;
+        criteriaClientBirthPlace.setOnAction(actionEvent -> criteriaButtonClient.setText("Birth Place"));;
+        criteriaClientActCity.setOnAction(actionEvent -> criteriaButtonClient.setText("Actual City"));;
+        criteriaClientActAddress.setOnAction(actionEvent -> criteriaButtonClient.setText("Actual Adress"));;
+        criteriaClientRegCity.setOnAction(actionEvent -> criteriaButtonClient.setText("Registr. City"));;
+        criteriaClientJob.setOnAction(actionEvent -> criteriaButtonClient.setText("Job"));;
+        criteriaClientPosition.setOnAction(actionEvent -> criteriaButtonClient.setText("Position"));;
+        criteriaClientEmail.setOnAction(actionEvent -> criteriaButtonClient.setText("Email"));;
+        criteriaClientHomePhone.setOnAction(actionEvent -> criteriaButtonClient.setText("Home Phone"));;
+        criteriaClientMobilePhone.setOnAction(actionEvent -> criteriaButtonClient.setText("Mobile Phone"));;
+        criteriaClientDisability.setOnAction(actionEvent -> criteriaButtonClient.setText("Disability"));;
+        criteriaClientRetiree.setOnAction(actionEvent -> criteriaButtonClient.setText("Retiree"));;
+        criteriaClientMonthlyIncome.setOnAction(actionEvent -> criteriaButtonClient.setText("Monthly Income"));;
+        criteriaClientIDNumber.setOnAction(actionEvent -> criteriaButtonClient.setText("ID Number"));;
+        criteriaClientMaritalStatus.setOnAction(actionEvent -> criteriaButtonClient.setText("Marital Status"));;
+        criteriaClientCitizenship.setOnAction(actionEvent -> criteriaButtonClient.setText("Citizenship"));;
+        criteriaClientID.setOnAction(actionEvent -> criteriaButtonClient.setText("ID"));
+
         createUser_AccessMenuItem_User.setOnAction(actionEvent -> {
             if (currentLanguage.equals("English"))
                 createUser_AnchorPane_AccessMode_MenuButton.setText("User");
@@ -789,6 +724,15 @@ public class MainController extends Application {
         themeItem_Light.setDisable(true);
 
         resetSearchButton.getStyleClass().add("resetSearchButton");
+        resetSearchButtonClient.getStyleClass().add("resetSearchButton");
+        resetSearchButtonClient.setOnAction(actionEvent -> {
+            try {
+                searchFieldClient.clear();
+                initClientsData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         resetSearchButton.setOnAction(actionEvent -> {
             try {
                 searchField.clear();
@@ -972,6 +916,38 @@ public class MainController extends Application {
                 monthlyIncomeColumn.setText("Monthly income");
                 idNumberColumn.setText("ID number");
 
+                criteriaClientName.setText("Name");
+                criteriaClientSurname.setText("Surname");
+                criteriaClientPatronymic.setText("Patronymic");
+                criteriaClientBirthDate.setText("Birth date");
+                criteriaClientBirthPlace.setText("Birth place");
+                criteriaClientPassportSeries.setText("Passport series");
+                criteriaClientPassportNumber.setText("Passport number");
+                criteriaClientIssuedBy.setText("Issued by");
+                criteriaClientIssuedDate.setText("Issued date");
+                criteriaClientActCity.setText("Act. residence city");
+                criteriaClientActAddress.setText("Act. residence address");
+                criteriaClientHomePhone.setText("Home phone");
+                criteriaClientMobilePhone.setText("Mobile phone");
+                criteriaClientEmail.setText("E-Mail");
+                criteriaClientJob.setText("Job");
+                criteriaClientPosition.setText("Position");
+                criteriaClientRegCity.setText("Registration city");
+                criteriaClientMaritalStatus.setText("Marital status");
+                criteriaClientCitizenship.setText("Citizenship");
+                criteriaClientDisability.setText("Disability");
+                criteriaClientRetiree.setText("Retiree");
+                criteriaClientMonthlyIncome.setText("Monthly income");
+                criteriaClientIDNumber.setText("ID number");
+
+
+                criteriaClientMenuFIO.setText("Full Name");;
+                criteriaClientMenuPassport.setText("Passport Data");;
+                criteriaClientMenuResidence.setText("Residence");;
+                criteriaClientMenuJob.setText("Job");;
+                criteriaClientMenuContacts.setText("Contacts");;
+                criteriaClientMenuOther.setText("Other");;
+
                 break;
             case "Russian":
                 currentLanguage = "Russian";
@@ -1053,6 +1029,38 @@ public class MainController extends Application {
                 retireeColumn.setText("Пенсионер");
                 monthlyIncomeColumn.setText("Месячный доход");
                 idNumberColumn.setText("Идент. номер");
+
+                criteriaClientName.setText("Имя");
+                criteriaClientSurname.setText("Фамииля");
+                criteriaClientPatronymic.setText("Отчество");
+                criteriaClientBirthDate.setText("Дата рождения");
+                criteriaClientBirthPlace.setText("Место рождения");
+                criteriaClientPassportSeries.setText("Серия паспорта");
+                criteriaClientPassportNumber.setText("Номер паспорта");
+                criteriaClientIssuedBy.setText("Орган выдачи");
+                criteriaClientIssuedDate.setText("Дата выдачи");
+                criteriaClientActCity.setText("Город проживания");
+                criteriaClientActAddress.setText("Адрес проживания");
+                criteriaClientHomePhone.setText("Домашний телефон");
+                criteriaClientMobilePhone.setText("Мобильный телефон");
+                criteriaClientEmail.setText("E-Mail");
+                criteriaClientJob.setText("Место работы");
+                criteriaClientPosition.setText("Должность");
+                criteriaClientRegCity.setText("Город прописки");
+                criteriaClientMaritalStatus.setText("Семейное положение");
+                criteriaClientCitizenship.setText("Гражданство");
+                criteriaClientDisability.setText("Инвалидность");
+                criteriaClientRetiree.setText("Пенсионер");
+                criteriaClientMonthlyIncome.setText("Месячный доход");
+                criteriaClientIDNumber.setText("Идент. номер");
+
+                criteriaClientMenuFIO.setText("ФИО");;
+                criteriaClientMenuPassport.setText("Паспортные данные");;
+                criteriaClientMenuResidence.setText("Проживание");;
+                criteriaClientMenuJob.setText("Работа");;
+                criteriaClientMenuContacts.setText("Контакты");;
+                criteriaClientMenuOther.setText("Другое");;
+
                 break;
         }
     }
