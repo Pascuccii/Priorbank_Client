@@ -263,7 +263,7 @@
                                           <TextField layoutX="391.0" layoutY="675.0" />
                                           <TextField layoutX="391.0" layoutY="715.0" />
                                           <TextField layoutX="391.0" layoutY="751.0" />
-                                          <TableView fx:id="clientsTable" editable="true" layoutX="26.0" layoutY="57.0" prefHeight="251.0" prefWidth="513.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="57.0">
+                                          <TableView fx:id="clientsTable" editable="true" layoutX="26.0" layoutY="57.0" prefHeight="251.0" prefWidth="513.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="57.0">
                                             <columns>
                                               <TableColumn fx:id="idClientColumn" minWidth="30.0" prefWidth="30.0" text="ID" />
                                                 <TableColumn fx:id="nameColumn" minWidth="110.0" prefWidth="110.0" text="Name" />
@@ -290,10 +290,10 @@
                                                 <TableColumn fx:id="idNumberColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Id number" />
                                             </columns>
                                           </TableView>
-                                          <TextField fx:id="searchFieldClient" layoutX="27.0" layoutY="14.0" prefHeight="27.0" prefWidth="299.0" promptText="Search..." AnchorPane.leftAnchor="26.0" />
-                                          <Button fx:id="searchButtonClient" focusTraversable="false" layoutX="483.0" layoutY="14.0" mnemonicParsing="false" text="Search" AnchorPane.leftAnchor="483.0" />
-                                          <Button fx:id="resetSearchButtonClient" focusTraversable="false" layoutX="306.0" layoutY="14.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.leftAnchor="306.0" />
-                                          <MenuButton fx:id="criteriaButtonClient" focusTraversable="false" layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="137.0" text="Passport Series" AnchorPane.leftAnchor="339.0">
+                                          <TextField fx:id="searchFieldClient" layoutX="27.0" layoutY="14.0" prefHeight="27.0" prefWidth="258.0" promptText="Search..." AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="269.20000000000005" AnchorPane.topAnchor="14.0" />
+                                          <Button fx:id="searchButtonClient" focusTraversable="false" layoutX="483.0" layoutY="14.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="14.600000000000023" AnchorPane.topAnchor="14.0" />
+                                          <Button fx:id="resetSearchButtonClient" focusTraversable="false" layoutX="266.0" layoutY="14.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="263.6" AnchorPane.topAnchor="14.0" />
+                                          <MenuButton fx:id="criteriaButtonClient" focusTraversable="false" layoutX="297.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="180.0" text="Passport Series" AnchorPane.rightAnchor="76.60000000000002" AnchorPane.topAnchor="14.0">
                                              <items>
                                                 <Menu fx:id="criteriaClientMenuFIO" mnemonicParsing="false" text="ФИО">
                                                   <items>

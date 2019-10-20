@@ -22,10 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import sample.Connectivity.ConnectionClass;
-import sample.enums.City;
-import sample.enums.Country;
-import sample.enums.Disability;
-import sample.enums.MaritalStatus;
+import sample.enums.*;
 
 import java.io.*;
 import java.sql.*;
@@ -105,7 +102,7 @@ public class MainController extends Application {
     private TableColumn<Client, Disability> disabilityColumn;
     private MenuButton disabilityColumnMenuButton;
     @FXML
-    private TableColumn<Client, Boolean> retireeColumn;
+    private TableColumn<Client, Retiree> retireeColumn;
     private MenuButton retireeColumnMenuButton;
     @FXML
     private TableColumn<Client, Double> monthlyIncomeColumn;
@@ -475,7 +472,7 @@ public class MainController extends Application {
         disabilityColumn.setCellValueFactory(new PropertyValueFactory<Client, Disability>("disability"));
         disabilityColumnMenuButton = new MenuButton("No");
 
-        retireeColumn.setCellValueFactory(new PropertyValueFactory<Client, Boolean>("retiree"));
+        retireeColumn.setCellValueFactory(new PropertyValueFactory<Client, Retiree>("retiree"));
         retireeColumnMenuButton = new MenuButton("No");
 
         monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
@@ -824,7 +821,7 @@ public class MainController extends Application {
                 registration_Admin(null, createUser_AnchorPane_Username.getText(), createUser_AnchorPane_Password.getText(), createUser_AnchorPane_Email.getText(), createUser_AnchorPane_AccessMode_MenuButton.getText());
         });
         deleteUserButton.setOnAction(actionEvent -> {
-            if(checkDeleteField(deleteUserTextField))
+            if (checkDeleteField(deleteUserTextField))
                 deleteUsers();
         });
 
@@ -834,30 +831,30 @@ public class MainController extends Application {
         criteriaMenuItem_Password.setOnAction(actionEvent -> criteriaButton.setText("Password"));
         criteriaMenuItem_Email.setOnAction(actionEvent -> criteriaButton.setText("E-mail"));
 
-        criteriaClientName.setOnAction(actionEvent -> criteriaButtonClient.setText("Name"));
-        criteriaClientSurname.setOnAction(actionEvent -> criteriaButtonClient.setText("Surname"));
-        criteriaClientPatronymic.setOnAction(actionEvent -> criteriaButtonClient.setText("Patronymic"));
-        criteriaClientPassportSeries.setOnAction(actionEvent -> criteriaButtonClient.setText("Passport Series"));
-        criteriaClientPassportNumber.setOnAction(actionEvent -> criteriaButtonClient.setText("Passport Number"));
-        criteriaClientIssuedBy.setOnAction(actionEvent -> criteriaButtonClient.setText("Issued By"));
-        criteriaClientIssuedDate.setOnAction(actionEvent -> criteriaButtonClient.setText("Issued Date"));
-        criteriaClientBirthDate.setOnAction(actionEvent -> criteriaButtonClient.setText("Birth Date"));
-        criteriaClientBirthPlace.setOnAction(actionEvent -> criteriaButtonClient.setText("Birth Place"));
-        criteriaClientActCity.setOnAction(actionEvent -> criteriaButtonClient.setText("Actual City"));
-        criteriaClientActAddress.setOnAction(actionEvent -> criteriaButtonClient.setText("Actual Adress"));
-        criteriaClientRegCity.setOnAction(actionEvent -> criteriaButtonClient.setText("Registr. City"));
-        criteriaClientJob.setOnAction(actionEvent -> criteriaButtonClient.setText("Job"));
-        criteriaClientPosition.setOnAction(actionEvent -> criteriaButtonClient.setText("Position"));
-        criteriaClientEmail.setOnAction(actionEvent -> criteriaButtonClient.setText("Email"));
-        criteriaClientHomePhone.setOnAction(actionEvent -> criteriaButtonClient.setText("Home Phone"));
-        criteriaClientMobilePhone.setOnAction(actionEvent -> criteriaButtonClient.setText("Mobile Phone"));
-        criteriaClientDisability.setOnAction(actionEvent -> criteriaButtonClient.setText("Disability"));
-        criteriaClientRetiree.setOnAction(actionEvent -> criteriaButtonClient.setText("Retiree"));
-        criteriaClientMonthlyIncome.setOnAction(actionEvent -> criteriaButtonClient.setText("Monthly Income"));
-        criteriaClientIDNumber.setOnAction(actionEvent -> criteriaButtonClient.setText("ID Number"));
-        criteriaClientMaritalStatus.setOnAction(actionEvent -> criteriaButtonClient.setText("Marital Status"));
-        criteriaClientCitizenship.setOnAction(actionEvent -> criteriaButtonClient.setText("Citizenship"));
-        criteriaClientID.setOnAction(actionEvent -> criteriaButtonClient.setText("ID"));
+        criteriaClientName.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientName.getText()));
+        criteriaClientSurname.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientSurname.getText()));
+        criteriaClientPatronymic.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPatronymic.getText()));
+        criteriaClientPassportSeries.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPassportSeries.getText()));
+        criteriaClientPassportNumber.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPassportNumber.getText()));
+        criteriaClientIssuedBy.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientIssuedBy.getText()));
+        criteriaClientIssuedDate.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientIssuedDate.getText()));
+        criteriaClientBirthDate.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientBirthDate.getText()));
+        criteriaClientBirthPlace.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientBirthPlace.getText()));
+        criteriaClientActCity.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientActCity.getText()));
+        criteriaClientActAddress.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientActAddress.getText()));
+        criteriaClientRegCity.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientRegCity.getText()));
+        criteriaClientJob.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientJob.getText()));
+        criteriaClientPosition.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPosition.getText()));
+        criteriaClientEmail.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientEmail.getText()));
+        criteriaClientHomePhone.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientHomePhone.getText()));
+        criteriaClientMobilePhone.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientMobilePhone.getText()));
+        criteriaClientDisability.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientDisability.getText()));
+        criteriaClientRetiree.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientRetiree.getText()));
+        criteriaClientMonthlyIncome.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientMonthlyIncome.getText()));
+        criteriaClientIDNumber.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientIDNumber.getText()));
+        criteriaClientMaritalStatus.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientMaritalStatus.getText()));
+        criteriaClientCitizenship.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientCitizenship.getText()));
+        criteriaClientID.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientID.getText()));
 
         createUser_AccessMenuItem_User.setOnAction(actionEvent -> {
             if (currentLanguage.equals("English"))
@@ -938,53 +935,12 @@ public class MainController extends Application {
             if (keyEvent.getCode() == KeyCode.ENTER)
                 searchButton.fire();
         });
-        searchButton.setOnAction(actionEvent -> {
-            try {
-                initUsersData();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if (!searchField.getText().equals("")) {
-                Iterator<User> i = usersData.iterator();
-                switch (criteriaButton.getText()) {
-                    case "Id":
-                        while (i.hasNext()) {
-                            if (i.next().getId() != Integer.parseInt(searchField.getText())) {
-                                i.remove();
-                            }
-                        }
-                        break;
-                    case "Access":
-                        while (i.hasNext()) {
-                            if (i.next().getAccessMode() != Integer.parseInt(searchField.getText())) {
-                                i.remove();
-                            }
-                        }
-                        break;
-                    case "Username":
-                        while (i.hasNext()) {
-                            if (!i.next().getUsername().equals(searchField.getText())) {
-                                i.remove();
-                            }
-                        }
-                        break;
-                    case "Password":
-                        while (i.hasNext()) {
-                            if (!i.next().getPassword().equals(searchField.getText())) {
-                                i.remove();
-                            }
-                        }
-                        break;
-                    case "E-mail":
-                        while (i.hasNext()) {
-                            if (!i.next().getEmail().equals(searchField.getText())) {
-                                i.remove();
-                            }
-                        }
-                        break;
-                }
-            }
+        searchFieldClient.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                searchButtonClient.fire();
         });
+        searchButton.setOnAction(actionEvent -> searchUser());
+        searchButtonClient.setOnAction(actionEvent -> searchClient());
         databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
 
         translate("English");
@@ -1032,6 +988,7 @@ public class MainController extends Application {
                 if (currentUser != null)
                     currentUser.setLanguageDB(conn, "English");
                 searchField.setPromptText("Search...");
+                searchFieldClient.setPromptText("Search...");
                 languageButton.setText("English");
                 loginUsernameLabel.setText("Username");
                 loginPasswordLabel.setText("Password");
@@ -1050,6 +1007,8 @@ public class MainController extends Application {
 
                 menuPane1_DBLabel.setText("Database connection");
                 searchButton.setText("Search");
+                searchButtonClient.setText("Search");
+                criteriaButtonClient.setText("ID");
 
                 languageLabel.setText("Language");
                 languageItem_Russian.setText("Russian");
@@ -1148,6 +1107,7 @@ public class MainController extends Application {
                 if (currentUser != null)
                     currentUser.setLanguageDB(conn, "Russian");
                 searchField.setPromptText("Искать...");
+                searchFieldClient.setPromptText("Искать...");
                 languageButton.setText("Русский");
                 loginUsernameLabel.setText("Имя");
                 loginPasswordLabel.setText("Пароль");
@@ -1165,7 +1125,8 @@ public class MainController extends Application {
 
                 menuPane1_DBLabel.setText("Соединение с БД");
                 searchButton.setText("Поиск");
-
+                searchButtonClient.setText("Поиск");
+                criteriaButtonClient.setText("ID");
                 languageLabel.setText("Язык");
                 languageItem_Russian.setText("Русский");
                 languageItem_English.setText("Английский");
@@ -1711,7 +1672,7 @@ public class MainController extends Application {
                 client.setMaritalStatus(MaritalStatus.valueOf(resultSet.getString("Marital_status")));
                 client.setCitizenship(Country.valueOf(resultSet.getString("Citizenship")));
                 client.setDisability(Disability.valueOf(resultSet.getString("Disability")));
-                client.setRetiree(resultSet.getBoolean("Is_retiree"));
+                client.setRetiree(Retiree.valueOf(resultSet.getString("Is_retiree")));
                 client.setMonthlyIncome(resultSet.getDouble("Monthly_income"));
                 client.setIdNumber(resultSet.getString("Id_number"));
                 clientsData.add(client);
@@ -1830,27 +1791,281 @@ public class MainController extends Application {
         return cellFactory;
     }
 
-    public boolean checkEmail(TextField toCheck) {
+    private boolean checkEmail(TextField toCheck) {
         if (!toCheck.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !toCheck.getText().equals("")) {
-                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
             return false;
         }
         return true;
     }
 
-    public boolean checkUsernamePassword(TextField toCheck) {
+    private boolean checkUsernamePassword(TextField toCheck) {
         if (toCheck.getText().length() < 3) {
-                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
             return false;
         }
         return true;
     }
 
-    public boolean checkDeleteField(TextField toCheck) {
+    private boolean checkDeleteField(TextField toCheck) {
         if (!toCheck.getText().matches("^[0-9]+(,[0-9]+)*$")) {
-                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
             return false;
         }
         return true;
     }
+
+    private void searchUser() {
+        try {
+            initUsersData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (!searchField.getText().equals("")) {
+            Iterator<User> i = usersData.iterator();
+            switch (criteriaButton.getText()) {
+                case "Id":
+                    while (i.hasNext()) {
+                        if (i.next().getId() != Integer.parseInt(searchField.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Access":
+                    while (i.hasNext()) {
+                        if (i.next().getAccessMode() != Integer.parseInt(searchField.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Username":
+                    while (i.hasNext()) {
+                        if (!i.next().getUsername().equals(searchField.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Password":
+                    while (i.hasNext()) {
+                        if (!i.next().getPassword().equals(searchField.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "E-mail":
+                    while (i.hasNext()) {
+                        if (!i.next().getEmail().equals(searchField.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void searchClient() {
+        try {
+            initClientsData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (!searchFieldClient.getText().equals("")) {
+            Iterator<Client> i = clientsData.iterator();
+            switch (criteriaButtonClient.getText()) {
+                case "ID":
+                    while (i.hasNext()) {
+                        if (i.next().getId() != Integer.parseInt(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Name":
+                case "Имя":
+                    while (i.hasNext()) {
+                        if (!i.next().getName().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Surname":
+                case "Фамилия":
+                    while (i.hasNext()) {
+                        if (!i.next().getSurname().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Patronymic":
+                case "Отчество":
+                    while (i.hasNext()) {
+                        if (!i.next().getPatronymic().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Passport Series":
+                case "Серия паспорта":
+                    while (i.hasNext()) {
+                        if (!i.next().getPassportSeries().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Passport Number":
+                case "Номер паспорта":
+                    while (i.hasNext()) {
+                        if (!i.next().getPassportNumber().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Issued By":
+                case "Орган выдачи":
+                    while (i.hasNext()) {
+                        if (!i.next().getIssuedBy().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Issued Date":
+                case "Дата выдачи":
+                    while (i.hasNext()) {
+                        if (!i.next().getIssuedDate().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Birth Date":
+                case "Дата рождения":
+                    while (i.hasNext()) {
+                        if (!i.next().getBirthDate().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Birth Place":
+                case "Место рождения":
+                    while (i.hasNext()) {
+                        if (!i.next().getBirthPlace().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "ID Number":
+                case "Идент. номер":
+                    while (i.hasNext()) {
+                        if (!i.next().getIdNumber().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Citizenship":
+                case "Гражданство":
+                    while (i.hasNext()) {
+                        if (!i.next().getCitizenship().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Actual City":
+                case "Город проживания":
+                    while (i.hasNext()) {
+                        if (!i.next().getActualResidenceCity().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Actual Adress":
+                case "Адрес проживания":
+                    while (i.hasNext()) {
+                        if (!i.next().getActualResidenceAddress().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Registr. City":
+                case "Город прописки":
+                    while (i.hasNext()) {
+                        if (!i.next().getRegistrationCity().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Job":
+                case "Место работы":
+                    while (i.hasNext()) {
+                        if (!i.next().getJob().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Position":
+                case "Должность":
+                    while (i.hasNext()) {
+                        if (!i.next().getPosition().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "E-Mail":
+                    while (i.hasNext()) {
+                        if (!i.next().getEmail().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Home Phone":
+                case "Домашний телефон":
+                    while (i.hasNext()) {
+                        if (!i.next().getHomeNumber().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Mobile Phone":
+                case "Мобильный телефон":
+                    while (i.hasNext()) {
+                        if (!i.next().getMobileNumber().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Disability":
+                case "Инвалидность":
+                    while (i.hasNext()) {
+                        if (!i.next().getDisability().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Retiree":
+                case "Пенсионер":
+                    while (i.hasNext()) {
+                        if (!i.next().getRetiree().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Monthly Income":
+                case "Месячный доход":
+                    while (i.hasNext()) {
+                        if (i.next().getMonthlyIncome() != Integer.parseInt(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+                case "Marital Status":
+                case "Семейное положение":
+                    while (i.hasNext()) {
+                        if (!i.next().getMaritalStatus().toString().equals(searchFieldClient.getText())) {
+                            i.remove();
+                        }
+                    }
+                    break;
+
+            }
+        }
+    }
+
+    //TODO: Остальные кнопочки в таблице, проверки на текстовые поля
 }

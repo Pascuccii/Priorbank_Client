@@ -53,9 +53,9 @@
 }
 
 .table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: transparent;
+    -fx-background-color: rgb(67, 101, 122);
     -fx-background-insets: 0, 1, 2;
-    -fx-background: transparent;
+    -fx-background: rgb(67, 101, 122);
     -fx-text-fill: transparent;
 }
 

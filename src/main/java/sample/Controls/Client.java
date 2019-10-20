@@ -1,10 +1,7 @@
 package sample.Controls;
 
 import sample.Connectivity.ConnectionClass;
-import sample.enums.City;
-import sample.enums.Country;
-import sample.enums.Disability;
-import sample.enums.MaritalStatus;
+import sample.enums.*;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -32,14 +29,14 @@ public class Client {
     private MaritalStatus maritalStatus;
     private Country citizenship;
     private Disability disability;
-    private boolean retiree;
+    private Retiree retiree;
     private double monthlyIncome;
     private String idNumber;
 
     public Client() {
     }
 
-    public Client(int id, String name, String surname, String patronymic, Date birthDate, String passportSeries, String passportNumber, String issuedBy, Date issuedDate, String birthPlace, City actualResidence_city, String actualResidenceAddress, String homeNumber, String mobileNumber, String email, String job, String position, City registrationCity, MaritalStatus maritalStatus, Country citizenship, Disability disability, boolean retiree, double monthlyIncome, String idNumber) {
+    public Client(int id, String name, String surname, String patronymic, Date birthDate, String passportSeries, String passportNumber, String issuedBy, Date issuedDate, String birthPlace, City actualResidence_city, String actualResidenceAddress, String homeNumber, String mobileNumber, String email, String job, String position, City registrationCity, MaritalStatus maritalStatus, Country citizenship, Disability disability, Retiree retiree, double monthlyIncome, String idNumber) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -67,7 +64,7 @@ public class Client {
     }
 
     //DB
-    public void setIdDB(ConnectionClass conn,int id) {
+    public void setIdDB(ConnectionClass conn, int id) {
         this.id = id;
     }
 
@@ -85,71 +82,71 @@ public class Client {
         }
     }
 
-    public void setSurnameDB(ConnectionClass conn,String surname) {
+    public void setSurnameDB(ConnectionClass conn, String surname) {
         this.surname = surname;
     }
 
-    public void setPatronymicDB(ConnectionClass conn,String patronymic) {
+    public void setPatronymicDB(ConnectionClass conn, String patronymic) {
         this.patronymic = patronymic;
     }
 
-    public void setBirthDateDB(ConnectionClass conn,Date birthDate) {
+    public void setBirthDateDB(ConnectionClass conn, Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public void setPassportSeriesDB(ConnectionClass conn,String passportSeries) {
+    public void setPassportSeriesDB(ConnectionClass conn, String passportSeries) {
         this.passportSeries = passportSeries;
     }
 
-    public void setPassportNumberDB(ConnectionClass conn,String passportNumber) {
+    public void setPassportNumberDB(ConnectionClass conn, String passportNumber) {
         this.passportNumber = passportNumber;
     }
 
-    public void setIssuedByDB(ConnectionClass conn,String issuedBy) {
+    public void setIssuedByDB(ConnectionClass conn, String issuedBy) {
         this.issuedBy = issuedBy;
     }
 
-    public void setIssuedDateDB(ConnectionClass conn,Date issuedDate) {
+    public void setIssuedDateDB(ConnectionClass conn, Date issuedDate) {
         this.issuedDate = issuedDate;
     }
 
-    public void setBirthPlaceDB(ConnectionClass conn,String birthPlace) {
+    public void setBirthPlaceDB(ConnectionClass conn, String birthPlace) {
         this.birthPlace = birthPlace;
     }
 
-    public void setActualResidence_cityDB(ConnectionClass conn,City actualResidence_city) {
+    public void setActualResidence_cityDB(ConnectionClass conn, City actualResidence_city) {
         this.actualResidenceCity = actualResidence_city;
     }
 
-    public void setActualResidenceAddressDB(ConnectionClass conn,String actualResidenceAddress) {
+    public void setActualResidenceAddressDB(ConnectionClass conn, String actualResidenceAddress) {
         this.actualResidenceAddress = actualResidenceAddress;
     }
 
-    public void setHomeNumberDB(ConnectionClass conn,String homeNumber) {
+    public void setHomeNumberDB(ConnectionClass conn, String homeNumber) {
         this.homeNumber = homeNumber;
     }
 
-    public void setMobileNumberDB(ConnectionClass conn,String mobileNumber) {
+    public void setMobileNumberDB(ConnectionClass conn, String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
-    public void setEmailDB(ConnectionClass conn,String email) {
+    public void setEmailDB(ConnectionClass conn, String email) {
         this.email = email;
     }
 
-    public void setJobDB(ConnectionClass conn,String job) {
+    public void setJobDB(ConnectionClass conn, String job) {
         this.job = job;
     }
 
-    public void setPositionDB(ConnectionClass conn,String position) {
+    public void setPositionDB(ConnectionClass conn, String position) {
         this.position = position;
     }
 
-    public void setRegistrationCityDB(ConnectionClass conn,City registrationCity) {
+    public void setRegistrationCityDB(ConnectionClass conn, City registrationCity) {
         this.registrationCity = registrationCity;
     }
 
-    public void setMaritalStatusDB(ConnectionClass conn,MaritalStatus maritalStatus) {
+    public void setMaritalStatusDB(ConnectionClass conn, MaritalStatus maritalStatus) {
         this.maritalStatus = (null == maritalStatus) ? MaritalStatus.Unknown : maritalStatus;
         try {
             String prepStat = "UPDATE clients SET Marital_status = ? WHERE id = ?";
@@ -163,23 +160,23 @@ public class Client {
         }
     }
 
-    public void setCitizenshipDB(ConnectionClass conn,Country citizenship) {
+    public void setCitizenshipDB(ConnectionClass conn, Country citizenship) {
         this.citizenship = citizenship;
     }
 
-    public void setDisabilityDB(ConnectionClass conn,Disability disability) {
+    public void setDisabilityDB(ConnectionClass conn, Disability disability) {
         this.disability = disability;
     }
 
-    public void setRetireeDB(ConnectionClass conn,boolean retiree) {
+    public void setRetireeDB(ConnectionClass conn, Retiree retiree) {
         this.retiree = retiree;
     }
 
-    public void setMonthlyIncomeDB(ConnectionClass conn,double monthlyIncome) {
+    public void setMonthlyIncomeDB(ConnectionClass conn, double monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 
-    public void setIdNumberDB(ConnectionClass conn,String idNumber) {
+    public void setIdNumberDB(ConnectionClass conn, String idNumber) {
         this.idNumber = idNumber;
     }
 
@@ -352,11 +349,11 @@ public class Client {
         this.disability = disability;
     }
 
-    public boolean isRetiree() {
+    public Retiree getRetiree() {
         return retiree;
     }
 
-    public void setRetiree(boolean retiree) {
+    public void setRetiree(Retiree retiree) {
         this.retiree = retiree;
     }
 
