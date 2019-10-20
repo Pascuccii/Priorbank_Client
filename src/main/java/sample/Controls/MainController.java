@@ -1713,22 +1713,22 @@ public class MainController extends Application {
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
                             data.setMaritalStatusDB(conn, MaritalStatus.Single);
-                            btn.setText("Single");
+                            btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
                             data.setMaritalStatusDB(conn, MaritalStatus.Married);
-                            btn.setText("Married");
+                            btn.setText(mi2.getText());
                         });
                         mi3.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
                             data.setMaritalStatusDB(conn, MaritalStatus.Divorced);
-                            btn.setText("Divorced");
+                            btn.setText(mi3.getText());
                         });
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
                             data.setMaritalStatusDB(conn, MaritalStatus.Unknown);
-                            btn.setText("Unknown");
+                            btn.setText(mi4.getText());
                         });
                     }
 
@@ -2076,6 +2076,5 @@ public class MainController extends Application {
     }
 
     //TODO:
-    // СДелать fix-image для второй таблицы, при русском языке сем. положение ставится англ
     // Остальные кнопочки в таблице, проверки на текстовые поля
 }
