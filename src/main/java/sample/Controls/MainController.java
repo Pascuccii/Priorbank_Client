@@ -384,6 +384,8 @@ public class MainController extends Application {
     @FXML
     private ProgressIndicator databaseSettingsConnectionProgressIndicator;
 
+    private Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -491,7 +493,8 @@ public class MainController extends Application {
         );
         initUsersData();
         initClientsData();
-        addButtonToTable();
+        cellFactory = addButtonToTable();
+
 
         //Дальше - функционал элементов
         loginWarning.getStyleClass().add("loginWarning");
@@ -1241,11 +1244,10 @@ public class MainController extends Application {
                 criteriaClientMenuJob.setText("Работа");
                 criteriaClientMenuContacts.setText("Контакты");
                 criteriaClientMenuOther.setText("Другое");
-
-                MenuButton buff = (MenuButton) maritalStatusColumn.getCellData(0);
-                //System.out.println(buff.getText());
                 break;
         }
+        clientsTable.refresh();
+        //initClientsData();
     }
 
     private void setTheme(String theme) throws SQLException {
@@ -1830,14 +1832,13 @@ public class MainController extends Application {
     }
 */
 
-    private void addButtonToTable() {
+    private Callback<TableColumn<Client, Void>, TableCell<Client, Void>> addButtonToTable() {
         maritalStatusColumn = new TableColumn("Marital Status");
-        maritalStatusColumn.setMinWidth(150);
-        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory =
-                new Callback<TableColumn<Client, Void>, TableCell<Client, Void>>() {
+        maritalStatusColumn.setMinWidth(180);
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<>() {
                     @Override
-                    public TableCell<Client, Void> call(final TableColumn<Client, Void> param) {
-                        final TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
+                        TableCell<Client, Void> cell = new TableCell<Client, Void>() {
                             MenuItem mi1 = new MenuItem("Single");
                             MenuItem mi2 = new MenuItem("Married");
                             MenuItem mi3 = new MenuItem("Divorced");
@@ -1847,7 +1848,7 @@ public class MainController extends Application {
                                     new MenuButton("Unknown", null, mi1, mi2, mi3, mi4);
 
                             {
-                                btn.setMinWidth(140);
+                                btn.setMinWidth(170);
                                 mi1.setOnAction(actionEvent -> {
                                     Client data = getTableView().getItems().get(getIndex());
                                     data.setMaritalStatusDB(conn, MaritalStatus.Single);
@@ -1876,15 +1877,65 @@ public class MainController extends Application {
                                 if (empty) {
                                     setGraphic(null);
                                 } else {
+                                    String toSet;
+                                    Client data = getTableView().getItems().get(getIndex());
+                                    if(currentLanguage.equals("English")) {
+                                        switch (data.getMaritalStatus()) {
+                                            case Single:
+                                                toSet = "Single";
+                                                break;
+                                            case Married:
+                                                toSet = "Married";
+                                                break;
+                                            case Divorced:
+                                                toSet = "Divorced";
+                                                break;
+                                            case Unknown:
+                                                toSet = "Unknown";
+                                                break;
+                                            default:
+                                                toSet = "Error";
+                                        }
+                                        btn.setText(toSet);
+                                        mi1.setText("Single");
+                                        mi2.setText("Married");
+                                        mi3.setText("Divorced");
+                                        mi4.setText("Unknown");
+                                    }
+                                    if(currentLanguage.equals("Russian")) {
+                                        switch (data.getMaritalStatus()) {
+                                            case Single:
+                                                toSet = "Не женат/не замужем";
+                                                break;
+                                            case Married:
+                                                toSet = "Женат/За мужем";
+                                                break;
+                                            case Divorced:
+                                                toSet = "Разведён/разведена";
+                                                break;
+                                            case Unknown:
+                                                toSet = "Не указано";
+                                                break;
+                                            default:
+                                                toSet = "Error";
+                                        }
+                                        btn.setText(toSet);
+                                        mi1.setText("Не женат/не замужем");
+                                        mi2.setText("Женат/За мужем");
+                                        mi3.setText("Разведён/разведена");
+                                        mi4.setText("Не указано");
+                                    }
                                     setGraphic(btn);
                                 }
                             }
                         };
+
                         return cell;
                     }
                 };
         maritalStatusColumn.setCellFactory(cellFactory);
 
         clientsTable.getColumns().add(18, maritalStatusColumn);
+        return cellFactory;
     }
 }
