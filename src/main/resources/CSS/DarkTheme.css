@@ -64,7 +64,11 @@
 .table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
 .table-view > .virtual-flow > .scroll-bar:horizontal,
 .table-view > .virtual-flow > .scroll-bar:horizontal > .track,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background,
+.scroll-bar:horizontal > .track,
+.scroll-bar:horizontal > .track-background,
+.scroll-bar:vertical > .track,
+.scroll-bar:vertical > .track-background {
     -fx-background-color: #383838;
 }
 

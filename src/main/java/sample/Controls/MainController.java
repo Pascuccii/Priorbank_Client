@@ -307,6 +307,8 @@ public class MainController extends Application {
     @FXML
     private Label themeLabel;
     @FXML
+    private ImageView fixImage2;
+    @FXML
     private MenuButton themeButton;
     @FXML
     private MenuItem themeItem_Dark;
@@ -1005,7 +1007,7 @@ public class MainController extends Application {
                 logoutButtonUser.setText(" 5 Log Out");
 
 
-                menuPane1_DBLabel.setText("Database connection");
+                menuPane1_DBLabel.setText("Connection");
                 searchButton.setText("Search");
                 searchButtonClient.setText("Search");
                 criteriaButtonClient.setText("ID");
@@ -1123,7 +1125,7 @@ public class MainController extends Application {
                 logoutButtonAdmin.setText(" 5 Выйти");
                 logoutButtonUser.setText(" 5 Выйти");
 
-                menuPane1_DBLabel.setText("Соединение с БД");
+                menuPane1_DBLabel.setText("Соединение");
                 searchButton.setText("Поиск");
                 searchButtonClient.setText("Поиск");
                 criteriaButtonClient.setText("ID");
@@ -1569,6 +1571,9 @@ public class MainController extends Application {
             stage.setMaximized(false);
             usersTable.setPrefHeight(150d);
             clientsTable.setPrefWidth(513d);
+            clientsTable.setPrefHeight(200d);
+            fixImage2.setLayoutX(526);
+            fixImage2.setLayoutY(233);
             createUser_AnchorPane.setLayoutY(212);
             if (currentTheme.equals("Dark"))
                 minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
@@ -1590,6 +1595,9 @@ public class MainController extends Application {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
             clientsTable.setPrefWidth(1250d);
+            clientsTable.setPrefHeight(470d);
+            fixImage2.setLayoutX(1274);
+            fixImage2.setLayoutY(502.7);
             createUser_AnchorPane.setLayoutY(667);
             if (currentTheme.equals("Dark"))
                 minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
@@ -2067,5 +2075,7 @@ public class MainController extends Application {
         }
     }
 
-    //TODO: Остальные кнопочки в таблице, проверки на текстовые поля
+    //TODO:
+    // СДелать fix-image для второй таблицы, при русском языке сем. положение ставится англ
+    // Остальные кнопочки в таблице, проверки на текстовые поля
 }
