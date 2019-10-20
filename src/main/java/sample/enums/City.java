@@ -1,5 +1,5 @@
 package sample.enums;
 
 public enum City {
-    Minsk, Moscow, New_York, London, Kyoto
+    Minsk, Moscow, New_York, London, Kyoto, Unknown
 }

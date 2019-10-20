@@ -1,5 +1,5 @@
 package sample.enums;
 
 public enum MaritalStatus {
-    Single, Married
+    Single, Married, Divorced, Unknown
 }
