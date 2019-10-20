@@ -92,7 +92,7 @@ public class MainController extends Application {
     private TableColumn<Client, String> positionColumn;
     @FXML
     private TableColumn<Client, City> registrationCityColumn;
-//  @FXML
+    //  @FXML
 //  private TableColumn<Client, MaritalStatus> maritalStatusColumn;
 //  private MenuItem maritalStatusMenuItemSingle;
 //  private MenuItem maritalStatusMenuItemDivorced;
@@ -557,6 +557,8 @@ public class MainController extends Application {
         clientManagementAnchorPane.getStyleClass().add("clientManagementScrollPane");
         clientManagementScrollPane.getStyleClass().add("clientManagementScrollPane");
         clientManagementScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        clientManagementScrollPane.setMinWidth(550);
+        clientManagementScrollPane.setMaxWidth(1920);
         fixImage.getStyleClass().add("fixImage");
 
 
@@ -661,8 +663,7 @@ public class MainController extends Application {
         changeUser_AnchorPane_Username.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (changeUser_AnchorPane_Username.getText().length() < 3 && !changeUser_AnchorPane_Username.getText().equals(""))
-                    changeUser_AnchorPane_Username.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkUsernamePassword(changeUser_AnchorPane_Username);
         });
 
 
@@ -675,8 +676,7 @@ public class MainController extends Application {
         changeUser_AnchorPane_Password.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (changeUser_AnchorPane_Password.getText().length() < 3 && !changeUser_AnchorPane_Password.getText().equals(""))
-                    changeUser_AnchorPane_Password.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkUsernamePassword(changeUser_AnchorPane_Password);
         });
 
         changeUser_AnchorPane_Email.setOnKeyPressed(keyEvent -> {
@@ -688,8 +688,7 @@ public class MainController extends Application {
         changeUser_AnchorPane_Email.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (!changeUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !changeUser_AnchorPane_Email.getText().equals(""))
-                    changeUser_AnchorPane_Email.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkEmail(changeUser_AnchorPane_Email);
         });
 
         createUser_AnchorPane_Username.setOnKeyPressed(keyEvent -> {
@@ -701,8 +700,7 @@ public class MainController extends Application {
         createUser_AnchorPane_Username.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (createUser_AnchorPane_Username.getText().length() < 3 && !createUser_AnchorPane_Username.getText().equals(""))
-                    createUser_AnchorPane_Username.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkUsernamePassword(createUser_AnchorPane_Username);
         });
 
         createUser_AnchorPane_Password.setOnKeyPressed(keyEvent -> {
@@ -714,8 +712,7 @@ public class MainController extends Application {
         createUser_AnchorPane_Password.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (createUser_AnchorPane_Password.getText().length() < 3 && !createUser_AnchorPane_Password.getText().equals(""))
-                    createUser_AnchorPane_Password.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkUsernamePassword(createUser_AnchorPane_Password);
         });
 
         createUser_AnchorPane_Email.setOnKeyPressed(keyEvent -> {
@@ -727,8 +724,7 @@ public class MainController extends Application {
         createUser_AnchorPane_Email.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (!createUser_AnchorPane_Email.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !createUser_AnchorPane_Email.getText().equals(""))
-                    createUser_AnchorPane_Email.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkEmail(createUser_AnchorPane_Email);
         });
 
         deleteUserTextField.setOnKeyPressed(keyEvent -> {
@@ -740,8 +736,7 @@ public class MainController extends Application {
         deleteUserTextField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
             System.out.println(oldPropertyValue + " -> " + newPropertyValue);
             if (!newPropertyValue)
-                if (deleteUserTextField.getText().matches("^[0-9]+(,[0-9]+)*$"))
-                    deleteUserTextField.setStyle("-fx-border-color: rgb(255,13,19)");
+                checkDeleteField(deleteUserTextField);
         });
 
         accountSettingsSaveButton.setOnAction(actionEvent -> changeAccountData());
@@ -814,9 +809,24 @@ public class MainController extends Application {
             loginBegin();
         });
         changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> submitId());
-        changeUserButton.setOnAction(actionEvent -> changeUser());
-        createUserButton.setOnAction(actionEvent -> registration_Admin(null, createUser_AnchorPane_Username.getText(), createUser_AnchorPane_Password.getText(), createUser_AnchorPane_Email.getText(), createUser_AnchorPane_AccessMode_MenuButton.getText()));
-        deleteUserButton.setOnAction(actionEvent -> deleteUsers());
+        changeUserButton.setOnAction(actionEvent -> {
+            checkEmail(changeUser_AnchorPane_Email);
+            checkUsernamePassword(changeUser_AnchorPane_Username);
+            checkUsernamePassword(changeUser_AnchorPane_Password);
+            if (checkEmail(changeUser_AnchorPane_Email) && checkUsernamePassword(changeUser_AnchorPane_Username) && checkUsernamePassword(changeUser_AnchorPane_Password))
+                changeUser();
+        });
+        createUserButton.setOnAction(actionEvent -> {
+            checkEmail(createUser_AnchorPane_Email);
+            checkUsernamePassword(createUser_AnchorPane_Username);
+            checkUsernamePassword(createUser_AnchorPane_Password);
+            if (checkEmail(createUser_AnchorPane_Email) && checkUsernamePassword(createUser_AnchorPane_Username) && checkUsernamePassword(createUser_AnchorPane_Password))
+                registration_Admin(null, createUser_AnchorPane_Username.getText(), createUser_AnchorPane_Password.getText(), createUser_AnchorPane_Email.getText(), createUser_AnchorPane_AccessMode_MenuButton.getText());
+        });
+        deleteUserButton.setOnAction(actionEvent -> {
+            if(checkDeleteField(deleteUserTextField))
+                deleteUsers();
+        });
 
         criteriaMenuItem_Id.setOnAction(actionEvent -> criteriaButton.setText("Id"));
         criteriaMenuItem_Access.setOnAction(actionEvent -> criteriaButton.setText("Access"));
@@ -1469,20 +1479,20 @@ public class MainController extends Application {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-
-        String[] ids = deleteUserTextField.getText().split(",");
-        for (String id : ids) {
-            if (StringUtils.isStrictlyNumeric(id)) {
-                deleteUserTextField.setText("");
-                try {
-                    String prepStat = "DELETE FROM `test`.`users` WHERE (`id` = ?)";
-                    PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
-                    preparedStatement.setInt(1, Integer.parseInt(id));
-                    preparedStatement.execute();
-                    initUsersData();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+        } else {
+            String[] ids = deleteUserTextField.getText().split(",");
+            for (String id : ids) {
+                if (StringUtils.isStrictlyNumeric(id)) {
+                    deleteUserTextField.setText("");
+                    try {
+                        String prepStat = "DELETE FROM `test`.`users` WHERE (`id` = ?)";
+                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        preparedStatement.setInt(1, Integer.parseInt(id));
+                        preparedStatement.execute();
+                        initUsersData();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -1610,6 +1620,11 @@ public class MainController extends Application {
             searchField.setPrefWidth(136);
 
             clientManagementScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            clientManagementScrollPane.setPrefWidth(573);
+            clientManagementAnchorPane.setPrefWidth(556);
+            clientManagementScrollPane.setPrefHeight(462);
+            clientManagementAnchorPane.setPrefHeight(830);
+
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
@@ -1626,6 +1641,10 @@ public class MainController extends Application {
             searchField.setPrefWidth(350);
 
             clientManagementScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            clientManagementScrollPane.setPrefWidth(1310);
+            clientManagementAnchorPane.setPrefWidth(1304);
+            clientManagementScrollPane.setPrefHeight(850);
+            clientManagementAnchorPane.setPrefHeight(820);
         }
     }
 
@@ -1701,241 +1720,137 @@ public class MainController extends Application {
             }
         } else
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
-        //clientsTableFitCells();
+
     }
-
-    /*private void clientsTableFitCells() {
-        double k = 8.5;
-        String data;
-        Date dateData;
-        Double doubleData;
-        Integer integerData;
-        Boolean booleanData;
-        City cityData;
-        Country countyData;
-        Disability disabilityData;
-        MaritalStatus maritalStatusData;
-        double[] prefMinWidths = new double[23];
-        for (int j = 0; j < 23; j++)
-            prefMinWidths[j] = clientsTable.getColumns().get(j).getMinWidth();
-        for (int j = 0; j < 23; j++)
-            System.out.println(prefMinWidths[j]);
-
-        double idClientColumnWidth = idClientColumn.getMinWidth();
-        double nameColumnWidth = nameColumn.getMinWidth();
-        double surnameColumnWidth = surnameColumn.getMinWidth();
-        double patronymicColumnWidth = patronymicColumn.getMinWidth();
-        double birthDateColumnWidth = birthDateColumn.getMinWidth();
-        double birthPlaceColumnWidth = birthPlaceColumn.getMinWidth();
-        double passportSeriesColumnWidth = passportSeriesColumn.getMinWidth();
-        double passportNumberColumnWidth = passportNumberColumn.getMinWidth();
-        double issuedByColumnWidth = issuedByColumn.getMinWidth();
-        double issuedDateColumnWidth = issuedDateColumn.getMinWidth();
-        double actualResidenceCityColumnWidth = actualResidenceCityColumn.getMinWidth();
-        double actualResidenceAddressColumnWidth = actualResidenceAddressColumn.getMinWidth();
-        double homeNumberColumnWidth = homeNumberColumn.getMinWidth();
-        double mobileNumberColumnWidth = mobileNumberColumn.getMinWidth();
-        double emailClientColumnWidth = emailClientColumn.getMinWidth();
-        double jobColumnWidth = jobColumn.getMinWidth();
-        double positionColumnWidth = positionColumn.getMinWidth();
-        double registrationCityColumnWidth = registrationCityColumn.getMinWidth();
-        double maritalStatusColumnWidth = maritalStatusColumn.getMinWidth();
-        double citizenshipColumnWidth = citizenshipColumn.getMinWidth();
-        double disabilityColumnWidth = disabilityColumn.getMinWidth();
-        double retireeColumnWidth = retireeColumn.getMinWidth();
-        double monthlyIncomeColumnWidth = monthlyIncomeColumn.getMinWidth();
-        double idNumberColumnWidth = idNumberColumn.getMinWidth();
-
-        for (int i = 0; i < clientsData.size(); i++) {
-            Client item = clientsTable.getItems().get(i);
-            for (int j = 0; j < 23; j++) {
-                TableColumn col = clientsTable.getColumns().get(j);
-                if (col.getCellObservableValue(item).getValue() instanceof String) {
-                    data = (String) col.getCellObservableValue(item).getValue();
-                    System.out.print("[" + data + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Date) {
-                    dateData = (Date) col.getCellObservableValue(item).getValue();
-                    data = dateData.toString();
-                    System.out.print("[" + dateData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Double) {
-                    doubleData = (Double) col.getCellObservableValue(item).getValue();
-                    data = doubleData.toString();
-                    System.out.print("[" + doubleData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Integer) {
-                    integerData = (Integer) col.getCellObservableValue(item).getValue();
-                    data = integerData.toString();
-                    System.out.print("[" + integerData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Boolean) {
-                    booleanData = (Boolean) col.getCellObservableValue(item).getValue();
-                    data = booleanData.toString();
-                    System.out.print("[" + booleanData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof City) {
-                    cityData = (City) col.getCellObservableValue(item).getValue();
-                    data = cityData.toString();
-                    System.out.print("[" + cityData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Country) {
-                    countyData = (Country) col.getCellObservableValue(item).getValue();
-                    data = countyData.toString();
-                    System.out.print("[" + countyData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof Disability) {
-                    disabilityData = (Disability) col.getCellObservableValue(item).getValue();
-                    data = disabilityData.toString();
-                    System.out.print("[" + disabilityData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-                if (col.getCellObservableValue(item).getValue() instanceof MaritalStatus) {
-                    maritalStatusData = (MaritalStatus) col.getCellObservableValue(item).getValue();
-                    data = maritalStatusData.toString();
-                    System.out.print("[" + maritalStatusData + "]:");
-                    System.out.print(data.length() * k + "   ");
-                    if ((data.length() * k) > prefMinWidths[j])
-                        prefMinWidths[j] = data.length() * k;
-                }
-            }
-            System.out.println();
-        }
-        for (int i = 0; i < 23; i++) {
-            System.out.println(prefMinWidths[i]);
-        }
-        for (int j = 0; j < 23; j++)
-            clientsTable.getColumns().get(j).setPrefWidth(prefMinWidths[j]);
-    }
-*/
 
     private Callback<TableColumn<Client, Void>, TableCell<Client, Void>> addButtonToTable() {
         maritalStatusColumn = new TableColumn("Marital Status");
         maritalStatusColumn.setMinWidth(180);
+        maritalStatusColumn.setResizable(false);
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
+                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    MenuItem mi1 = new MenuItem("Single");
+                    MenuItem mi2 = new MenuItem("Married");
+                    MenuItem mi3 = new MenuItem("Divorced");
+                    MenuItem mi4 = new MenuItem("Unknown");
+
+                    private MenuButton btn =
+                            new MenuButton("Unknown", null, mi1, mi2, mi3, mi4);
+
+                    {
+                        btn.setMinWidth(170);
+                        mi1.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setMaritalStatusDB(conn, MaritalStatus.Single);
+                            btn.setText("Single");
+                        });
+                        mi2.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setMaritalStatusDB(conn, MaritalStatus.Married);
+                            btn.setText("Married");
+                        });
+                        mi3.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setMaritalStatusDB(conn, MaritalStatus.Divorced);
+                            btn.setText("Divorced");
+                        });
+                        mi4.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setMaritalStatusDB(conn, MaritalStatus.Unknown);
+                            btn.setText("Unknown");
+                        });
+                    }
+
                     @Override
-                    public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
-                        TableCell<Client, Void> cell = new TableCell<Client, Void>() {
-                            MenuItem mi1 = new MenuItem("Single");
-                            MenuItem mi2 = new MenuItem("Married");
-                            MenuItem mi3 = new MenuItem("Divorced");
-                            MenuItem mi4 = new MenuItem("Unknown");
-
-                            private MenuButton btn =
-                                    new MenuButton("Unknown", null, mi1, mi2, mi3, mi4);
-
-                            {
-                                btn.setMinWidth(170);
-                                mi1.setOnAction(actionEvent -> {
-                                    Client data = getTableView().getItems().get(getIndex());
-                                    data.setMaritalStatusDB(conn, MaritalStatus.Single);
-                                    btn.setText("Single");
-                                });
-                                mi2.setOnAction(actionEvent -> {
-                                    Client data = getTableView().getItems().get(getIndex());
-                                    data.setMaritalStatusDB(conn, MaritalStatus.Married);
-                                    btn.setText("Married");
-                                });
-                                mi3.setOnAction(actionEvent -> {
-                                    Client data = getTableView().getItems().get(getIndex());
-                                    data.setMaritalStatusDB(conn, MaritalStatus.Divorced);
-                                    btn.setText("Divorced");
-                                });
-                                mi4.setOnAction(actionEvent -> {
-                                    Client data = getTableView().getItems().get(getIndex());
-                                    data.setMaritalStatusDB(conn, MaritalStatus.Unknown);
-                                    btn.setText("Unknown");
-                                });
-                            }
-
-                            @Override
-                            public void updateItem(Void item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                } else {
-                                    String toSet;
-                                    Client data = getTableView().getItems().get(getIndex());
-                                    if(currentLanguage.equals("English")) {
-                                        switch (data.getMaritalStatus()) {
-                                            case Single:
-                                                toSet = "Single";
-                                                break;
-                                            case Married:
-                                                toSet = "Married";
-                                                break;
-                                            case Divorced:
-                                                toSet = "Divorced";
-                                                break;
-                                            case Unknown:
-                                                toSet = "Unknown";
-                                                break;
-                                            default:
-                                                toSet = "Error";
-                                        }
-                                        btn.setText(toSet);
-                                        mi1.setText("Single");
-                                        mi2.setText("Married");
-                                        mi3.setText("Divorced");
-                                        mi4.setText("Unknown");
-                                    }
-                                    if(currentLanguage.equals("Russian")) {
-                                        switch (data.getMaritalStatus()) {
-                                            case Single:
-                                                toSet = "Не женат/не замужем";
-                                                break;
-                                            case Married:
-                                                toSet = "Женат/За мужем";
-                                                break;
-                                            case Divorced:
-                                                toSet = "Разведён/разведена";
-                                                break;
-                                            case Unknown:
-                                                toSet = "Не указано";
-                                                break;
-                                            default:
-                                                toSet = "Error";
-                                        }
-                                        btn.setText(toSet);
-                                        mi1.setText("Не женат/не замужем");
-                                        mi2.setText("Женат/За мужем");
-                                        mi3.setText("Разведён/разведена");
-                                        mi4.setText("Не указано");
-                                    }
-                                    setGraphic(btn);
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            String toSet;
+                            Client data = getTableView().getItems().get(getIndex());
+                            if (currentLanguage.equals("English")) {
+                                switch (data.getMaritalStatus()) {
+                                    case Single:
+                                        toSet = "Single";
+                                        break;
+                                    case Married:
+                                        toSet = "Married";
+                                        break;
+                                    case Divorced:
+                                        toSet = "Divorced";
+                                        break;
+                                    case Unknown:
+                                        toSet = "Unknown";
+                                        break;
+                                    default:
+                                        toSet = "Error";
                                 }
+                                btn.setText(toSet);
+                                mi1.setText("Single");
+                                mi2.setText("Married");
+                                mi3.setText("Divorced");
+                                mi4.setText("Unknown");
                             }
-                        };
-
-                        return cell;
+                            if (currentLanguage.equals("Russian")) {
+                                switch (data.getMaritalStatus()) {
+                                    case Single:
+                                        toSet = "Не женат/не замужем";
+                                        break;
+                                    case Married:
+                                        toSet = "Женат/За мужем";
+                                        break;
+                                    case Divorced:
+                                        toSet = "Разведён/разведена";
+                                        break;
+                                    case Unknown:
+                                        toSet = "Не указано";
+                                        break;
+                                    default:
+                                        toSet = "Error";
+                                }
+                                btn.setText(toSet);
+                                mi1.setText("Не женат/не замужем");
+                                mi2.setText("Женат/За мужем");
+                                mi3.setText("Разведён/разведена");
+                                mi4.setText("Не указано");
+                            }
+                            setGraphic(btn);
+                        }
                     }
                 };
-        maritalStatusColumn.setCellFactory(cellFactory);
 
+                return cell;
+            }
+        };
+        maritalStatusColumn.setCellFactory(cellFactory);
         clientsTable.getColumns().add(18, maritalStatusColumn);
         return cellFactory;
+    }
+
+    public boolean checkEmail(TextField toCheck) {
+        if (!toCheck.getText().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !toCheck.getText().equals("")) {
+                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkUsernamePassword(TextField toCheck) {
+        if (toCheck.getText().length() < 3) {
+                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkDeleteField(TextField toCheck) {
+        if (!toCheck.getText().matches("^[0-9]+(,[0-9]+)*$")) {
+                toCheck.setStyle("-fx-border-color: rgb(255,13,19)");
+            return false;
+        }
+        return true;
     }
 }

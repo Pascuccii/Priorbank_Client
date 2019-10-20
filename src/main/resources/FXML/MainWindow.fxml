@@ -216,9 +216,9 @@
                            </children></AnchorPane>
                         <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="462.0" prefWidth="573.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                  <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="1218.0" prefWidth="1334.0">
+                                  <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="834.0" prefWidth="553.0">
                                        <children>
                                           <Label layoutX="35.0" layoutY="407.0" text="Name*" />
                                           <Label layoutX="34.0" layoutY="443.0" text="Surname*" />
