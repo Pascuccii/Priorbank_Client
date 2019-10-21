@@ -26,7 +26,6 @@ import sample.enums.*;
 
 import java.io.*;
 import java.sql.*;
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class MainController extends Application {
@@ -63,7 +62,7 @@ public class MainController extends Application {
     @FXML
     private TableColumn<Client, String> patronymicColumn;
     @FXML
-    private TableColumn<Client, Date> birthDateColumn;
+    private TableColumn<Client, String> birthDateColumn;
     @FXML
     private TableColumn<Client, String> birthPlaceColumn;
     @FXML
@@ -73,9 +72,9 @@ public class MainController extends Application {
     @FXML
     private TableColumn<Client, String> issuedByColumn;
     @FXML
-    private TableColumn<Client, Date> issuedDateColumn;
+    private TableColumn<Client, String> issuedDateColumn;
     @FXML
-    private TableColumn<Client, City> actualResidenceCityColumn;
+    private TableColumn<Client, String> actualResidenceCityColumn;
     @FXML
     private TableColumn<Client, String> actualResidenceAddressColumn;
     @FXML
@@ -89,7 +88,7 @@ public class MainController extends Application {
     @FXML
     private TableColumn<Client, String> positionColumn;
     @FXML
-    private TableColumn<Client, City> registrationCityColumn;
+    private TableColumn<Client, String> registrationCityColumn;
     //  @FXML
 //  private TableColumn<Client, MaritalStatus> maritalStatusColumn;
 //  private MenuItem maritalStatusMenuItemSingle;
@@ -103,9 +102,9 @@ public class MainController extends Application {
 
 
     @FXML
-    private TableColumn<Client, Country> citizenshipColumn;
+    private TableColumn<Client, String> citizenshipColumn;
     @FXML
-    private TableColumn<Client, Double> monthlyIncomeColumn;
+    private TableColumn<Client, String> monthlyIncomeColumn;
     @FXML
     private TableColumn<Client, String> idNumberColumn;
     @FXML
@@ -186,6 +185,8 @@ public class MainController extends Application {
     private MenuItem criteriaClientSurname;
     @FXML
     private MenuItem criteriaClientPatronymic;
+    @FXML
+    private MenuItem criteriaClientFIO;
     @FXML
     private MenuItem criteriaClientPassportSeries;
     @FXML
@@ -455,39 +456,312 @@ public class MainController extends Application {
         nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
         surnameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("surname"));
         patronymicColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("patronymic"));
-        birthDateColumn.setCellValueFactory(new PropertyValueFactory<Client, Date>("birthDate"));
+        birthDateColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("birthDate"));
         passportSeriesColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportSeries"));
         passportNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportNumber"));
         issuedByColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedBy"));
-        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<Client, Date>("issuedDate"));
+        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedDate"));
         birthPlaceColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("birthPlace"));
-        actualResidenceCityColumn.setCellValueFactory(new PropertyValueFactory<Client, City>("actualResidenceCity"));
+        actualResidenceCityColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceCity"));
         actualResidenceAddressColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceAddress"));
         homeNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("homeNumber"));
         mobileNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("mobileNumber"));
         emailClientColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
         jobColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("job"));
         positionColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
-        registrationCityColumn.setCellValueFactory(new PropertyValueFactory<Client, City>("registrationCity"));
-
-        citizenshipColumn.setCellValueFactory(new PropertyValueFactory<Client, Country>("citizenship"));
-
-        monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
+        registrationCityColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("registrationCity"));
+        citizenshipColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("citizenship"));
+        monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("monthlyIncome"));
         idNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        nameColumn.sortTypeProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
-            System.out.println("nameColumn"  + oldPropertyValue + " -> " + newPropertyValue);
-        });
 
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
-
         nameColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) ->
-                        (t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())
-                        ).setNameDB(conn, t.getNewValue())
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
         );
+        surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        surnameColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        patronymicColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+
+        birthDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        birthDateColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        /*
+        passportSeriesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        passportSeriesColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        passportNumberColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        issuedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        issuedByColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        issuedDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        issuedDateColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        birthPlaceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        birthPlaceColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        actualResidenceCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        actualResidenceCityColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        actualResidenceAddressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        actualResidenceAddressColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        homeNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        homeNumberColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        mobileNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        mobileNumberColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        emailClientColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailClientColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        jobColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        jobColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        positionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        positionColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        registrationCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        registrationCityColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        citizenshipColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        citizenshipColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        monthlyIncomeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        monthlyIncomeColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        idNumberColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client, String> t) -> {
+                    if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+                        (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                    else {
+                        try {
+                            initClientsData();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        */
+
+        clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
         initUsersData();
         initClientsData();
         addButtonsToTable();
@@ -551,7 +825,7 @@ public class MainController extends Application {
         createUser_AnchorPane.getStyleClass().add("elementsPane");
         changeUser_AnchorPane.getStyleClass().add("elementsPane");
         deleteUser_AnchorPane.getStyleClass().add("elementsPane");
-        clientManagementAnchorPane.getStyleClass().add("clientManagementScrollPane");
+        clientManagementAnchorPane.getStyleClass().add("clientManagementAnchorPane");
         clientManagementScrollPane.getStyleClass().add("clientManagementScrollPane");
         clientManagementScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         clientManagementScrollPane.setMinWidth(550);
@@ -834,6 +1108,7 @@ public class MainController extends Application {
         criteriaClientName.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientName.getText()));
         criteriaClientSurname.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientSurname.getText()));
         criteriaClientPatronymic.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPatronymic.getText()));
+        criteriaClientFIO.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientFIO.getText()));
         criteriaClientPassportSeries.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPassportSeries.getText()));
         criteriaClientPassportNumber.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientPassportNumber.getText()));
         criteriaClientIssuedBy.setOnAction(actionEvent -> criteriaButtonClient.setText(criteriaClientIssuedBy.getText()));
@@ -1072,6 +1347,7 @@ public class MainController extends Application {
                 criteriaClientName.setText("Name");
                 criteriaClientSurname.setText("Surname");
                 criteriaClientPatronymic.setText("Patronymic");
+                criteriaClientFIO.setText("Full name");
                 criteriaClientBirthDate.setText("Birth date");
                 criteriaClientBirthPlace.setText("Birth place");
                 criteriaClientPassportSeries.setText("Passport series");
@@ -1188,6 +1464,7 @@ public class MainController extends Application {
                 criteriaClientName.setText("Имя");
                 criteriaClientSurname.setText("Фамииля");
                 criteriaClientPatronymic.setText("Отчество");
+                criteriaClientFIO.setText("ФИО");
                 criteriaClientBirthDate.setText("Дата рождения");
                 criteriaClientBirthPlace.setText("Место рождения");
                 criteriaClientPassportSeries.setText("Серия паспорта");
@@ -1322,7 +1599,6 @@ public class MainController extends Application {
         menuPane2.setVisible(false);
         menuPane3.setVisible(false);
         menuPane4.setVisible(false);
-        clientManagementScrollPane.setVisible(false);
         loginPane.setVisible(false);
     }
 
@@ -1813,9 +2089,10 @@ public class MainController extends Application {
                     MenuItem mi2 = new MenuItem("Second group");
                     MenuItem mi3 = new MenuItem("Third group");
                     MenuItem mi4 = new MenuItem("No");
+                    MenuItem mi5 = new MenuItem("Unknown");
 
                     private MenuButton btn =
-                            new MenuButton("No", null, mi1, mi2, mi3, mi4);
+                            new MenuButton("No", null, mi1, mi2, mi3, mi4, mi5);
 
                     {
                         btn.setMinWidth(170);
@@ -1837,6 +2114,11 @@ public class MainController extends Application {
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
                             data.setDisabilityDB(conn, Disability.No);
+                            btn.setText(mi4.getText());
+                        });
+                        mi5.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setDisabilityDB(conn, Disability.Unknown);
                             btn.setText(mi4.getText());
                         });
                     }
@@ -1863,6 +2145,9 @@ public class MainController extends Application {
                                     case No:
                                         toSet = "No";
                                         break;
+                                    case Unknown:
+                                        toSet = "Unknown";
+                                        break;
                                     default:
                                         toSet = "Error";
                                 }
@@ -1871,6 +2156,7 @@ public class MainController extends Application {
                                 mi2.setText("Second group");
                                 mi3.setText("Third group");
                                 mi4.setText("No");
+                                mi5.setText("Unknown");
                             }
                             if (currentLanguage.equals("Russian")) {
                                 switch (data.getDisability()) {
@@ -1886,6 +2172,9 @@ public class MainController extends Application {
                                     case No:
                                         toSet = "Нет";
                                         break;
+                                    case Unknown:
+                                        toSet = "Не указано";
+                                        break;
                                     default:
                                         toSet = "Error";
                                 }
@@ -1894,6 +2183,7 @@ public class MainController extends Application {
                                 mi2.setText("Вторая группа");
                                 mi3.setText("Третья группа");
                                 mi4.setText("Нет");
+                                mi5.setText("Не указано");
                             }
                             setGraphic(btn);
                         }
@@ -2140,6 +2430,17 @@ public class MainController extends Application {
                         }
                     }
                     break;
+                case "Full name":
+                case "ФИО":
+                    String[] buffer = searchFieldClient.getText().split(" ");
+                    while (i.hasNext()) {
+                        if (!i.next().getSurname().equals(buffer[0])
+                         || !i.next().getName().equals(buffer[1])
+                         || !i.next().getPatronymic().equals(buffer[2])){
+                            i.remove();
+                        }
+                    }
+                    break;
                 case "Passport Series":
                 case "Серия паспорта":
                     while (i.hasNext()) {
@@ -2305,7 +2606,6 @@ public class MainController extends Application {
     }
 
     //TODO:
-    // Остальные кнопочки в таблице, проверки на текстовые поля,
+    // проверки на текстовые поля,
     // типы дат, енумов и тд
-    // УБРАТЬ ВСЕ UNKNOWN'ы
 }

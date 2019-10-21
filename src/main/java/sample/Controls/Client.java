@@ -69,29 +69,67 @@ public class Client {
     }
 
     public void setNameDB(ConnectionClass conn, String name) {
-        this.name = (null == name) ? "" : name;
-        try {
-            String prepStat = "UPDATE clients SET name = ? WHERE id = ?";
-            PreparedStatement preparedStatement = null;
-            preparedStatement = conn.getConnection().prepareStatement(prepStat);
-            preparedStatement.setInt(2, this.id);
-            preparedStatement.setString(1, name);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        name = name.trim();
+        if(name.matches("[а-яА-Я]{2,20}")) {
+            this.name = (null == name) ? "" : name;
+            try {
+                String prepStat = "UPDATE clients SET Name = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, name);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void setSurnameDB(ConnectionClass conn, String surname) {
-        this.surname = surname;
+        surname = surname.trim();
+        if(surname.matches("[а-яА-Я]{2,20}")) {
+            this.surname = (null == surname) ? "" : surname;
+            try {
+                String prepStat = "UPDATE clients SET Surname = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, surname);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setPatronymicDB(ConnectionClass conn, String patronymic) {
-        this.patronymic = patronymic;
+        patronymic = patronymic.trim();
+        if(patronymic.matches("[а-яА-Я]{2,30}")) {
+            this.patronymic = (null == patronymic) ? "" : patronymic;
+            try {
+                String prepStat = "UPDATE clients SET Patronymic = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, patronymic);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setBirthDateDB(ConnectionClass conn, Date birthDate) {
-        this.birthDate = birthDate;
+        /*patronymic = patronymic.trim();
+        if(patronymic.matches("[а-яА-Я]{2,30}")) {
+            this.patronymic = (null == patronymic) ? "" : patronymic;
+            try {
+                String prepStat = "UPDATE clients SET Patronymic = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, patronymic);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     public void setPassportSeriesDB(ConnectionClass conn, String passportSeries) {
