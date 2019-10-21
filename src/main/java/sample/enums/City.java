@@ -1,5 +1,11 @@
 package sample.enums;
 
 public enum City {
-    Minsk, Moscow, New_York, London, Kyoto, Unknown
+    Minsk, Brest, Grodno, Gomel,
+    Vitebsk, Mogilev, Bobruisk,
+    Baranovichi, Novopolotsk,
+    Pinsk, Borisov, Lida,
+    Mazyr, Polotsk, Slonim,
+    Orsha, Molodechno, Globin,
+    Kobrin, Slutsk
 }
