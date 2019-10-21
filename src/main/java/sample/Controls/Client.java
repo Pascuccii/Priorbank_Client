@@ -1,7 +1,9 @@
 package sample.Controls;
 
 import sample.Connectivity.ConnectionClass;
-import sample.enums.*;
+import sample.enums.Disability;
+import sample.enums.MaritalStatus;
+import sample.enums.Retiree;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -71,7 +73,7 @@ public class Client {
     public void setNameDB(ConnectionClass conn, String name) {
         name = name.trim();
         if (name.matches("[а-яА-Я]{2,20}")) {
-            this.name = (null == name) ? "" : name;
+            this.name = name;
             try {
                 String prepStat = "UPDATE clients SET Name = ? WHERE id = ?";
                 PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -87,7 +89,7 @@ public class Client {
     public void setSurnameDB(ConnectionClass conn, String surname) {
         surname = surname.trim();
         if (surname.matches("[а-яА-Я]{2,20}")) {
-            this.surname = (null == surname) ? "" : surname;
+            this.surname = surname;
             try {
                 String prepStat = "UPDATE clients SET Surname = ? WHERE id = ?";
                 PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -103,7 +105,7 @@ public class Client {
     public void setPatronymicDB(ConnectionClass conn, String patronymic) {
         patronymic = patronymic.trim();
         if (patronymic.matches("[а-яА-Я]{2,30}")) {
-            this.patronymic = (null == patronymic) ? "" : patronymic;
+            this.patronymic = patronymic;
             try {
                 String prepStat = "UPDATE clients SET Patronymic = ? WHERE id = ?";
                 PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -192,11 +194,11 @@ public class Client {
 
     public void setBirthPlaceDB(ConnectionClass conn, String birthPlace) {
         boolean exists = true;
-        try {
+        /*try {
             City.valueOf(birthPlace);
         } catch (IllegalArgumentException e) {
             exists = false;
-        }
+        }*/
         if(exists) {
         this.birthPlace = birthPlace;
         try {
@@ -213,11 +215,11 @@ public class Client {
 
     public void setActualResidenceCityDB(ConnectionClass conn, String actualResidenceCity) {
         boolean exists = true;
-        try {
+        /*try {
             City.valueOf(actualResidenceCity);
         } catch (IllegalArgumentException e) {
             exists = false;
-        }
+        }*/
         if(exists) {
             this.actualResidenceCity = actualResidenceCity;
             try {
@@ -312,11 +314,11 @@ public class Client {
 
     public void setRegistrationCityDB(ConnectionClass conn, String registrationCity) {
         boolean exists = true;
-        try {
+        /*try {
             City.valueOf(registrationCity);
         } catch (IllegalArgumentException e) {
             exists = false;
-        }
+        }*/
         if(exists) {
             this.registrationCity = registrationCity;
             try {
@@ -347,11 +349,11 @@ public class Client {
 
     public void setCitizenshipDB(ConnectionClass conn, String citizenship) {
         boolean exists = true;
-        try {
+        /*try {
             City.valueOf(citizenship);
         } catch (IllegalArgumentException e) {
             exists = false;
-        }
+        }*/
         if(exists) {
             this.citizenship = citizenship;
             try {
