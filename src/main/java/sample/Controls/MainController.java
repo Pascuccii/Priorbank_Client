@@ -17,17 +17,22 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import sample.Connectivity.ConnectionClass;
-import sample.enums.*;
+import sample.enums.Disability;
+import sample.enums.MaritalStatus;
+import sample.enums.Retiree;
 
 import java.io.*;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Iterator;
 
+@SuppressWarnings("ALL")
 public class MainController extends Application {
 
     private double xOffset = 0;
@@ -390,30 +395,6 @@ public class MainController extends Application {
         launch(args);
     }
 
-    public static void autoResizeColumns(TableView<?> table) {
-        //Set the right policy
-        table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        table.getColumns().stream().forEach((column) ->
-        {
-            //Minimal width = columnheader
-            Text t = new Text(column.getText());
-            double max = t.getLayoutBounds().getWidth();
-            for (int i = 0; i < table.getItems().size(); i++) {
-                //cell must not be empty
-                if (column.getCellData(i) != null) {
-                    t = new Text(column.getCellData(i).toString());
-                    double calcwidth = t.getLayoutBounds().getWidth();
-                    //remember new max-width
-                    if (calcwidth > max) {
-                        max = calcwidth;
-                    }
-                }
-            }
-            //set the new max-widht with some extra space
-            column.setPrefWidth(max + 10.0d);
-        });
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting...");
@@ -446,33 +427,33 @@ public class MainController extends Application {
                 new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        accessModeColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("access_mode"));
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("access_mode"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        idClientColumn.setCellValueFactory(new PropertyValueFactory<Client, Integer>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
-        surnameColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("surname"));
-        patronymicColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("patronymic"));
-        birthDateColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("birthDate"));
-        passportSeriesColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportSeries"));
-        passportNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("passportNumber"));
-        issuedByColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedBy"));
-        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("issuedDate"));
-        birthPlaceColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("birthPlace"));
-        actualResidenceCityColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceCity"));
-        actualResidenceAddressColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("actualResidenceAddress"));
-        homeNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("homeNumber"));
-        mobileNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("mobileNumber"));
-        emailClientColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
-        jobColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("job"));
-        positionColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("position"));
-        registrationCityColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("registrationCity"));
-        citizenshipColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("citizenship"));
-        monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("monthlyIncome"));
-        idNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
+        idClientColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        patronymicColumn.setCellValueFactory(new PropertyValueFactory<>("patronymic"));
+        birthDateColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+        passportSeriesColumn.setCellValueFactory(new PropertyValueFactory<>("passportSeries"));
+        passportNumberColumn.setCellValueFactory(new PropertyValueFactory<>("passportNumber"));
+        issuedByColumn.setCellValueFactory(new PropertyValueFactory<>("issuedBy"));
+        issuedDateColumn.setCellValueFactory(new PropertyValueFactory<>("issuedDate"));
+        birthPlaceColumn.setCellValueFactory(new PropertyValueFactory<>("birthPlace"));
+        actualResidenceCityColumn.setCellValueFactory(new PropertyValueFactory<>("actualResidenceCity"));
+        actualResidenceAddressColumn.setCellValueFactory(new PropertyValueFactory<>("actualResidenceAddress"));
+        homeNumberColumn.setCellValueFactory(new PropertyValueFactory<>("homeNumber"));
+        mobileNumberColumn.setCellValueFactory(new PropertyValueFactory<>("mobileNumber"));
+        emailClientColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        jobColumn.setCellValueFactory(new PropertyValueFactory<>("job"));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        registrationCityColumn.setCellValueFactory(new PropertyValueFactory<>("registrationCity"));
+        citizenshipColumn.setCellValueFactory(new PropertyValueFactory<>("citizenship"));
+        monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("monthlyIncome"));
+        idNumberColumn.setCellValueFactory(new PropertyValueFactory<>("idNumber"));
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -1976,7 +1957,6 @@ public class MainController extends Application {
                 client.setMonthlyIncome(resultSet.getString("Monthly_income"));
                 client.setIdNumber(resultSet.getString("Id_number"));
                 clientsData.add(client);
-                autoResizeColumns(clientsTable);
                 System.out.println(client);
             }
         } else
@@ -2004,7 +1984,8 @@ public class MainController extends Application {
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory1 = new Callback<>() {
             @Override
             public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
-                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+
+                return new TableCell<>() {
                     MenuItem mi1 = new MenuItem("Single");
                     MenuItem mi2 = new MenuItem("Married");
                     MenuItem mi3 = new MenuItem("Divorced");
@@ -2095,14 +2076,12 @@ public class MainController extends Application {
                         }
                     }
                 };
-
-                return cell;
             }
         };
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory2 = new Callback<>() {
             @Override
             public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
-                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                return new TableCell<>() {
                     MenuItem mi1 = new MenuItem("First group");
                     MenuItem mi2 = new MenuItem("Second group");
                     MenuItem mi3 = new MenuItem("Third group");
@@ -2207,14 +2186,13 @@ public class MainController extends Application {
                         }
                     }
                 };
-
-                return cell;
             }
         };
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory3 = new Callback<>() {
             @Override
             public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
-                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+
+                return new TableCell<>() {
                     MenuItem mi1 = new MenuItem("Yes");
                     MenuItem mi2 = new MenuItem("No");
 
@@ -2277,14 +2255,12 @@ public class MainController extends Application {
                         }
                     }
                 };
-
-                return cell;
             }
         };
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory4 = new Callback<>() {
             @Override
             public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
-                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                return new TableCell<>() {
 
                     private Button btn =
                             new Button("");
@@ -2321,7 +2297,6 @@ public class MainController extends Application {
                         }
                     }
                 };
-                return cell;
             }
         };
 
@@ -2453,8 +2428,8 @@ public class MainController extends Application {
                     String[] buffer = searchFieldClient.getText().split(" ");
                     while (i.hasNext()) {
                         if (!i.next().getSurname().equals(buffer[0])
-                         || !i.next().getName().equals(buffer[1])
-                         || !i.next().getPatronymic().equals(buffer[2])){
+                                || !i.next().getName().equals(buffer[1])
+                                || !i.next().getPatronymic().equals(buffer[2])) {
                             i.remove();
                         }
                     }
