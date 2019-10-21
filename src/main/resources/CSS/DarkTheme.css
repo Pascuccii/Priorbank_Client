@@ -15,7 +15,7 @@
     -fx-font-weight: bold;
 }
 
-.table-view{
+.table-view {
     -fx-border-radius: 3;
     -fx-background-radius: 3;
     -fx-background-color: #282828;
@@ -23,11 +23,11 @@
     -fx-font-weight: bold;
 }
 
-.table-view .column-header-background{
+.table-view .column-header-background {
     -fx-background-color: #282828;
 }
 
-.table-view .column-header-background .label{
+.table-view .column-header-background .label {
     -fx-background-color: transparent;
     -fx-text-fill: #D8D8D8;
 }
@@ -36,11 +36,11 @@
     -fx-background-color: transparent;
 }
 
-.table-view .table-cell{
+.table-view .table-cell {
     -fx-text-fill: #D8D8D8;
 }
 
-.table-row-cell{
+.table-row-cell {
     -fx-background-color: #525252;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
@@ -114,9 +114,11 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5.5 6;
 }
+
 .hideButton:hover {
     -fx-background-color: #525252;
 }
+
 .hideButton:pressed {
     -fx-background-image: url(../assets/hide-black.png);
     -fx-background-color: #D8D8D8;
@@ -130,9 +132,11 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5.5 6;
 }
+
 .minimizeButton:hover {
     -fx-background-color: #525252;
 }
+
 .minimizeButton:pressed {
     -fx-background-image: url(../assets/expand-black.png);
     -fx-background-color: #D8D8D8;
@@ -145,9 +149,11 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5.5 6;
 }
+
 .exitButton:hover {
     -fx-background-color: #AB4642;
 }
+
 .exitButton:pressed {
     -fx-background-image: url(../assets/exit-black.png);
     -fx-background-color: #783b37;
@@ -189,6 +195,23 @@
     -fx-background-color: transparent;
     -fx-border-color: #7f7f7f;
     -fx-border-width: 1;
+}
+
+.deleteClientButton {
+    -fx-background-image: url(../assets/delete-button.png);
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 10pt;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 0 7;
+}
+
+.deleteClientButton:hover {
+    -fx-background-color: #aa2c2f;
+}
+
+.deleteClientButton:pressed {
+    -fx-background-color: #D8D8D8;
 }
 
 .workPane {

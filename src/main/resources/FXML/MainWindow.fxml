@@ -282,8 +282,6 @@
                                                 <TableColumn fx:id="positionColumn" minWidth="110.0" prefWidth="110.0" text="Position" />
                                                 <TableColumn fx:id="registrationCityColumn" minWidth="110.0" prefWidth="110.0" text="Reg. City" />
                                                 <TableColumn fx:id="citizenshipColumn" minWidth="110.0" prefWidth="110.0" text="Citizenship" />
-                                                <TableColumn fx:id="disabilityColumn" minWidth="110.0" prefWidth="110.0" text="Disability" />
-                                                <TableColumn fx:id="retireeColumn" minWidth="110.0" prefWidth="110.0" text="Retiree" />
                                                 <TableColumn fx:id="monthlyIncomeColumn" minWidth="110.0" prefWidth="110.0" text="Monthly income" />
                                                 <TableColumn fx:id="idNumberColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Id number" />
                                             </columns>

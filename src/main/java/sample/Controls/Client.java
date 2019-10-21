@@ -165,11 +165,31 @@ public class Client {
     }
 
     public void setDisabilityDB(ConnectionClass conn, Disability disability) {
-        this.disability = disability;
+        this.disability = (null == disability) ? Disability.No : disability;
+        try {
+            String prepStat = "UPDATE clients SET Disability = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            assert disability != null;
+            preparedStatement.setString(1, disability.toString());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setRetireeDB(ConnectionClass conn, Retiree retiree) {
-        this.retiree = retiree;
+        this.retiree = (null == retiree) ? Retiree.Unknown : retiree;
+        try {
+            String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            assert retiree != null;
+            preparedStatement.setString(1, retiree.toString());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMonthlyIncomeDB(ConnectionClass conn, double monthlyIncome) {
@@ -178,6 +198,17 @@ public class Client {
 
     public void setIdNumberDB(ConnectionClass conn, String idNumber) {
         this.idNumber = idNumber;
+    }
+
+    public void deleteDB(ConnectionClass conn) {
+        try {
+            String prepStat = "DELETE FROM clients WHERE Id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(1, this.id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {

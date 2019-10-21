@@ -26,6 +26,7 @@ import sample.enums.*;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class MainController extends Application {
@@ -96,14 +97,13 @@ public class MainController extends Application {
 //  private MenuItem maritalStatusMenuItemMarried;
 //  private MenuButton maritalStatusColumnMenuButton;
     private TableColumn maritalStatusColumn;
+    private TableColumn disabilityColumn;
+    private TableColumn retireeColumn;
+    private TableColumn deleteColumn;
+
+
     @FXML
     private TableColumn<Client, Country> citizenshipColumn;
-    @FXML
-    private TableColumn<Client, Disability> disabilityColumn;
-    private MenuButton disabilityColumnMenuButton;
-    @FXML
-    private TableColumn<Client, Retiree> retireeColumn;
-    private MenuButton retireeColumnMenuButton;
     @FXML
     private TableColumn<Client, Double> monthlyIncomeColumn;
     @FXML
@@ -471,15 +471,13 @@ public class MainController extends Application {
         registrationCityColumn.setCellValueFactory(new PropertyValueFactory<Client, City>("registrationCity"));
 
         citizenshipColumn.setCellValueFactory(new PropertyValueFactory<Client, Country>("citizenship"));
-        disabilityColumn.setCellValueFactory(new PropertyValueFactory<Client, Disability>("disability"));
-        disabilityColumnMenuButton = new MenuButton("No");
-
-        retireeColumn.setCellValueFactory(new PropertyValueFactory<Client, Retiree>("retiree"));
-        retireeColumnMenuButton = new MenuButton("No");
 
         monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<Client, Double>("monthlyIncome"));
         idNumberColumn.setCellValueFactory(new PropertyValueFactory<Client, String>("idNumber"));
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        nameColumn.sortTypeProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
+            System.out.println("nameColumn"  + oldPropertyValue + " -> " + newPropertyValue);
+        });
 
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -492,7 +490,7 @@ public class MainController extends Application {
         );
         initUsersData();
         initClientsData();
-        cellFactory = addButtonToTable();
+        addButtonsToTable();
 
 
         //Дальше - функционал элементов
@@ -1692,11 +1690,24 @@ public class MainController extends Application {
 
     }
 
-    private Callback<TableColumn<Client, Void>, TableCell<Client, Void>> addButtonToTable() {
+    private void addButtonsToTable() {
         maritalStatusColumn = new TableColumn("Marital Status");
+        disabilityColumn = new TableColumn("Disability");
+        retireeColumn = new TableColumn("Retiree");
+        deleteColumn = new TableColumn("");
+
         maritalStatusColumn.setMinWidth(180);
+        disabilityColumn.setMinWidth(180);
+        retireeColumn.setMinWidth(80);
+        deleteColumn.setMaxWidth(23);
+        deleteColumn.setMinWidth(23);
+
         maritalStatusColumn.setResizable(false);
-        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<>() {
+        disabilityColumn.setResizable(false);
+        retireeColumn.setResizable(false);
+        deleteColumn.setResizable(false);
+
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory1 = new Callback<>() {
             @Override
             public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
                 TableCell<Client, Void> cell = new TableCell<Client, Void>() {
@@ -1794,9 +1805,227 @@ public class MainController extends Application {
                 return cell;
             }
         };
-        maritalStatusColumn.setCellFactory(cellFactory);
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory2 = new Callback<>() {
+            @Override
+            public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
+                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    MenuItem mi1 = new MenuItem("First group");
+                    MenuItem mi2 = new MenuItem("Second group");
+                    MenuItem mi3 = new MenuItem("Third group");
+                    MenuItem mi4 = new MenuItem("No");
+
+                    private MenuButton btn =
+                            new MenuButton("No", null, mi1, mi2, mi3, mi4);
+
+                    {
+                        btn.setMinWidth(170);
+                        mi1.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setDisabilityDB(conn, Disability.First_group);
+                            btn.setText(mi1.getText());
+                        });
+                        mi2.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setDisabilityDB(conn, Disability.Second_group);
+                            btn.setText(mi2.getText());
+                        });
+                        mi3.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setDisabilityDB(conn, Disability.Third_group);
+                            btn.setText(mi3.getText());
+                        });
+                        mi4.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setDisabilityDB(conn, Disability.No);
+                            btn.setText(mi4.getText());
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            String toSet;
+                            Client data = getTableView().getItems().get(getIndex());
+                            if (currentLanguage.equals("English")) {
+                                switch (data.getDisability()) {
+                                    case First_group:
+                                        toSet = "First group";
+                                        break;
+                                    case Second_group:
+                                        toSet = "Second group";
+                                        break;
+                                    case Third_group:
+                                        toSet = "Third group";
+                                        break;
+                                    case No:
+                                        toSet = "No";
+                                        break;
+                                    default:
+                                        toSet = "Error";
+                                }
+                                btn.setText(toSet);
+                                mi1.setText("First group");
+                                mi2.setText("Second group");
+                                mi3.setText("Third group");
+                                mi4.setText("No");
+                            }
+                            if (currentLanguage.equals("Russian")) {
+                                switch (data.getDisability()) {
+                                    case First_group:
+                                        toSet = "Первая группа";
+                                        break;
+                                    case Second_group:
+                                        toSet = "Вторая группа";
+                                        break;
+                                    case Third_group:
+                                        toSet = "Третья группа";
+                                        break;
+                                    case No:
+                                        toSet = "Нет";
+                                        break;
+                                    default:
+                                        toSet = "Error";
+                                }
+                                btn.setText(toSet);
+                                mi1.setText("Первая группа");
+                                mi2.setText("Вторая группа");
+                                mi3.setText("Третья группа");
+                                mi4.setText("Нет");
+                            }
+                            setGraphic(btn);
+                        }
+                    }
+                };
+
+                return cell;
+            }
+        };
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory3 = new Callback<>() {
+            @Override
+            public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
+                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    MenuItem mi1 = new MenuItem("Yes");
+                    MenuItem mi2 = new MenuItem("No");
+
+                    private MenuButton btn =
+                            new MenuButton("No", null, mi1, mi2);
+
+                    {
+                        btn.setMinWidth(70);
+                        mi1.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setRetireeDB(conn, Retiree.Yes);
+                            btn.setText(mi1.getText());
+                        });
+                        mi2.setOnAction(actionEvent -> {
+                            Client data = getTableView().getItems().get(getIndex());
+                            data.setRetireeDB(conn, Retiree.No);
+                            btn.setText(mi2.getText());
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            String toSet;
+                            Client data = getTableView().getItems().get(getIndex());
+                            if (currentLanguage.equals("English")) {
+                                switch (data.getRetiree()) {
+                                    case Yes:
+                                        toSet = "Yes";
+                                        break;
+                                    case No:
+                                        toSet = "No";
+                                        break;
+                                    default:
+                                        toSet = "Error";
+                                }
+                                btn.setText(toSet);
+                                mi1.setText("Yes");
+                                mi2.setText("No");
+                            }
+                            if (currentLanguage.equals("Russian")) {
+                                switch (data.getRetiree()) {
+                                    case Yes:
+                                        toSet = "Да";
+                                        break;
+                                    case No:
+                                        toSet = "Нет";
+                                        break;
+                                    default:
+                                        toSet = "Error";
+                                }
+                                btn.setText(toSet);
+                                mi1.setText("Да");
+                                mi2.setText("Нет");
+                            }
+                            setGraphic(btn);
+                        }
+                    }
+                };
+
+                return cell;
+            }
+        };
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory4 = new Callback<>() {
+            @Override
+            public TableCell<Client, Void> call(TableColumn<Client, Void> param) {
+                TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+
+                    private Button btn =
+                            new Button("");
+
+                    {
+                        btn.getStyleClass().add("deleteClientButton");
+                        btn.setMinWidth(15);
+                        btn.setPrefWidth(15);
+                        btn.setOnAction(event -> {
+                            getTableView().getItems().get(getIndex()).deleteDB(conn);
+                            try {
+                                initClientsData();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            String toSet;
+                            Client data = getTableView().getItems().get(getIndex());
+                            if (currentLanguage.equals("English")) {
+                                btn.setText("");
+                            }
+                            if (currentLanguage.equals("Russian")) {
+                                btn.setText("");
+                            }
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        maritalStatusColumn.setCellFactory(cellFactory1);
+        disabilityColumn.setCellFactory(cellFactory2);
+        retireeColumn.setCellFactory(cellFactory3);
+        deleteColumn.setCellFactory(cellFactory4);
+
         clientsTable.getColumns().add(18, maritalStatusColumn);
-        return cellFactory;
+        clientsTable.getColumns().add(18, disabilityColumn);
+        clientsTable.getColumns().add(18, retireeColumn);
+        clientsTable.getColumns().add(0, deleteColumn);
     }
 
     private boolean checkEmail(TextField toCheck) {
@@ -2076,5 +2305,7 @@ public class MainController extends Application {
     }
 
     //TODO:
-    // Остальные кнопочки в таблице, проверки на текстовые поля
+    // Остальные кнопочки в таблице, проверки на текстовые поля,
+    // типы дат, енумов и тд
+    // УБРАТЬ ВСЕ UNKNOWN'ы
 }
