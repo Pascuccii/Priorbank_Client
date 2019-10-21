@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
-
+<?import javafx.scene.layout.*?>
 <AnchorPane fx:id="primaryAnchorPane" prefHeight="500.0" prefWidth="800.0" stylesheets="@../CSS/DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controls.MainController">
    <children>
       <AnchorPane fx:id="title" maxHeight="-Infinity" prefHeight="33.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -270,14 +257,17 @@
                                                 <TableColumn fx:id="birthDateColumn" minWidth="110.0" prefWidth="110.0" text="BirthDate" />
                                                 <TableColumn fx:id="passportSeriesColumn" minWidth="110.0" prefWidth="110.0" text="Passport series" />
                                                 <TableColumn fx:id="passportNumberColumn" minWidth="110.0" prefWidth="110.0" text="Passport number" />
-                                                <TableColumn fx:id="issuedByColumn" minWidth="110.0" prefWidth="110.0" text="Issued by" />
+                                                <TableColumn fx:id="issuedByColumn" minWidth="200.0" prefWidth="200.0"
+                                                             text="Issued by"/>
                                                 <TableColumn fx:id="issuedDateColumn" minWidth="110.0" prefWidth="110.0" text="Issued date" />
                                                 <TableColumn fx:id="birthPlaceColumn" minWidth="110.0" prefWidth="110.0" text="Birth place" />
                                                 <TableColumn fx:id="actualResidenceCityColumn" minWidth="120.0" prefWidth="120.0" text="Act. City" />
-                                                <TableColumn fx:id="actualResidenceAddressColumn" minWidth="125.0" prefWidth="125.0" text="Act. Address" />
+                                                <TableColumn fx:id="actualResidenceAddressColumn" minWidth="230.0"
+                                                             prefWidth="230.0" text="Act. Address"/>
                                                 <TableColumn fx:id="homeNumberColumn" minWidth="130.0" prefWidth="130.0" text="Home number" />
                                                 <TableColumn fx:id="mobileNumberColumn" minWidth="130.0" prefWidth="130.0" text="Mobile number" />
-                                                <TableColumn fx:id="emailClientColumn" minWidth="110.0" prefWidth="110.0" text="Email" />
+                                                <TableColumn fx:id="emailClientColumn" minWidth="160.0"
+                                                             prefWidth="160.0" text="Email"/>
                                                 <TableColumn fx:id="jobColumn" minWidth="110.0" prefWidth="110.0" text="Job" />
                                                 <TableColumn fx:id="positionColumn" minWidth="110.0" prefWidth="110.0" text="Position" />
                                                 <TableColumn fx:id="registrationCityColumn" minWidth="110.0" prefWidth="110.0" text="Reg. City" />

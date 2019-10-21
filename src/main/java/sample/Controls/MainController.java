@@ -455,11 +455,11 @@ public class MainController extends Application {
         citizenshipColumn.setCellValueFactory(new PropertyValueFactory<>("citizenship"));
         monthlyIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("monthlyIncome"));
         idNumberColumn.setCellValueFactory(new PropertyValueFactory<>("idNumber"));
-        clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        clientsTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
 
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        nameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameDB(conn, t.getNewValue());
                     else {
@@ -469,11 +469,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+        });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        surnameColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        surnameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
                     else {
@@ -483,11 +481,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+        });
         patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        patronymicColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        patronymicColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicDB(conn, t.getNewValue());
                     else {
@@ -497,12 +493,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         birthDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        birthDateColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        birthDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     String s = t.getNewValue().trim();
                     System.out.println(s);
                     if (t.getNewValue().trim().matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$"))
@@ -514,11 +507,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+        });
         passportSeriesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        passportSeriesColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        passportSeriesColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[a-zA-Z]{2}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesDB(conn, t.getNewValue());
                     else {
@@ -528,12 +519,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        passportNumberColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        passportNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("^\\d{7}$"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberDB(conn, t.getNewValue());
                     else {
@@ -543,12 +531,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         issuedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        issuedByColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        issuedByColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByDB(conn, t.getNewValue());
                     else {
@@ -558,12 +543,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         issuedDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        issuedDateColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        issuedDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     String s = t.getNewValue().trim();
                     System.out.println(s);
                     if (t.getNewValue().trim().matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$"))
@@ -575,12 +557,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         birthPlaceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        birthPlaceColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        birthPlaceColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceDB(conn, t.getNewValue());
                     else {
@@ -590,12 +569,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         actualResidenceCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        actualResidenceCityColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        actualResidenceCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityDB(conn, t.getNewValue());
                     else {
@@ -605,12 +581,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         actualResidenceAddressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        actualResidenceAddressColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        actualResidenceAddressColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressDB(conn, t.getNewValue());
                     else {
@@ -620,12 +593,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         homeNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        homeNumberColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        homeNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("^\\d{7}$"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberDB(conn, t.getNewValue());
                     else {
@@ -635,12 +605,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         mobileNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        mobileNumberColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        mobileNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberDB(conn, t.getNewValue());
                     else {
@@ -650,12 +617,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         emailClientColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        emailClientColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        emailClientColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailDB(conn, t.getNewValue());
                     else {
@@ -665,12 +629,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         jobColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        jobColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        jobColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobDB(conn, t.getNewValue());
                     else {
@@ -680,12 +641,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         positionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        positionColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        positionColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 0)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionDB(conn, t.getNewValue());
                     else {
@@ -695,12 +653,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         registrationCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        registrationCityColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        registrationCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityDB(conn, t.getNewValue());
                     else {
@@ -710,12 +665,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         citizenshipColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        citizenshipColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        citizenshipColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().length() > 4)
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipDB(conn, t.getNewValue());
                     else {
@@ -725,12 +677,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         monthlyIncomeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        monthlyIncomeColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        monthlyIncomeColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("^[0-9]+(\\.[0-9]+)?$"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeDB(conn, t.getNewValue());
                     else {
@@ -740,12 +689,9 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
-
+        });
         idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        idNumberColumn.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client, String> t) -> {
+        idNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
                     if (t.getNewValue().trim().matches("[A-Z0-9]{14}"))
                         (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberDB(conn, t.getNewValue());
                     else {
@@ -755,8 +701,7 @@ public class MainController extends Application {
                             e.printStackTrace();
                         }
                     }
-                }
-        );
+        });
 
 
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -2090,7 +2035,7 @@ public class MainController extends Application {
                     MenuItem mi5 = new MenuItem("Unknown");
 
                     private MenuButton btn =
-                            new MenuButton("No", null, mi1, mi2, mi3, mi4, mi5);
+                            new MenuButton("No", null, mi1, mi2, mi3, mi4);
 
                     {
                         btn.setMinWidth(170);
@@ -2599,7 +2544,7 @@ public class MainController extends Application {
         }
     }
 
+
     //TODO:
-    // проверки на текстовые поля,
-    // типы дат, енумов и тд
+    // сломался поиск, скорее всего берутся просто не оттуда значения
 }
