@@ -255,6 +255,14 @@ public class MainController extends Application {
     @FXML
     private AnchorPane createUser_AnchorPane;
     @FXML
+    private AnchorPane createClient_AnchorPane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_NameJobResidencePane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_PassportDataPane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_ContactsOtherPane;
+    @FXML
     private TextField createUser_AnchorPane_Username;
     @FXML
     private TextField createUser_AnchorPane_Email;
@@ -498,7 +506,7 @@ public class MainController extends Application {
         birthDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             String s = t.getNewValue().trim();
             System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$"))
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateDB(conn, t.getNewValue());
             else {
                 try {
@@ -548,7 +556,7 @@ public class MainController extends Application {
         issuedDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             String s = t.getNewValue().trim();
             System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$"))
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateDB(conn, t.getNewValue());
             else {
                 try {
@@ -770,6 +778,9 @@ public class MainController extends Application {
         createUser_AnchorPane.getStyleClass().add("elementsPane");
         changeUser_AnchorPane.getStyleClass().add("elementsPane");
         deleteUser_AnchorPane.getStyleClass().add("elementsPane");
+        createClient_AnchorPane.getStyleClass().add("elementsPane");
+        createClient_AnchorPane_NameJobResidencePane.getStyleClass().add("oneBorderPane");
+        createClient_AnchorPane_PassportDataPane.getStyleClass().add("oneBorderPane");
         clientManagementAnchorPane.getStyleClass().add("clientManagementAnchorPane");
         clientManagementScrollPane.getStyleClass().add("clientManagementScrollPane");
         clientManagementScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -1790,7 +1801,7 @@ public class MainController extends Application {
         Stage stage = (Stage) minimizeButton.getScene().getWindow();
         if (stage.isMaximized() && theme == 0) {
             stage.setMaximized(false);
-            usersTable.setPrefHeight(150d);
+            usersTable.setPrefHeight(154d);
             clientsTable.setPrefWidth(513d);
             clientsTable.setPrefHeight(200d);
             fixImage2.setLayoutX(526);
@@ -1810,15 +1821,15 @@ public class MainController extends Application {
             clientManagementScrollPane.setPrefWidth(573);
             clientManagementAnchorPane.setPrefWidth(556);
             clientManagementScrollPane.setPrefHeight(462);
-            clientManagementAnchorPane.setPrefHeight(830);
-
+            clientManagementAnchorPane.setPrefHeight(1033);
+            createClient_AnchorPane.setPrefHeight(768);
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
             clientsTable.setPrefWidth(1250d);
-            clientsTable.setPrefHeight(470d);
+            clientsTable.setPrefHeight(370d);
             fixImage2.setLayoutX(1274);
-            fixImage2.setLayoutY(502.7);
+            fixImage2.setLayoutY(402.7);
             createUser_AnchorPane.setLayoutY(667);
             if (currentTheme.equals("Dark"))
                 minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
@@ -1835,6 +1846,7 @@ public class MainController extends Application {
             clientManagementAnchorPane.setPrefWidth(1304);
             clientManagementScrollPane.setPrefHeight(850);
             clientManagementAnchorPane.setPrefHeight(820);
+            createClient_AnchorPane.setPrefHeight(380);
         }
     }
 
@@ -2446,7 +2458,7 @@ public class MainController extends Application {
                         }
                     }
                     break;
-                case "Actual city":
+                case "Act. residence city":
                 case "Город проживания":
                     while (i.hasNext()) {
                         if (!i.next().getActualResidenceCity().equals(searchFieldClient.getText())) {
@@ -2454,7 +2466,7 @@ public class MainController extends Application {
                         }
                     }
                     break;
-                case "Actual adress":
+                case "Act. residence address":
                 case "Адрес проживания":
                     while (i.hasNext()) {
                         if (!i.next().getActualResidenceAddress().equals(searchFieldClient.getText())) {
@@ -2462,7 +2474,7 @@ public class MainController extends Application {
                         }
                     }
                     break;
-                case "Registr. city":
+                case "Registration city":
                 case "Город прописки":
                     while (i.hasNext()) {
                         if (!i.next().getRegistrationCity().equals(searchFieldClient.getText())) {

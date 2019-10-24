@@ -187,8 +187,16 @@ public class User {
         return language;
     }
 
-    public String toString () {
-        return getClass().getSimpleName() + ": " + id + ' ' + accessMode + ' '
-                + username + ' ' + password + ' ' + email + ' ' + theme + ' ' + language;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", accessMode=" + accessMode +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", theme='" + theme + '\'' +
+                ", language='" + language + '\'' +
+                '}';
     }
 }
