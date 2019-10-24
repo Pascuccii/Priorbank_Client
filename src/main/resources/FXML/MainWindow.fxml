@@ -212,16 +212,16 @@
                               <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="462.0" prefWidth="573.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
                                     <AnchorPane fx:id="clientManagementAnchorPane" minHeight="0.0" minWidth="0.0"
-                                                prefHeight="1033.0" prefWidth="554.0">
+                                                prefHeight="1200.0" prefWidth="554.0">
                                         <children>
-                                            <AnchorPane fx:id="createClient_AnchorPane" layoutX="14.0" layoutY="254.0"
-                                                        prefHeight="768.0" prefWidth="526.0"
+                                            <AnchorPane fx:id="createClient_AnchorPane" layoutX="14.0" layoutY="258.0"
+                                                        prefHeight="930.0" prefWidth="526.0"
                                                         AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0"
                                                         AnchorPane.rightAnchor="14.0">
                                                 <children>
                                                     <AnchorPane fx:id="createClient_AnchorPane_NameJobResidencePane"
-                                                                layoutX="10.0" layoutY="25.0" prefHeight="295.0"
-                                                                prefWidth="506.0" visible="false">
+                                                                layoutX="10.0" layoutY="26.0" prefHeight="297.0"
+                                                                prefWidth="504.0">
                                                         <children>
                                                             <Label layoutX="15.0" layoutY="15.0" text="Name*"/>
                                                             <Label layoutX="15.0" layoutY="50.0" text="Surname*"/>
@@ -233,18 +233,26 @@
                                                             <TextField layoutX="130.0" layoutY="80.0"/>
                                                             <TextField layoutX="130.0" layoutY="115.0"/>
                                                             <TextField layoutX="130.0" layoutY="45.0"/>
+                                                            <TextField layoutX="130.0" layoutY="185.0"/>
+                                                            <TextField layoutX="130.0" layoutY="220.0"/>
+                                                            <TextField layoutX="130.0" layoutY="255.0"/>
                                                             <Label layoutX="15.0" layoutY="260.0"
                                                                    text="Registration city*"/>
                                                             <Label layoutX="15.0" layoutY="190.0" text="City*"/>
                                                             <Label layoutX="15.0" layoutY="225.0" text="Address*"/>
-                                                            <TextField layoutX="120.0" layoutY="185.0"/>
-                                                            <TextField layoutX="120.0" layoutY="220.0"/>
-                                                            <TextField layoutX="121.0" layoutY="255.0"/>
+                                                            <Label layoutX="310.0" layoutY="15.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="50.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="85.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="120.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="155.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="260.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="190.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="225.0" text="Description"/>
                                                         </children>
                                                     </AnchorPane>
                                                     <AnchorPane fx:id="createClient_AnchorPane_PassportDataPane"
-                                                                layoutX="10.0" layoutY="20.0" prefHeight="350.0"
-                                                                prefWidth="506.0">
+                                                                layoutX="10.0" layoutY="325.0" prefHeight="295.0"
+                                                                prefWidth="504.0">
                                                         <children>
                                                             <Label layoutX="15.0" layoutY="190.0" text="Birth date*"/>
                                                             <Label layoutX="15.0" layoutY="155.0" text="Birth place*"/>
@@ -258,10 +266,10 @@
                                                             <Label layoutX="15.0" layoutY="260.0" text="Id number"/>
                                                             <TextField layoutX="130.0" layoutY="10.0"/>
                                                             <TextField layoutX="130.0" layoutY="45.0"/>
-                                                            <TextField layoutX="130.0" layoutY="150.0"/>
+                                                            <TextField layoutX="130.0" layoutY="150.0" prefHeight="4.0"
+                                                                       prefWidth="161.0"/>
                                                             <TextField layoutX="130.0" layoutY="220.0"/>
                                                             <TextField layoutX="130.0" layoutY="80.0"/>
-                                                            <TextField layoutX="130.0" layoutY="185.0"/>
                                                             <TextField layoutX="130.0" layoutY="255.0"/>
                                                             <Label layoutX="310.0" layoutY="15.0" text="Description"/>
                                                             <Label layoutX="310.0" layoutY="50.0" text="Description"/>
@@ -273,24 +281,72 @@
                                                             <Label layoutX="310.0" layoutY="260.0" text="Description"/>
                                                             <DatePicker layoutX="130.0" layoutY="115.0"
                                                                         prefHeight="27.0" prefWidth="161.0"/>
+                                                            <DatePicker layoutX="130.0" layoutY="185.0"
+                                                                        prefHeight="27.0" prefWidth="161.0"/>
                                                         </children>
                                                     </AnchorPane>
                                                     <AnchorPane fx:id="createClient_AnchorPane_ContactsOtherPane"
-                                                                layoutX="10.0" layoutY="500.0" prefHeight="52.0"
-                                                                prefWidth="506.0">
+                                                                layoutX="10.0" layoutY="623.0" prefHeight="250.0"
+                                                                prefWidth="504.0">
                                                         <children>
-                                                            <Label text="Marital status*"/>
-                                                            <Label text="Disability*"/>
-                                                            <Label text="Retiree*"/>
-                                                            <Label text="Monthly income"/>
-                                                            <Label text="Home phone"/>
-                                                            <Label text="Mobile phone"/>
-                                                            <Label text="Email"/>
+                                                            <MenuButton layoutX="130.0" layoutY="10.0"
+                                                                        mnemonicParsing="false" prefHeight="27.0"
+                                                                        prefWidth="160.0" text="Single">
+                                                                <items>
+                                                                    <MenuItem mnemonicParsing="false" text="Single"/>
+                                                                    <MenuItem mnemonicParsing="false" text="Married"/>
+                                                                    <MenuItem mnemonicParsing="false" text="Divorced"/>
+                                                                    <MenuItem mnemonicParsing="false" text="Unknown"/>
+                                                                </items>
+                                                            </MenuButton>
+                                                            <MenuButton layoutX="130.0" layoutY="45.0"
+                                                                        mnemonicParsing="false" prefHeight="27.0"
+                                                                        prefWidth="160.0" text="First group">
+                                                                <items>
+                                                                    <MenuItem mnemonicParsing="false"
+                                                                              text="First group"/>
+                                                                    <MenuItem mnemonicParsing="false"
+                                                                              text="Second group"/>
+                                                                    <MenuItem mnemonicParsing="false"
+                                                                              text="Third group"/>
+                                                                    <MenuItem mnemonicParsing="false" text="No"/>
+                                                                </items>
+                                                            </MenuButton>
+                                                            <MenuButton layoutX="130.0" layoutY="80.0"
+                                                                        mnemonicParsing="false" prefHeight="27.0"
+                                                                        prefWidth="160.0" text="No">
+                                                                <items>
+                                                                    <MenuItem mnemonicParsing="false" text="Yes"/>
+                                                                    <MenuItem mnemonicParsing="false" text="No"/>
+                                                                </items>
+                                                            </MenuButton>
+                                                            <Label layoutX="15.0" layoutY="15.0"
+                                                                   text="Marital status*"/>
+                                                            <Label layoutX="15.0" layoutY="50.0" text="Disability*"/>
+                                                            <Label layoutX="15.0" layoutY="85.0" text="Retiree*"/>
+                                                            <Label layoutX="15.0" layoutY="225.0" text="Home phone"/>
+                                                            <Label layoutX="15.0" layoutY="120.0"
+                                                                   text="Monthly income"/>
+                                                            <Label layoutX="15.0" layoutY="190.0" text="Mobile phone"/>
+                                                            <Label layoutX="14.0" layoutY="155.0" text="Email"/>
+                                                            <TextField layoutX="130.0" layoutY="185.0"/>
+                                                            <TextField layoutX="130.0" layoutY="115.0"/>
+                                                            <TextField layoutX="130.0" layoutY="150.0"/>
+                                                            <TextField layoutX="130.0" layoutY="220.0"/>
+                                                            <Label layoutX="310.0" layoutY="15.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="50.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="85.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="225.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="120.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="190.0" text="Description"/>
+                                                            <Label layoutX="310.0" layoutY="155.0" text="Description"/>
                                                         </children>
                                                     </AnchorPane>
-                                                    <Label alignment="CENTER" layoutX="186.0" layoutY="5.0"
-                                                           text="Add client" AnchorPane.leftAnchor="186.0"
-                                                           AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="5.0"/>
+                                                    <Label fx:id="addClientLabel" alignment="CENTER" layoutX="176.0"
+                                                           layoutY="6.0" prefHeight="18.0" prefWidth="171.0"
+                                                           text="Add client" AnchorPane.topAnchor="6.0"/>
+                                                    <Button fx:id="addClientButton" layoutX="215.0" layoutY="888.0"
+                                                            mnemonicParsing="false" prefWidth="105.0" text="Add"/>
                                                 </children>
                                             </AnchorPane>
                                           <TableView fx:id="clientsTable" editable="true" layoutX="26.0" layoutY="57.0" prefHeight="200.0" prefWidth="513.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="47.0">

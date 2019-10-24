@@ -10,7 +10,7 @@
     -fx-border-color: transparent;
     -fx-border-width: 1px;
     -fx-border-radius: 2px;
-    -fx-background-color: #b1b1b1;
+    -fx-background-color: #cccccc;
     -fx-prompt-text-fill: #747474;
     -fx-font-weight: bold;
 }
@@ -370,11 +370,8 @@
 
 .date-picker-popup > .calendar-grid {
     -fx-background-color: #383838;
-}
-
-.date-picker-popup > * > .previous-month,
-.date-picker-popup > * > .next-month {
-    -fx-background: red;
+    -fx-border-color: #7d7d7d;
+    -fx-border-width: 1 0 0 0;
 }
 
 .date-picker .cell {
@@ -392,7 +389,7 @@
 }
 
 .date-picker .cell:focused {
-    -fx-background-color: #b1b1b1;
+    -fx-background-color: #c6c6c6;
     -fx-text-fill: #383838;
     -fx-font-weight: BOLD;
     -fx-pref-width: 20px;

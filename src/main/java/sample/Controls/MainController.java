@@ -393,6 +393,10 @@ public class MainController extends Application {
     @FXML
     private Label settingsWarningLabel;
     @FXML
+    private Label addClientLabel;
+    @FXML
+    private Button addClientButton;
+    @FXML
     private Label databaseSettingsConnectionStatusLabel;
     @FXML
     private ProgressIndicator databaseSettingsConnectionProgressIndicator;
@@ -1821,8 +1825,29 @@ public class MainController extends Application {
             clientManagementScrollPane.setPrefWidth(573);
             clientManagementAnchorPane.setPrefWidth(556);
             clientManagementScrollPane.setPrefHeight(462);
-            clientManagementAnchorPane.setPrefHeight(1033);
-            createClient_AnchorPane.setPrefHeight(768);
+            clientManagementAnchorPane.setPrefHeight(1200);
+            createClient_AnchorPane.setPrefHeight(930);
+
+            createClient_AnchorPane_NameJobResidencePane.setLayoutX(10);
+            createClient_AnchorPane_NameJobResidencePane.setLayoutY(26);
+            createClient_AnchorPane_NameJobResidencePane.setPrefWidth(504);
+            createClient_AnchorPane_NameJobResidencePane.setPrefHeight(297);
+
+            createClient_AnchorPane_PassportDataPane.setLayoutX(10);
+            createClient_AnchorPane_PassportDataPane.setLayoutY(325);
+            createClient_AnchorPane_PassportDataPane.setPrefWidth(504);
+            createClient_AnchorPane_PassportDataPane.setPrefHeight(295);
+
+            createClient_AnchorPane_ContactsOtherPane.setLayoutX(10);
+            createClient_AnchorPane_ContactsOtherPane.setLayoutY(623);
+            createClient_AnchorPane_ContactsOtherPane.setPrefWidth(504);
+            createClient_AnchorPane_ContactsOtherPane.setPrefHeight(250);
+
+            createClient_AnchorPane_NameJobResidencePane.setStyle("-fx-border-width: 0 0 1 0");
+            createClient_AnchorPane_PassportDataPane.setStyle("-fx-border-width: 0 0 1 0");
+
+            addClientLabel.setLayoutX(176);
+            addClientButton.setLayoutX(215);
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
@@ -1847,6 +1872,28 @@ public class MainController extends Application {
             clientManagementScrollPane.setPrefHeight(850);
             clientManagementAnchorPane.setPrefHeight(820);
             createClient_AnchorPane.setPrefHeight(380);
+
+            createClient_AnchorPane_NameJobResidencePane.setLayoutX(10);
+            createClient_AnchorPane_NameJobResidencePane.setLayoutY(35);
+            createClient_AnchorPane_NameJobResidencePane.setPrefWidth(420);
+            createClient_AnchorPane_NameJobResidencePane.setPrefHeight(297);
+
+            createClient_AnchorPane_PassportDataPane.setLayoutX(430);
+            createClient_AnchorPane_PassportDataPane.setLayoutY(35);
+            createClient_AnchorPane_PassportDataPane.setPrefWidth(420);
+            createClient_AnchorPane_PassportDataPane.setPrefHeight(295);
+
+            createClient_AnchorPane_ContactsOtherPane.setLayoutX(850);
+            createClient_AnchorPane_ContactsOtherPane.setLayoutY(35);
+            createClient_AnchorPane_ContactsOtherPane.setPrefWidth(420);
+            createClient_AnchorPane_ContactsOtherPane.setPrefHeight(250);
+
+            createClient_AnchorPane_NameJobResidencePane.setStyle("-fx-border-width: 0 1 0 0");
+            createClient_AnchorPane_PassportDataPane.setStyle("-fx-border-width: 0 1 0 0");
+
+            addClientLabel.setLayoutX(555);
+            addClientButton.setLayoutX(1005);
+            addClientButton.setLayoutY(320);
         }
     }
 
@@ -2558,5 +2605,6 @@ public class MainController extends Application {
         }
     }
 
-    //TODO: форма добавления клиента
+    //TODO: back-end формы добавления
+    // сделать date-picker'ы в самой таблице
 }
