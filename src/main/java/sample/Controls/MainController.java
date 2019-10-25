@@ -30,6 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Iterator;
 
 @SuppressWarnings("ALL")
@@ -42,7 +43,13 @@ public class MainController extends Application {
     private String currentLanguage;
     private ConnectionClass conn;
     private int theme = 0;
+    private TableColumn maritalStatusColumn;
+    private TableColumn disabilityColumn;
+    private TableColumn retireeColumn;
+    private TableColumn deleteColumn;
     private ObservableList<User> usersData = FXCollections.observableArrayList();
+    private ObservableList<Client> clientsData = FXCollections.observableArrayList();
+
     @FXML
     private TableView<User> usersTable;
     @FXML
@@ -55,7 +62,6 @@ public class MainController extends Application {
     private TableColumn<User, String> passwordColumn;
     @FXML
     private TableColumn<User, String> emailColumn;
-    private ObservableList<Client> clientsData = FXCollections.observableArrayList();
     @FXML
     private TableView<Client> clientsTable;
     @FXML
@@ -94,18 +100,6 @@ public class MainController extends Application {
     private TableColumn<Client, String> positionColumn;
     @FXML
     private TableColumn<Client, String> registrationCityColumn;
-    //  @FXML
-//  private TableColumn<Client, MaritalStatus> maritalStatusColumn;
-//  private MenuItem maritalStatusMenuItemSingle;
-//  private MenuItem maritalStatusMenuItemDivorced;
-//  private MenuItem maritalStatusMenuItemMarried;
-//  private MenuButton maritalStatusColumnMenuButton;
-    private TableColumn maritalStatusColumn;
-    private TableColumn disabilityColumn;
-    private TableColumn retireeColumn;
-    private TableColumn deleteColumn;
-
-
     @FXML
     private TableColumn<Client, String> citizenshipColumn;
     @FXML
@@ -123,19 +117,13 @@ public class MainController extends Application {
     @FXML
     private Button exitButton;
     @FXML
-    private Button logoutButtonAdmin;
-    @FXML
-    private Button logoutButtonUser;
-    @FXML
-    private Label currentUserLabelAdmin;
-    @FXML
-    private Label currentUserLabelUser;
-    @FXML
     private AnchorPane workPane;
     @FXML
     private AnchorPane leftAnchorPane;
     @FXML
     private FlowPane menuAdmin;
+    @FXML
+    private Label currentUserLabelAdmin;
     @FXML
     private Button menuAdminButton1;
     @FXML
@@ -145,7 +133,11 @@ public class MainController extends Application {
     @FXML
     private Button menuAdminButton4;
     @FXML
+    private Button logoutButtonAdmin;
+    @FXML
     private FlowPane menuUser;
+    @FXML
+    private Label currentUserLabelUser;
     @FXML
     private Button menuUserButton1;
     @FXML
@@ -155,13 +147,11 @@ public class MainController extends Application {
     @FXML
     private Button menuUserButton4;
     @FXML
+    private Button logoutButtonUser;
+    @FXML
     private AnchorPane rightAnchorPane;
     @FXML
     private AnchorPane menuPane1;
-    @FXML
-    private Button connectionIndicator;
-    @FXML
-    private Label menuPane1_DBLabel;
     @FXML
     private TextField searchField;
     @FXML
@@ -181,93 +171,15 @@ public class MainController extends Application {
     @FXML
     private Button resetSearchButton;
     @FXML
-    private TextField searchFieldClient;
-    @FXML
-    private MenuButton criteriaButtonClient;
-    @FXML
-    private MenuItem criteriaClientName;
-    @FXML
-    private MenuItem criteriaClientSurname;
-    @FXML
-    private MenuItem criteriaClientPatronymic;
-    @FXML
-    private MenuItem criteriaClientFIO;
-    @FXML
-    private MenuItem criteriaClientPassportSeries;
-    @FXML
-    private MenuItem criteriaClientPassportNumber;
-    @FXML
-    private MenuItem criteriaClientIssuedBy;
-    @FXML
-    private MenuItem criteriaClientIssuedDate;
-    @FXML
-    private MenuItem criteriaClientBirthDate;
-    @FXML
-    private MenuItem criteriaClientBirthPlace;
-    @FXML
-    private MenuItem criteriaClientActCity;
-    @FXML
-    private MenuItem criteriaClientActAddress;
-    @FXML
-    private MenuItem criteriaClientRegCity;
-    @FXML
-    private MenuItem criteriaClientJob;
-    @FXML
-    private MenuItem criteriaClientPosition;
-    @FXML
-    private MenuItem criteriaClientEmail;
-    @FXML
-    private MenuItem criteriaClientHomePhone;
-    @FXML
-    private MenuItem criteriaClientMobilePhone;
-    @FXML
-    private MenuItem criteriaClientDisability;
-    @FXML
-    private MenuItem criteriaClientRetiree;
-    @FXML
-    private MenuItem criteriaClientMonthlyIncome;
-    @FXML
-    private MenuItem criteriaClientIDNumber;
-    @FXML
-    private MenuItem criteriaClientMaritalStatus;
-    @FXML
-    private MenuItem criteriaClientID;
-    @FXML
-    private MenuItem criteriaClientCitizenship;
-    @FXML
-    private MenuItem criteriaClientMenuFIO;
-    @FXML
-    private MenuItem criteriaClientMenuPassport;
-    @FXML
-    private MenuItem criteriaClientMenuResidence;
-    @FXML
-    private MenuItem criteriaClientMenuJob;
-    @FXML
-    private MenuItem criteriaClientMenuContacts;
-    @FXML
-    private MenuItem criteriaClientMenuOther;
-    @FXML
-    private Button searchButtonClient;
-    @FXML
-    private Button resetSearchButtonClient;
-    @FXML
     private ImageView fixImage;
     @FXML
     private AnchorPane createUser_AnchorPane;
     @FXML
-    private AnchorPane createClient_AnchorPane;
-    @FXML
-    private AnchorPane createClient_AnchorPane_NameJobResidencePane;
-    @FXML
-    private AnchorPane createClient_AnchorPane_PassportDataPane;
-    @FXML
-    private AnchorPane createClient_AnchorPane_ContactsOtherPane;
-    @FXML
     private TextField createUser_AnchorPane_Username;
     @FXML
-    private TextField createUser_AnchorPane_Email;
-    @FXML
     private TextField createUser_AnchorPane_Password;
+    @FXML
+    private TextField createUser_AnchorPane_Email;
     @FXML
     private Button createUserButton;
     @FXML
@@ -279,13 +191,13 @@ public class MainController extends Application {
     @FXML
     private AnchorPane changeUser_AnchorPane;
     @FXML
-    private TextField changeUser_AnchorPane_Username;
+    private TextField changeUser_AnchorPane_Id;
     @FXML
-    private TextField changeUser_AnchorPane_Email;
+    private TextField changeUser_AnchorPane_Username;
     @FXML
     private TextField changeUser_AnchorPane_Password;
     @FXML
-    private TextField changeUser_AnchorPane_Id;
+    private TextField changeUser_AnchorPane_Email;
     @FXML
     private Button changeUser_AnchorPane_IdSubmitButton;
     @FXML
@@ -307,6 +219,253 @@ public class MainController extends Application {
     @FXML
     private AnchorPane menuPane2;
     @FXML
+    private ScrollPane clientManagementScrollPane;
+    @FXML
+    private AnchorPane clientManagementAnchorPane;
+    //ФОРМА ДОБАВЛЕНИЯ КЛИЕНТА
+    @FXML
+    private AnchorPane createClient_AnchorPane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_NameJobResidencePane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_PassportDataPane;
+    @FXML
+    private AnchorPane createClient_AnchorPane_ContactsOtherPane;
+    @FXML
+    private Label addClientNameLabel;
+    @FXML
+    private Label addClientSurnameLabel;
+    @FXML
+    private Label addClientPatronymicLabel;
+    @FXML
+    private Label addClientJobLabel;
+    @FXML
+    private Label addClientPositionLabel;
+    @FXML
+    private Label addClientRegistrationCityLabel;
+    @FXML
+    private Label addClientCityLabel;
+    @FXML
+    private Label addClientAddressLabel;
+    @FXML
+    private Label addClientBirthDateLabel;
+    @FXML
+    private Label addClientBirthPlaceLabel;
+    @FXML
+    private Label addClientPassportSeriesLabel;
+    @FXML
+    private Label addClientPassportNumberLabel;
+    @FXML
+    private Label addClientIssuedByLabel;
+    @FXML
+    private Label addClientIssuedDateLabel;
+    @FXML
+    private Label addClientCitizenshipLabel;
+    @FXML
+    private Label addClientIDNumberLabel;
+    @FXML
+    private Label addClientMaritalStatusLabel;
+    @FXML
+    private Label addClientDisabilityLabel;
+    @FXML
+    private Label addClientRetireeLabel;
+    @FXML
+    private Label addClientHomePhoneLabel;
+    @FXML
+    private Label addClientMonthlyIncomeLabel;
+    @FXML
+    private Label addClientMobilePhoneLabel;
+    @FXML
+    private Label addClientEmailLabel;
+    //ДАЛЬШЕ - Description
+    @FXML
+    private Label addClientNameDescription;
+    @FXML
+    private Label addClientSurnameDescription;
+    @FXML
+    private Label addClientPatronymicDescription;
+    @FXML
+    private Label addClientJobDescription;
+    @FXML
+    private Label addClientPositionDescription;
+    @FXML
+    private Label addClientRegistrationCityDescription;
+    @FXML
+    private Label addClientCityDescription;
+    @FXML
+    private Label addClientAddressDescription;
+    @FXML
+    private Label addClientPassportSeriesDescription;
+    @FXML
+    private Label addClientPassportNumberDescription;
+    @FXML
+    private Label addClientIssuedByDescription;
+    @FXML
+    private Label addClientIssuedDateDescription;
+    @FXML
+    private Label addClientBirthPlaceDescription;
+    @FXML
+    private Label addClientBirthDateDescription;
+    @FXML
+    private Label addClientCitizenshipDescription;
+    @FXML
+    private Label addClientIDNumberDescription;
+    @FXML
+    private Label addClientMaritalStatusDescription;
+    @FXML
+    private Label addClientDisabilityDescription;
+    @FXML
+    private Label addClientRetireeDescription;
+    @FXML
+    private Label addClientHomePhoneDescription;
+    @FXML
+    private Label addClientMonthlyIncomeDescription;
+    @FXML
+    private Label addClientMobilePhoneDescription;
+    @FXML
+    private Label addClientEmailDescription;
+    @FXML
+    private Label addClientLabel;
+    @FXML
+    private TextField addClientMobilePhoneTextField;
+    @FXML
+    private TextField addClientMonthlyIncomeTextField;
+    @FXML
+    private TextField addClientEmailTextField;
+    @FXML
+    private TextField addClientHomePhoneTextField;
+    @FXML
+    private DatePicker addClientIssuedDatePicker;
+    @FXML
+    private DatePicker addClientBirthDatePicker;
+    @FXML
+    private TextField addClientPassportSeriesTextField;
+    @FXML
+    private TextField addClientPassportNumberTextField;
+    @FXML
+    private TextField addClientBirthPlaceTextField;
+    @FXML
+    private TextField addClientCitizenshipTextField;
+    @FXML
+    private TextField addClientIssuedByTextField;
+    @FXML
+    private TextField addClientIDNumberTextField;
+    @FXML
+    private TextField addClientRegistrationCityTextField;
+    @FXML
+    private TextField addClientNameTextField;
+    @FXML
+    private TextField addClientPositionTextField;
+    @FXML
+    private TextField addClientPatronymicTextField;
+    @FXML
+    private TextField addClientJobTextField;
+    @FXML
+    private TextField addClientSurnameTextField;
+    @FXML
+    private TextField addClientCityTextField;
+    @FXML
+    private TextField addClientAddressTextField;
+    @FXML
+    private MenuButton addClientMaritalStatusMenuButton;
+    @FXML
+    private MenuItem addClientMaritalStatusMenuItem_Single;
+    @FXML
+    private MenuItem addClientMaritalStatusMenuItem_Married;
+    @FXML
+    private MenuItem addClientMaritalStatusMenuItem_Divorced;
+    @FXML
+    private MenuButton addClientDisabilityMenuButton;
+    @FXML
+    private MenuItem addClientDisabilityMenuItem_FirstGroup;
+    @FXML
+    private MenuItem addClientDisabilityMenuItem_SecondGroup;
+    @FXML
+    private MenuItem addClientDisabilityMenuItem_ThirdGroup;
+    @FXML
+    private MenuItem addClientDisabilityMenuItem_No;
+    @FXML
+    private MenuButton addClientRetireeMenuButton;
+    @FXML
+    private MenuItem addClientRetireeMenuItem_Yes;
+    @FXML
+    private MenuItem addClientRetireeMenuItem_No;
+    @FXML
+    private Button addClientButton;
+    //КОНЕЦ ФОРМЫ ДОБАВЛЕНИЯ КЛИНТА
+    @FXML
+    private TextField searchFieldClient;
+    @FXML
+    private Button searchButtonClient;
+    @FXML
+    private Button resetSearchButtonClient;
+    @FXML
+    private MenuButton criteriaButtonClient;
+    @FXML
+    private Menu criteriaClientMenuFIO;
+    @FXML
+    private MenuItem criteriaClientName;
+    @FXML
+    private MenuItem criteriaClientSurname;
+    @FXML
+    private MenuItem criteriaClientPatronymic;
+    @FXML
+    private MenuItem criteriaClientFIO;
+    @FXML
+    private Menu criteriaClientMenuPassport;
+    @FXML
+    private MenuItem criteriaClientPassportSeries;
+    @FXML
+    private MenuItem criteriaClientPassportNumber;
+    @FXML
+    private MenuItem criteriaClientIssuedBy;
+    @FXML
+    private MenuItem criteriaClientIssuedDate;
+    @FXML
+    private MenuItem criteriaClientBirthDate;
+    @FXML
+    private MenuItem criteriaClientBirthPlace;
+    @FXML
+    private MenuItem criteriaClientIDNumber;
+    @FXML
+    private MenuItem criteriaClientCitizenship;
+    @FXML
+    private Menu criteriaClientMenuResidence;
+    @FXML
+    private MenuItem criteriaClientActCity;
+    @FXML
+    private MenuItem criteriaClientActAddress;
+    @FXML
+    private MenuItem criteriaClientRegCity;
+    @FXML
+    private Menu criteriaClientMenuJob;
+    @FXML
+    private MenuItem criteriaClientJob;
+    @FXML
+    private MenuItem criteriaClientPosition;
+    @FXML
+    private Menu criteriaClientMenuContacts;
+    @FXML
+    private MenuItem criteriaClientEmail;
+    @FXML
+    private MenuItem criteriaClientHomePhone;
+    @FXML
+    private MenuItem criteriaClientMobilePhone;
+    @FXML
+    private Menu criteriaClientMenuOther;
+    @FXML
+    private MenuItem criteriaClientDisability;
+    @FXML
+    private MenuItem criteriaClientRetiree;
+    @FXML
+    private MenuItem criteriaClientMonthlyIncome;
+    @FXML
+    private MenuItem criteriaClientMaritalStatus;
+    @FXML
+    private MenuItem criteriaClientID;
+    @FXML
+    private ImageView fixImage2;
+    @FXML
     private AnchorPane menuPane3;
     @FXML
     private AnchorPane menuPane31;
@@ -321,8 +480,6 @@ public class MainController extends Application {
     @FXML
     private Label themeLabel;
     @FXML
-    private ImageView fixImage2;
-    @FXML
     private MenuButton themeButton;
     @FXML
     private MenuItem themeItem_Dark;
@@ -333,15 +490,11 @@ public class MainController extends Application {
     @FXML
     private AnchorPane accountSettingsPane;
     @FXML
-    private ScrollPane clientManagementScrollPane;
-    @FXML
-    private AnchorPane clientManagementAnchorPane;
-    @FXML
     private Label accountSettingsLabel;
     @FXML
-    private Label databaseSettingsLabel;
-    @FXML
     private TextField accountSettingsUsernameTextField;
+    @FXML
+    private PasswordField accountSettingsPasswordTextField;
     @FXML
     private TextField accountSettingsEmailTextField;
     @FXML
@@ -353,9 +506,11 @@ public class MainController extends Application {
     @FXML
     private Button accountSettingsSaveButton;
     @FXML
-    private PasswordField accountSettingsPasswordTextField;
+    private Label settingsWarningLabel;
     @FXML
     private AnchorPane databaseSettingsPane;
+    @FXML
+    private Label databaseSettingsLabel;
     @FXML
     private TextField databaseSettingsURLTextField;
     @FXML
@@ -370,6 +525,14 @@ public class MainController extends Application {
     private TextField databaseSettingsUsernameTextField;
     @FXML
     private PasswordField databaseSettingsPasswordTextField;
+    @FXML
+    private Label databaseSettingsConnectionStatusLabel;
+    @FXML
+    private ProgressIndicator databaseSettingsConnectionProgressIndicator;
+    @FXML
+    private Button connectionIndicator;
+    @FXML
+    private Label menuPane1_DBLabel;
     @FXML
     private AnchorPane menuPane4;
     @FXML
@@ -390,46 +553,9 @@ public class MainController extends Application {
     private PasswordField passwordField;
     @FXML
     private Label loginWarning;
-    @FXML
-    private Label settingsWarningLabel;
-    @FXML
-    private Label addClientLabel;
-    @FXML
-    private Button addClientButton;
-    @FXML
-    private Label databaseSettingsConnectionStatusLabel;
-    @FXML
-    private ProgressIndicator databaseSettingsConnectionProgressIndicator;
-
-    private Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory;
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        System.out.println("Starting...");
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainWindow.fxml"));
-        primaryStage.setTitle("Main");
-        Scene scene = new Scene(root, 800, 500, Color.TRANSPARENT);
-        primaryStage.initStyle(StageStyle.TRANSPARENT);
-        root.setOnMousePressed(mouseEvent -> {
-            xOffset = mouseEvent.getSceneX();
-            yOffset = mouseEvent.getSceneY();
-        });
-        root.setOnMouseDragged(mouseEvent -> {
-            primaryStage.setX(mouseEvent.getScreenX() - xOffset);
-            primaryStage.setY(mouseEvent.getScreenY() - yOffset);
-        });
-        primaryStage.setMaximized(false);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    @Override
-    public void stop() {
-        System.out.println("Closing...");
     }
 
     @FXML
@@ -718,6 +844,55 @@ public class MainController extends Application {
 
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        addClientNameDescription.setText("");
+        addClientSurnameDescription.setText("");
+        addClientPatronymicDescription.setText("");
+        addClientJobDescription.setText("");
+        addClientPositionDescription.setText("");
+        addClientRegistrationCityDescription.setText("");
+        addClientCityDescription.setText("");
+        addClientAddressDescription.setText("");
+        addClientPassportSeriesDescription.setText("");
+        addClientPassportNumberDescription.setText("");
+        addClientIssuedByDescription.setText("");
+        addClientIssuedDateDescription.setText("");
+        addClientBirthPlaceDescription.setText("");
+        addClientBirthDateDescription.setText("");
+        addClientCitizenshipDescription.setText("");
+        addClientIDNumberDescription.setText("");
+        addClientMaritalStatusDescription.setText("");
+        addClientDisabilityDescription.setText("");
+        addClientRetireeDescription.setText("");
+        addClientHomePhoneDescription.setText("");
+        addClientMonthlyIncomeDescription.setText("");
+        addClientMobilePhoneDescription.setText("");
+        addClientEmailDescription.setText("");
+        addClientBirthDatePicker.setValue(LocalDate.now());
+        addClientIssuedDatePicker.setValue(LocalDate.now());
+
+        addClientNameDescription.getStyleClass().add("descriptionLabel");
+        addClientSurnameDescription.getStyleClass().add("descriptionLabel");
+        addClientPatronymicDescription.getStyleClass().add("descriptionLabel");
+        addClientJobDescription.getStyleClass().add("descriptionLabel");
+        addClientPositionDescription.getStyleClass().add("descriptionLabel");
+        addClientRegistrationCityDescription.getStyleClass().add("descriptionLabel");
+        addClientCityDescription.getStyleClass().add("descriptionLabel");
+        addClientAddressDescription.getStyleClass().add("descriptionLabel");
+        addClientPassportSeriesDescription.getStyleClass().add("descriptionLabel");
+        addClientPassportNumberDescription.getStyleClass().add("descriptionLabel");
+        addClientIssuedByDescription.getStyleClass().add("descriptionLabel");
+        addClientIssuedDateDescription.getStyleClass().add("descriptionLabel");
+        addClientBirthPlaceDescription.getStyleClass().add("descriptionLabel");
+        addClientBirthDateDescription.getStyleClass().add("descriptionLabel");
+        addClientCitizenshipDescription.getStyleClass().add("descriptionLabel");
+        addClientIDNumberDescription.getStyleClass().add("descriptionLabel");
+        addClientMaritalStatusDescription.getStyleClass().add("descriptionLabel");
+        addClientDisabilityDescription.getStyleClass().add("descriptionLabel");
+        addClientRetireeDescription.getStyleClass().add("descriptionLabel");
+        addClientHomePhoneDescription.getStyleClass().add("descriptionLabel");
+        addClientMonthlyIncomeDescription.getStyleClass().add("descriptionLabel");
+        addClientMobilePhoneDescription.getStyleClass().add("descriptionLabel");
+        addClientEmailDescription.getStyleClass().add("descriptionLabel");
 
         initUsersData();
         initClientsData();
@@ -745,6 +920,8 @@ public class MainController extends Application {
         databaseSettingsPane.getStyleClass().add("elementsPane");
         workPane.getStyleClass().add("workPane");
         loginPane.getStyleClass().add("loginPane");
+        menuAdmin.getStyleClass().add("menu");
+        menuUser.getStyleClass().add("menu");
         primaryAnchorPane.getStyleClass().add("primaryAnchorPane");
         primaryAnchorPane.setOnKeyPressed(keyEvent -> {
             switch (keyEvent.getCode()) {
@@ -1117,6 +1294,167 @@ public class MainController extends Application {
                 changeUser_AnchorPane_AccessMode_MenuButton.setText("Администратор");
         });
 
+        addClientMaritalStatusMenuButton.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuButton.getText()));
+        addClientDisabilityMenuButton.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(criteriaClientID.getText()));
+        addClientRetireeMenuButton.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(criteriaClientID.getText()));
+
+        addClientMaritalStatusMenuItem_Single.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Single.getText()));
+        addClientMaritalStatusMenuItem_Married.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Married.getText()));
+        addClientMaritalStatusMenuItem_Divorced.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Divorced.getText()));
+        addClientDisabilityMenuItem_FirstGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_FirstGroup.getText()));
+        addClientDisabilityMenuItem_SecondGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_SecondGroup.getText()));
+        addClientDisabilityMenuItem_ThirdGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_ThirdGroup.getText()));
+        addClientDisabilityMenuItem_No.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_No.getText()));
+        addClientRetireeMenuItem_Yes.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(addClientRetireeMenuItem_Yes.getText()));
+        addClientRetireeMenuItem_No.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(addClientRetireeMenuItem_No.getText()));
+
+        addClientMobilePhoneTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientMobilePhoneTextField.setStyle("-fx-border-color: transparent");
+            addClientMobilePhoneDescription.setText("");
+        });
+        addClientMonthlyIncomeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientMonthlyIncomeTextField.setStyle("-fx-border-color: transparent");
+            addClientMonthlyIncomeDescription.setText("");
+        });
+        addClientEmailTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientEmailTextField.setStyle("-fx-border-color: transparent");
+            addClientEmailDescription.setText("");
+        });
+        addClientHomePhoneTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientHomePhoneTextField.setStyle("-fx-border-color: transparent");
+            addClientHomePhoneDescription.setText("");
+        });
+        addClientPassportSeriesTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientPassportSeriesTextField.setStyle("-fx-border-color: transparent");
+            addClientPassportSeriesDescription.setText("");
+        });
+        addClientPassportNumberTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientPassportNumberTextField.setStyle("-fx-border-color: transparent");
+            addClientPassportNumberDescription.setText("");
+        });
+        addClientBirthPlaceTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientBirthPlaceTextField.setStyle("-fx-border-color: transparent");
+            addClientBirthPlaceDescription.setText("");
+        });
+        addClientCitizenshipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientCitizenshipTextField.setStyle("-fx-border-color: transparent");
+            addClientMobilePhoneDescription.setText("");
+        });
+        addClientIssuedByTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientIssuedByTextField.setStyle("-fx-border-color: transparent");
+            addClientIssuedByDescription.setText("");
+        });
+        addClientIDNumberTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientIDNumberTextField.setStyle("-fx-border-color: transparent");
+            addClientIDNumberDescription.setText("");
+        });
+        addClientRegistrationCityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientRegistrationCityTextField.setStyle("-fx-border-color: transparent");
+            addClientRegistrationCityDescription.setText("");
+        });
+        addClientNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientNameTextField.setStyle("-fx-border-color: transparent");
+            addClientNameDescription.setText("");
+        });
+        addClientPositionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientPositionTextField.setStyle("-fx-border-color: transparent");
+            addClientPositionDescription.setText("");
+        });
+        addClientPatronymicTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientPatronymicTextField.setStyle("-fx-border-color: transparent");
+            addClientPatronymicDescription.setText("");
+        });
+        addClientJobTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientJobTextField.setStyle("-fx-border-color: transparent");
+            addClientJobDescription.setText("");
+        });
+        addClientSurnameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientSurnameTextField.setStyle("-fx-border-color: transparent");
+            addClientSurnameDescription.setText("");
+        });
+        addClientCityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientCityTextField.setStyle("-fx-border-color: transparent");
+            addClientCityDescription.setText("");
+        });
+        addClientAddressTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            addClientAddressTextField.setStyle("-fx-border-color: transparent");
+            addClientAddressDescription.setText("");
+        });
+
+        addClientMobilePhoneTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientMonthlyIncomeTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientEmailTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientHomePhoneTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientPassportSeriesTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientPassportNumberTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientBirthPlaceTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientCitizenshipTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientIssuedByTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientIDNumberTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientRegistrationCityTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientNameTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientPositionTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientPatronymicTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientJobTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientSurnameTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientCityTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+        addClientAddressTextField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER)
+                addClientButton.fire();
+        });
+
+        addClientButton.setOnAction(actionEvent -> addClient());
 
         languageItem_English.setOnAction(actionEvent -> {
             try {
@@ -1183,6 +1521,31 @@ public class MainController extends Application {
         loadLastConfig();
         loginBegin();
     } //INITIALIZE
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        System.out.println("Starting...");
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainWindow.fxml"));
+        primaryStage.setTitle("Main");
+        Scene scene = new Scene(root, 800, 500, Color.TRANSPARENT);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        root.setOnMousePressed(mouseEvent -> {
+            xOffset = mouseEvent.getSceneX();
+            yOffset = mouseEvent.getSceneY();
+        });
+        root.setOnMouseDragged(mouseEvent -> {
+            primaryStage.setX(mouseEvent.getScreenX() - xOffset);
+            primaryStage.setY(mouseEvent.getScreenY() - yOffset);
+        });
+        primaryStage.setMaximized(false);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Closing...");
+    }
 
     private void loadLastConfig() {
         try {
@@ -1338,6 +1701,70 @@ public class MainController extends Application {
                 criteriaClientMenuContacts.setText("Contacts");
                 criteriaClientMenuOther.setText("Other");
 
+                addClientNameLabel.setText("Name*");
+                addClientSurnameLabel.setText("Surname*");
+                addClientPatronymicLabel.setText("Patronymic*");
+                addClientJobLabel.setText("Job");
+                addClientPositionLabel.setText("Position");
+                addClientRegistrationCityLabel.setText("Registr. city*");
+                addClientCityLabel.setText("City*");
+                addClientAddressLabel.setText("Adress*");
+                addClientBirthDateLabel.setText("Birth date*");
+                addClientBirthPlaceLabel.setText("Birth place*");
+                addClientPassportSeriesLabel.setText("Passport series*");
+                addClientPassportNumberLabel.setText("Passport number*");
+                addClientIssuedByLabel.setText("Issued by*");
+                addClientIssuedDateLabel.setText("Issued date*");
+                addClientCitizenshipLabel.setText("Citizenship*");
+                addClientIDNumberLabel.setText("ID number*");
+                addClientMaritalStatusLabel.setText("Marital status*");
+                addClientDisabilityLabel.setText("Disability*");
+                addClientRetireeLabel.setText("Retiree*");
+                addClientHomePhoneLabel.setText("Home phone");
+                addClientMonthlyIncomeLabel.setText("Monthly income");
+                addClientMobilePhoneLabel.setText("Mobile phone");
+                addClientEmailLabel.setText("E-Mail");
+
+                addClientNameDescription.setText("");
+                addClientSurnameDescription.setText("");
+                addClientPatronymicDescription.setText("");
+                addClientJobDescription.setText("");
+                addClientPositionDescription.setText("");
+                addClientRegistrationCityDescription.setText("");
+                addClientCityDescription.setText("");
+                addClientAddressDescription.setText("");
+                addClientBirthDateDescription.setText("");
+                addClientBirthPlaceDescription.setText("");
+                addClientPassportSeriesDescription.setText("");
+                addClientPassportNumberDescription.setText("");
+                addClientIssuedByDescription.setText("");
+                addClientIssuedDateDescription.setText("");
+                addClientCitizenshipDescription.setText("");
+                addClientIDNumberDescription.setText("");
+                addClientMaritalStatusDescription.setText("");
+                addClientDisabilityDescription.setText("");
+                addClientRetireeDescription.setText("");
+                addClientHomePhoneDescription.setText("");
+                addClientMonthlyIncomeDescription.setText("");
+                addClientMobilePhoneDescription.setText("");
+                addClientEmailDescription.setText("");
+
+                addClientMaritalStatusMenuButton.setText("Single");
+                addClientMaritalStatusMenuItem_Single.setText("Single");
+                addClientMaritalStatusMenuItem_Married.setText("Married");
+                addClientMaritalStatusMenuItem_Divorced.setText("Divorced");
+                addClientDisabilityMenuButton.setText("No");
+                addClientDisabilityMenuItem_FirstGroup.setText("First group");
+                addClientDisabilityMenuItem_SecondGroup.setText("Second group");
+                addClientDisabilityMenuItem_ThirdGroup.setText("Third group");
+                addClientDisabilityMenuItem_No.setText("No");
+                addClientRetireeMenuButton.setText("No");
+                addClientRetireeMenuItem_Yes.setText("Yes");
+                addClientRetireeMenuItem_No.setText("No");
+
+                addClientLabel.setText("Add client");
+                addClientButton.setText("Add");
+
                 break;
             case "Russian":
                 currentLanguage = "Russian";
@@ -1453,6 +1880,71 @@ public class MainController extends Application {
                 criteriaClientMenuJob.setText("Работа");
                 criteriaClientMenuContacts.setText("Контакты");
                 criteriaClientMenuOther.setText("Другое");
+
+                addClientNameLabel.setText("Имя*");
+                addClientSurnameLabel.setText("Фамилия*");
+                addClientPatronymicLabel.setText("Отчество*");
+                addClientJobLabel.setText("Работа");
+                addClientPositionLabel.setText("Должность");
+                addClientRegistrationCityLabel.setText("Город прописки*");
+                addClientCityLabel.setText("Город*");
+                addClientAddressLabel.setText("Адрес*");
+                addClientBirthDateLabel.setText("Дата рождения*");
+                addClientBirthPlaceLabel.setText("Место рождения*");
+                addClientPassportSeriesLabel.setText("Серия паспорта*");
+                addClientPassportNumberLabel.setText("Номер паспорта*");
+                addClientIssuedByLabel.setText("Орган выдачи*");
+                addClientIssuedDateLabel.setText("Дата выдачи*");
+                addClientCitizenshipLabel.setText("Гражданство*");
+                addClientIDNumberLabel.setText("Идент. номер");
+                addClientMaritalStatusLabel.setText("Сем. положение*");
+                addClientDisabilityLabel.setText("Инвалидность*");
+                addClientRetireeLabel.setText("Пенсионер*");
+                addClientHomePhoneLabel.setText("Дом. телефон");
+                addClientMonthlyIncomeLabel.setText("Месячный доход");
+                addClientMobilePhoneLabel.setText("Моб. телефон");
+                addClientEmailLabel.setText("E-Mail");
+
+                addClientNameDescription.setText("");
+                addClientSurnameDescription.setText("");
+                addClientPatronymicDescription.setText("");
+                addClientJobDescription.setText("");
+                addClientPositionDescription.setText("");
+                addClientRegistrationCityDescription.setText("");
+                addClientCityDescription.setText("");
+                addClientAddressDescription.setText("");
+                addClientBirthDateDescription.setText("");
+                addClientBirthPlaceDescription.setText("");
+                addClientPassportSeriesDescription.setText("");
+                addClientPassportNumberDescription.setText("");
+                addClientIssuedByDescription.setText("");
+                addClientIssuedDateDescription.setText("");
+                addClientCitizenshipDescription.setText("");
+                addClientIDNumberDescription.setText("");
+                addClientMaritalStatusDescription.setText("");
+                addClientDisabilityDescription.setText("");
+                addClientRetireeDescription.setText("");
+                addClientHomePhoneDescription.setText("");
+                addClientMonthlyIncomeDescription.setText("");
+                addClientMobilePhoneDescription.setText("");
+                addClientEmailDescription.setText("");
+
+                addClientMaritalStatusMenuButton.setText("Не в браке");
+                addClientMaritalStatusMenuItem_Single.setText("Не в браке");
+                addClientMaritalStatusMenuItem_Married.setText("Женат/За мужем");
+                addClientMaritalStatusMenuItem_Divorced.setText("Разведён/разведена");
+                addClientDisabilityMenuButton.setText("Нет");
+                addClientDisabilityMenuItem_FirstGroup.setText("Первая группа");
+                addClientDisabilityMenuItem_SecondGroup.setText("Вторая группа");
+                addClientDisabilityMenuItem_ThirdGroup.setText("Третья группа");
+                addClientDisabilityMenuItem_No.setText("Нет");
+                addClientRetireeMenuButton.setText("Нет");
+                addClientRetireeMenuItem_Yes.setText("Да");
+                addClientRetireeMenuItem_No.setText("Нет");
+
+                addClientLabel.setText("Добавление клиента");
+                addClientButton.setText("Добавить");
+
                 break;
         }
         clientsTable.refresh();
@@ -1848,6 +2340,7 @@ public class MainController extends Application {
 
             addClientLabel.setLayoutX(176);
             addClientButton.setLayoutX(215);
+            addClientButton.setLayoutY(888);
         } else {
             stage.setMaximized(true);
             usersTable.setPrefHeight(606d);
@@ -2059,7 +2552,7 @@ public class MainController extends Application {
                             if (currentLanguage.equals("Russian")) {
                                 switch (data.getMaritalStatus()) {
                                     case Single:
-                                        toSet = "Не женат/не замужем";
+                                        toSet = "Не в браке";
                                         break;
                                     case Married:
                                         toSet = "Женат/За мужем";
@@ -2074,7 +2567,7 @@ public class MainController extends Application {
                                         toSet = "Error";
                                 }
                                 btn.setText(toSet);
-                                mi1.setText("Не женат/не замужем");
+                                mi1.setText("Не в браке");
                                 mi2.setText("Женат/За мужем");
                                 mi3.setText("Разведён/разведена");
                                 mi4.setText("Не указано");
@@ -2605,6 +3098,81 @@ public class MainController extends Application {
         }
     }
 
-    //TODO: back-end формы добавления
-    // сделать date-picker'ы в самой таблице
+    private void addClient() {
+        boolean result = true;
+        if (!addClientNameTextField.getText().trim().matches("[а-яА-Я]{2,20}"))
+            result = addClientFillingError(addClientNameTextField, addClientNameDescription);
+        if (!addClientSurnameTextField.getText().trim().matches("[а-яА-Я]{2,20}"))
+            result = addClientFillingError(addClientSurnameTextField, addClientSurnameDescription);
+        if (!addClientPatronymicTextField.getText().trim().matches("[а-яА-Я]{2,30}"))
+            result = addClientFillingError(addClientPatronymicTextField, addClientPatronymicDescription);
+        if (!addClientCityTextField.getText().trim().matches("[а-яА-Я.\\-\\s]{2,20}"))
+            result = addClientFillingError(addClientCityTextField, addClientCityDescription);
+        if (!addClientAddressTextField.getText().trim().matches("[а-яА-Я.\\-\\s/0-9]{2,40}"))
+            result = addClientFillingError(addClientAddressTextField, addClientAddressDescription);
+        if (!addClientRegistrationCityTextField.getText().trim().matches("[а-яА-Я.\\-\\s]{2,20}"))
+            result = addClientFillingError(addClientRegistrationCityTextField, addClientRegistrationCityDescription);
+        if (!addClientPassportSeriesTextField.getText().trim().matches("[A-Z]{2}"))
+            result = addClientFillingError(addClientPassportSeriesTextField, addClientPassportSeriesDescription);
+        if (!addClientPassportNumberTextField.getText().trim().matches("[\\d]{7}"))
+            result = addClientFillingError(addClientPassportNumberTextField, addClientPassportNumberDescription);
+        if (!addClientIssuedByTextField.getText().trim().matches("[а-яА-Я\\-\\s/.\\d]{2,40}"))
+            result = addClientFillingError(addClientIssuedByTextField, addClientIssuedByDescription);
+        if (!addClientBirthPlaceTextField.getText().trim().matches("[а-яА-Я\\-\\s/.]{2,30}"))
+            result = addClientFillingError(addClientBirthPlaceTextField, addClientBirthPlaceDescription);
+        if (!addClientCitizenshipTextField.getText().trim().matches("[а-яА-Я]{2,25}"))
+            result = addClientFillingError(addClientCitizenshipTextField, addClientCitizenshipDescription);
+        if (!addClientIDNumberTextField.getText().trim().matches("[0-9A-Z]{14}"))
+            result = addClientFillingError(addClientIDNumberTextField, addClientIDNumberDescription);
+        else
+            result = isIDNumberUnique(addClientIDNumberTextField, addClientIDNumberDescription);
+        if (!addClientMonthlyIncomeTextField.getText().trim().matches("^[0-9]+(\\.[0-9]+)?$") && !addClientMonthlyIncomeTextField.getText().equals(""))
+            result = addClientFillingError(addClientMonthlyIncomeTextField, addClientMonthlyIncomeDescription);
+        if (!addClientEmailTextField.getText().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !addClientEmailTextField.getText().equals(""))
+            result = addClientFillingError(addClientEmailTextField, addClientEmailDescription);
+        if (!addClientMobilePhoneTextField.getText().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$") && !addClientMobilePhoneTextField.getText().equals(""))
+            result = addClientFillingError(addClientMobilePhoneTextField, addClientMobilePhoneDescription);
+        if (!addClientHomePhoneTextField.getText().trim().matches("[0-9]{7}") && !addClientHomePhoneTextField.getText().equals(""))
+            result = addClientFillingError(addClientHomePhoneTextField, addClientHomePhoneDescription);
+
+
+        if (result) {
+            System.out.println("Good");
+          /*  try {
+                String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, retiree.toString());
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }*/
+        } else {
+            System.out.println("Not good");
+        }
+    }
+
+    private boolean addClientFillingError(TextField field, Label description) {
+        field.setStyle("-fx-border-color: rgb(255,13,19)");
+        if (field.getText().equals(""))
+            description.setText(currentLanguage.equals("English") ? "Obligatory field" : "Обязательное поле");
+        else
+            description.setText(currentLanguage.equals("English") ? "Wrong format" : "Неверный формат");
+        return false;
+    }
+
+    private boolean isIDNumberUnique(TextField idNumber, Label description) {
+        System.out.println(idNumber);
+        for (Client c : clientsData) {
+            System.out.println(c.getIdNumber());
+            if (c.getIdNumber().equals(idNumber.getText().trim())) {
+                description.setText(currentLanguage.equals("English") ? "Non-unique ID" : "Неукальный ID");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // TODO: back-end формы добавления (осталась сама инъекция в БД)
+    //  сделать date-picker'ы в самой таблице
 }

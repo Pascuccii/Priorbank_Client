@@ -223,123 +223,222 @@
                                                                 layoutX="10.0" layoutY="26.0" prefHeight="297.0"
                                                                 prefWidth="504.0">
                                                         <children>
-                                                            <Label layoutX="15.0" layoutY="15.0" text="Name*"/>
-                                                            <Label layoutX="15.0" layoutY="50.0" text="Surname*"/>
-                                                            <Label layoutX="15.0" layoutY="85.0" text="Patronymic*"/>
-                                                            <Label layoutX="15.0" layoutY="120.0" text="Job"/>
-                                                            <Label layoutX="15.0" layoutY="155.0" text="Position"/>
-                                                            <TextField layoutX="130.0" layoutY="10.0"/>
-                                                            <TextField layoutX="130.0" layoutY="150.0"/>
-                                                            <TextField layoutX="130.0" layoutY="80.0"/>
-                                                            <TextField layoutX="130.0" layoutY="115.0"/>
-                                                            <TextField layoutX="130.0" layoutY="45.0"/>
-                                                            <TextField layoutX="130.0" layoutY="185.0"/>
-                                                            <TextField layoutX="130.0" layoutY="220.0"/>
-                                                            <TextField layoutX="130.0" layoutY="255.0"/>
-                                                            <Label layoutX="15.0" layoutY="260.0"
-                                                                   text="Registration city*"/>
-                                                            <Label layoutX="15.0" layoutY="190.0" text="City*"/>
-                                                            <Label layoutX="15.0" layoutY="225.0" text="Address*"/>
-                                                            <Label layoutX="310.0" layoutY="15.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="50.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="85.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="120.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="155.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="260.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="190.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="225.0" text="Description"/>
+                                                            <Label fx:id="addClientNameLabel" layoutX="15.0"
+                                                                   layoutY="15.0" text="Name*"/>
+                                                            <Label fx:id="addClientSurnameLabel" layoutX="15.0"
+                                                                   layoutY="50.0" text="Surname*"/>
+                                                            <Label fx:id="addClientPatronymicLabel" layoutX="15.0"
+                                                                   layoutY="85.0" text="Patronymic*"/>
+                                                            <Label fx:id="addClientJobLabel" layoutX="15.0"
+                                                                   layoutY="120.0" text="Job"/>
+                                                            <Label fx:id="addClientPositionLabel" layoutX="15.0"
+                                                                   layoutY="155.0" text="Position"/>
+                                                            <Label fx:id="addClientRegistrationCityLabel" layoutX="15.0"
+                                                                   layoutY="260.0" text="Registration city*"/>
+                                                            <Label fx:id="addClientCityLabel" layoutX="15.0"
+                                                                   layoutY="190.0" text="City*"/>
+                                                            <Label fx:id="addClientAddressLabel" layoutX="15.0"
+                                                                   layoutY="225.0" text="Address*"/>
+                                                            <TextField fx:id="addClientRegistrationCityTextField"
+                                                                       layoutX="130.0" layoutY="255.0"/>
+                                                            <TextField fx:id="addClientNameTextField" layoutX="130.0"
+                                                                       layoutY="10.0"/>
+                                                            <TextField fx:id="addClientPositionTextField"
+                                                                       layoutX="130.0" layoutY="150.0"/>
+                                                            <TextField fx:id="addClientPatronymicTextField"
+                                                                       layoutX="130.0" layoutY="80.0"/>
+                                                            <TextField fx:id="addClientJobTextField" layoutX="130.0"
+                                                                       layoutY="115.0"/>
+                                                            <TextField fx:id="addClientSurnameTextField" layoutX="130.0"
+                                                                       layoutY="45.0"/>
+                                                            <TextField fx:id="addClientCityTextField" layoutX="130.0"
+                                                                       layoutY="185.0"/>
+                                                            <TextField fx:id="addClientAddressTextField" layoutX="130.0"
+                                                                       layoutY="220.0"/>
+                                                            <Label fx:id="addClientNameDescription" layoutX="300.0"
+                                                                   layoutY="15.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientSurnameDescription" layoutX="300.0"
+                                                                   layoutY="50.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientPatronymicDescription"
+                                                                   layoutX="300.0" layoutY="85.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientJobDescription" layoutX="300.0"
+                                                                   layoutY="120.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientPositionDescription" layoutX="300.0"
+                                                                   layoutY="155.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientRegistrationCityDescription"
+                                                                   layoutX="300.0" layoutY="260.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientCityDescription" layoutX="300.0"
+                                                                   layoutY="190.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientAddressDescription" layoutX="300.0"
+                                                                   layoutY="225.0" text="Description"
+                                                                   textFill="#d85751"/>
                                                         </children>
                                                     </AnchorPane>
                                                     <AnchorPane fx:id="createClient_AnchorPane_PassportDataPane"
                                                                 layoutX="10.0" layoutY="325.0" prefHeight="295.0"
                                                                 prefWidth="504.0">
                                                         <children>
-                                                            <Label layoutX="15.0" layoutY="190.0" text="Birth date*"/>
-                                                            <Label layoutX="15.0" layoutY="155.0" text="Birth place*"/>
-                                                            <Label layoutX="15.0" layoutY="15.0"
-                                                                   text="Passport series*"/>
-                                                            <Label layoutX="15.0" layoutY="50.0"
-                                                                   text="Passport number*"/>
-                                                            <Label layoutX="15.0" layoutY="85.0" text="Issued by*"/>
-                                                            <Label layoutX="15.0" layoutY="120.0" text="Issued date*"/>
-                                                            <Label layoutX="15.0" layoutY="225.0" text="Citizenship*"/>
-                                                            <Label layoutX="15.0" layoutY="260.0" text="Id number"/>
-                                                            <TextField layoutX="130.0" layoutY="10.0"/>
-                                                            <TextField layoutX="130.0" layoutY="45.0"/>
-                                                            <TextField layoutX="130.0" layoutY="150.0" prefHeight="4.0"
+                                                            <Label fx:id="addClientBirthDateLabel" layoutX="15.0"
+                                                                   layoutY="190.0" text="Birth date*"/>
+                                                            <Label fx:id="addClientBirthPlaceLabel" layoutX="15.0"
+                                                                   layoutY="155.0" text="Birth place*"/>
+                                                            <Label fx:id="addClientPassportSeriesLabel" layoutX="15.0"
+                                                                   layoutY="15.0" text="Passport series*"/>
+                                                            <Label fx:id="addClientPassportNumberLabel" layoutX="15.0"
+                                                                   layoutY="50.0" text="Passport number*"/>
+                                                            <Label fx:id="addClientIssuedByLabel" layoutX="15.0"
+                                                                   layoutY="85.0" text="Issued by*"/>
+                                                            <Label fx:id="addClientIssuedDateLabel" layoutX="15.0"
+                                                                   layoutY="120.0" text="Issued date*"/>
+                                                            <Label fx:id="addClientCitizenshipLabel" layoutX="15.0"
+                                                                   layoutY="225.0" text="Citizenship*"/>
+                                                            <Label fx:id="addClientIDNumberLabel" layoutX="15.0"
+                                                                   layoutY="260.0" text="Id number"/>
+                                                            <DatePicker fx:id="addClientIssuedDatePicker"
+                                                                        layoutX="130.0" layoutY="115.0"
+                                                                        prefHeight="27.0" prefWidth="161.0"/>
+                                                            <DatePicker fx:id="addClientBirthDatePicker" layoutX="130.0"
+                                                                        layoutY="185.0" prefHeight="27.0"
+                                                                        prefWidth="161.0"/>
+                                                            <TextField fx:id="addClientPassportSeriesTextField"
+                                                                       layoutX="130.0" layoutY="10.0"/>
+                                                            <TextField fx:id="addClientPassportNumberTextField"
+                                                                       layoutX="130.0" layoutY="45.0"/>
+                                                            <TextField fx:id="addClientBirthPlaceTextField"
+                                                                       layoutX="130.0" layoutY="150.0" prefHeight="4.0"
                                                                        prefWidth="161.0"/>
-                                                            <TextField layoutX="130.0" layoutY="220.0"/>
-                                                            <TextField layoutX="130.0" layoutY="80.0"/>
-                                                            <TextField layoutX="130.0" layoutY="255.0"/>
-                                                            <Label layoutX="310.0" layoutY="15.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="50.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="85.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="120.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="155.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="190.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="225.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="260.0" text="Description"/>
-                                                            <DatePicker layoutX="130.0" layoutY="115.0"
-                                                                        prefHeight="27.0" prefWidth="161.0"/>
-                                                            <DatePicker layoutX="130.0" layoutY="185.0"
-                                                                        prefHeight="27.0" prefWidth="161.0"/>
+                                                            <TextField fx:id="addClientCitizenshipTextField"
+                                                                       layoutX="130.0" layoutY="220.0"/>
+                                                            <TextField fx:id="addClientIssuedByTextField"
+                                                                       layoutX="130.0" layoutY="80.0"/>
+                                                            <TextField fx:id="addClientIDNumberTextField"
+                                                                       layoutX="130.0" layoutY="255.0"/>
+                                                            <Label fx:id="addClientPassportSeriesDescription"
+                                                                   layoutX="300.0" layoutY="15.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientPassportNumberDescription"
+                                                                   layoutX="300.0" layoutY="50.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientIssuedByDescription" layoutX="300.0"
+                                                                   layoutY="85.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientIssuedDateDescription"
+                                                                   layoutX="300.0" layoutY="120.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientBirthPlaceDescription"
+                                                                   layoutX="300.0" layoutY="155.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientBirthDateDescription" layoutX="300.0"
+                                                                   layoutY="190.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientCitizenshipDescription"
+                                                                   layoutX="300.0" layoutY="225.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientIDNumberDescription" layoutX="300.0"
+                                                                   layoutY="260.0" text="Description"
+                                                                   textFill="#d85751"/>
                                                         </children>
                                                     </AnchorPane>
                                                     <AnchorPane fx:id="createClient_AnchorPane_ContactsOtherPane"
                                                                 layoutX="10.0" layoutY="623.0" prefHeight="250.0"
                                                                 prefWidth="504.0">
                                                         <children>
-                                                            <MenuButton layoutX="130.0" layoutY="10.0"
+                                                            <MenuButton fx:id="addClientMaritalStatusMenuButton"
+                                                                        layoutX="130.0" layoutY="10.0"
                                                                         mnemonicParsing="false" prefHeight="27.0"
                                                                         prefWidth="160.0" text="Single">
                                                                 <items>
-                                                                    <MenuItem mnemonicParsing="false" text="Single"/>
-                                                                    <MenuItem mnemonicParsing="false" text="Married"/>
-                                                                    <MenuItem mnemonicParsing="false" text="Divorced"/>
-                                                                    <MenuItem mnemonicParsing="false" text="Unknown"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientMaritalStatusMenuItem_Single"
+                                                                            mnemonicParsing="false" text="Single"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientMaritalStatusMenuItem_Married"
+                                                                            mnemonicParsing="false" text="Married"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientMaritalStatusMenuItem_Divorced"
+                                                                            mnemonicParsing="false" text="Divorced"/>
                                                                 </items>
                                                             </MenuButton>
-                                                            <MenuButton layoutX="130.0" layoutY="45.0"
+                                                            <MenuButton fx:id="addClientDisabilityMenuButton"
+                                                                        layoutX="130.0" layoutY="45.0"
                                                                         mnemonicParsing="false" prefHeight="27.0"
                                                                         prefWidth="160.0" text="First group">
                                                                 <items>
-                                                                    <MenuItem mnemonicParsing="false"
-                                                                              text="First group"/>
-                                                                    <MenuItem mnemonicParsing="false"
-                                                                              text="Second group"/>
-                                                                    <MenuItem mnemonicParsing="false"
-                                                                              text="Third group"/>
-                                                                    <MenuItem mnemonicParsing="false" text="No"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientDisabilityMenuItem_FirstGroup"
+                                                                            mnemonicParsing="false" text="First group"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientDisabilityMenuItem_SecondGroup"
+                                                                            mnemonicParsing="false"
+                                                                            text="Second group"/>
+                                                                    <MenuItem
+                                                                            fx:id="addClientDisabilityMenuItem_ThirdGroup"
+                                                                            mnemonicParsing="false" text="Third group"/>
+                                                                    <MenuItem fx:id="addClientDisabilityMenuItem_No"
+                                                                              mnemonicParsing="false" text="No"/>
                                                                 </items>
                                                             </MenuButton>
-                                                            <MenuButton layoutX="130.0" layoutY="80.0"
+                                                            <MenuButton fx:id="addClientRetireeMenuButton"
+                                                                        layoutX="130.0" layoutY="80.0"
                                                                         mnemonicParsing="false" prefHeight="27.0"
                                                                         prefWidth="160.0" text="No">
                                                                 <items>
-                                                                    <MenuItem mnemonicParsing="false" text="Yes"/>
-                                                                    <MenuItem mnemonicParsing="false" text="No"/>
+                                                                    <MenuItem fx:id="addClientRetireeMenuItem_Yes"
+                                                                              mnemonicParsing="false" text="Yes"/>
+                                                                    <MenuItem fx:id="addClientRetireeMenuItem_No"
+                                                                              mnemonicParsing="false" text="No"/>
                                                                 </items>
                                                             </MenuButton>
-                                                            <Label layoutX="15.0" layoutY="15.0"
-                                                                   text="Marital status*"/>
-                                                            <Label layoutX="15.0" layoutY="50.0" text="Disability*"/>
-                                                            <Label layoutX="15.0" layoutY="85.0" text="Retiree*"/>
-                                                            <Label layoutX="15.0" layoutY="225.0" text="Home phone"/>
-                                                            <Label layoutX="15.0" layoutY="120.0"
-                                                                   text="Monthly income"/>
-                                                            <Label layoutX="15.0" layoutY="190.0" text="Mobile phone"/>
-                                                            <Label layoutX="14.0" layoutY="155.0" text="Email"/>
-                                                            <TextField layoutX="130.0" layoutY="185.0"/>
-                                                            <TextField layoutX="130.0" layoutY="115.0"/>
-                                                            <TextField layoutX="130.0" layoutY="150.0"/>
-                                                            <TextField layoutX="130.0" layoutY="220.0"/>
-                                                            <Label layoutX="310.0" layoutY="15.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="50.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="85.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="225.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="120.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="190.0" text="Description"/>
-                                                            <Label layoutX="310.0" layoutY="155.0" text="Description"/>
+                                                            <Label fx:id="addClientMaritalStatusLabel" layoutX="15.0"
+                                                                   layoutY="15.0" text="Marital status*"/>
+                                                            <Label fx:id="addClientDisabilityLabel" layoutX="15.0"
+                                                                   layoutY="50.0" text="Disability*"/>
+                                                            <Label fx:id="addClientRetireeLabel" layoutX="15.0"
+                                                                   layoutY="85.0" text="Retiree*"/>
+                                                            <Label fx:id="addClientHomePhoneLabel" layoutX="15.0"
+                                                                   layoutY="225.0" text="Home phone"/>
+                                                            <Label fx:id="addClientMonthlyIncomeLabel" layoutX="15.0"
+                                                                   layoutY="120.0" text="Monthly income"/>
+                                                            <Label fx:id="addClientMobilePhoneLabel" layoutX="15.0"
+                                                                   layoutY="190.0" text="Mobile phone"/>
+                                                            <Label fx:id="addClientEmailLabel" layoutX="14.0"
+                                                                   layoutY="155.0" text="Email"/>
+                                                            <TextField fx:id="addClientMobilePhoneTextField"
+                                                                       layoutX="130.0" layoutY="185.0"/>
+                                                            <TextField fx:id="addClientMonthlyIncomeTextField"
+                                                                       layoutX="130.0" layoutY="115.0"/>
+                                                            <TextField fx:id="addClientEmailTextField" layoutX="130.0"
+                                                                       layoutY="150.0"/>
+                                                            <TextField fx:id="addClientHomePhoneTextField"
+                                                                       layoutX="130.0" layoutY="220.0"/>
+                                                            <Label fx:id="addClientMaritalStatusDescription"
+                                                                   layoutX="300.0" layoutY="15.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientDisabilityDescription"
+                                                                   layoutX="300.0" layoutY="50.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientRetireeDescription" layoutX="300.0"
+                                                                   layoutY="85.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientHomePhoneDescription" layoutX="300.0"
+                                                                   layoutY="225.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientMonthlyIncomeDescription"
+                                                                   layoutX="300.0" layoutY="120.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientMobilePhoneDescription"
+                                                                   layoutX="300.0" layoutY="190.0" text="Description"
+                                                                   textFill="#d85751"/>
+                                                            <Label fx:id="addClientEmailDescription" layoutX="300.0"
+                                                                   layoutY="155.0" text="Description"
+                                                                   textFill="#d85751"/>
                                                         </children>
                                                     </AnchorPane>
                                                     <Label fx:id="addClientLabel" alignment="CENTER" layoutX="176.0"
