@@ -28,17 +28,17 @@ public class Client {
     private String job;
     private String position;
     private String registrationCity;
-    private MaritalStatus maritalStatus;
+    private String maritalStatus;
     private String citizenship;
-    private Disability disability;
-    private Retiree retiree;
+    private String disability;
+    private String retiree;
     private String monthlyIncome;
     private String idNumber;
 
     public Client() {
     }
 
-    public Client(int id, String name, String surname, String patronymic, String birthDate, String passportSeries, String passportNumber, String issuedBy, String issuedDate, String birthPlace, String actualResidenceCity, String actualResidenceAddress, String homeNumber, String mobileNumber, String email, String job, String position, String registrationCity, MaritalStatus maritalStatus, String citizenship, Disability disability, Retiree retiree, String monthlyIncome, String idNumber) {
+    public Client(int id, String name, String surname, String patronymic, String birthDate, String passportSeries, String passportNumber, String issuedBy, String issuedDate, String birthPlace, String actualResidenceCity, String actualResidenceAddress, String homeNumber, String mobileNumber, String email, String job, String position, String registrationCity, String maritalStatus, String citizenship, String disability, String retiree, String monthlyIncome, String idNumber) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -237,7 +237,7 @@ public class Client {
     public void setActualResidenceAddressDB(ConnectionClass conn, String actualResidenceAddress) {
         this.actualResidenceAddress = actualResidenceAddress;
         try {
-            String prepStat = "UPDATE clients SET Actual_residence_adress = ? WHERE id = ?";
+            String prepStat = "UPDATE clients SET Actual_residence_address = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
             preparedStatement.setInt(2, this.id);
             preparedStatement.setString(1, this.actualResidenceAddress);
@@ -334,7 +334,7 @@ public class Client {
     }
 
     public void setMaritalStatusDB(ConnectionClass conn, MaritalStatus maritalStatus) {
-        this.maritalStatus = (null == maritalStatus) ? MaritalStatus.Unknown : maritalStatus;
+        this.maritalStatus = maritalStatus.toString();
         try {
             String prepStat = "UPDATE clients SET Marital_status = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -369,7 +369,7 @@ public class Client {
     }
 
     public void setDisabilityDB(ConnectionClass conn, Disability disability) {
-        this.disability = disability;
+        this.disability = disability.toString();
         try {
             String prepStat = "UPDATE clients SET Disability = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -383,7 +383,7 @@ public class Client {
     }
 
     public void setRetireeDB(ConnectionClass conn, Retiree retiree) {
-        this.retiree = retiree;
+        this.retiree = retiree.toString();
         try {
             String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -584,12 +584,12 @@ public class Client {
         this.registrationCity = registrationCity;
     }
 
-    public MaritalStatus getMaritalStatus() {
+    public String getMaritalStatus() {
         return maritalStatus;
     }
 
     public void setMaritalStatus(MaritalStatus maritalStatus) {
-        this.maritalStatus = maritalStatus;
+        this.maritalStatus = maritalStatus.toString();
     }
 
     public String getCitizenship() {
@@ -600,20 +600,20 @@ public class Client {
         this.citizenship = citizenship;
     }
 
-    public Disability getDisability() {
+    public String getDisability() {
         return disability;
     }
 
     public void setDisability(Disability disability) {
-        this.disability = disability;
+        this.disability = disability.toString();
     }
 
-    public Retiree getRetiree() {
+    public String getRetiree() {
         return retiree;
     }
 
     public void setRetiree(Retiree retiree) {
-        this.retiree = retiree;
+        this.retiree = retiree.toString();
     }
 
     public String getMonthlyIncome() {

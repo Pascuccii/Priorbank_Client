@@ -206,8 +206,9 @@
                               </AnchorPane>
                            </children></AnchorPane>
                          <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-                                     prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                     prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0"
+                                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                     AnchorPane.topAnchor="0.0">
                            <children>
                               <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="462.0" prefWidth="573.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
@@ -542,7 +543,10 @@
                                 </content>
                               </ScrollPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                         <AnchorPane fx:id="menuPane3" layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0"
+                                     prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
+                                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                     AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane fx:id="menuPane31" layoutX="60.0" layoutY="31.0" prefHeight="76.0" prefWidth="513.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0">
                                  <children>
@@ -585,7 +589,9 @@
                                     <Button fx:id="databaseSettingsConnectButton" focusTraversable="false" layoutX="395.0" layoutY="111.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Connect" />
                                     <TextField fx:id="databaseSettingsUsernameTextField" layoutX="136.0" layoutY="74.0" prefWidth="240.0" text="root" />
                                     <PasswordField fx:id="databaseSettingsPasswordTextField" layoutX="136.0" layoutY="111.0" prefWidth="240.0" text="root" />
-                                    <Label fx:id="databaseSettingsConnectionStatusLabel" alignment="CENTER" layoutX="357.0" layoutY="77.0" prefHeight="18.0" prefWidth="126.0" />
+                                     <Label fx:id="databaseSettingsConnectionStatusLabel" alignment="CENTER"
+                                            layoutX="393.0" layoutY="13.0" prefHeight="82.0" prefWidth="103.0"
+                                            wrapText="true"/>
                                     <ProgressIndicator fx:id="databaseSettingsConnectionProgressIndicator" layoutX="480.0" layoutY="113.0" prefHeight="65.0" prefWidth="26.0" progress="0.08" visible="false" />
                                     <Button fx:id="connectionIndicator" focusTraversable="false" layoutX="472.0" layoutY="47.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" visible="false" AnchorPane.leftAnchor="472.0" AnchorPane.topAnchor="47.0" />
                                     <Label fx:id="menuPane1_DBLabel" focusTraversable="false" layoutX="392.0" layoutY="53.0" prefHeight="18.0" prefWidth="78.0" text="Database connection" visible="false" AnchorPane.leftAnchor="392.0" AnchorPane.topAnchor="53.0" />

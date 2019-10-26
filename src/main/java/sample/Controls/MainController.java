@@ -26,11 +26,9 @@ import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
 
 import java.io.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 @SuppressWarnings("ALL")
@@ -368,6 +366,7 @@ public class MainController extends Application {
     private TextField addClientAddressTextField;
     @FXML
     private MenuButton addClientMaritalStatusMenuButton;
+    private MaritalStatus addClientMaritalStatusValue;
     @FXML
     private MenuItem addClientMaritalStatusMenuItem_Single;
     @FXML
@@ -376,6 +375,7 @@ public class MainController extends Application {
     private MenuItem addClientMaritalStatusMenuItem_Divorced;
     @FXML
     private MenuButton addClientDisabilityMenuButton;
+    private Disability addClientDisabilityValue;
     @FXML
     private MenuItem addClientDisabilityMenuItem_FirstGroup;
     @FXML
@@ -386,6 +386,7 @@ public class MainController extends Application {
     private MenuItem addClientDisabilityMenuItem_No;
     @FXML
     private MenuButton addClientRetireeMenuButton;
+    private Retiree addClientRetireeValue;
     @FXML
     private MenuItem addClientRetireeMenuItem_Yes;
     @FXML
@@ -1298,15 +1299,42 @@ public class MainController extends Application {
         addClientDisabilityMenuButton.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(criteriaClientID.getText()));
         addClientRetireeMenuButton.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(criteriaClientID.getText()));
 
-        addClientMaritalStatusMenuItem_Single.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Single.getText()));
-        addClientMaritalStatusMenuItem_Married.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Married.getText()));
-        addClientMaritalStatusMenuItem_Divorced.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Divorced.getText()));
-        addClientDisabilityMenuItem_FirstGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_FirstGroup.getText()));
-        addClientDisabilityMenuItem_SecondGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_SecondGroup.getText()));
-        addClientDisabilityMenuItem_ThirdGroup.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_ThirdGroup.getText()));
-        addClientDisabilityMenuItem_No.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_No.getText()));
-        addClientRetireeMenuItem_Yes.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(addClientRetireeMenuItem_Yes.getText()));
-        addClientRetireeMenuItem_No.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(addClientRetireeMenuItem_No.getText()));
+        addClientMaritalStatusMenuItem_Single.setOnAction(actionEvent -> {
+            addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Single.getText());
+            addClientMaritalStatusValue = MaritalStatus.Single;
+        });
+        addClientMaritalStatusMenuItem_Married.setOnAction(actionEvent -> {
+            addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Married.getText());
+            addClientMaritalStatusValue = MaritalStatus.Married;
+        });
+        addClientMaritalStatusMenuItem_Divorced.setOnAction(actionEvent -> {
+            addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Divorced.getText());
+            addClientMaritalStatusValue = MaritalStatus.Divorced;
+        });
+        addClientDisabilityMenuItem_FirstGroup.setOnAction(actionEvent -> {
+            addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_FirstGroup.getText());
+            addClientDisabilityValue = Disability.First_group;
+        });
+        addClientDisabilityMenuItem_SecondGroup.setOnAction(actionEvent -> {
+            addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_SecondGroup.getText());
+            addClientDisabilityValue = Disability.Second_group;
+        });
+        addClientDisabilityMenuItem_ThirdGroup.setOnAction(actionEvent -> {
+            addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_ThirdGroup.getText());
+            addClientDisabilityValue = Disability.Third_group;
+        });
+        addClientDisabilityMenuItem_No.setOnAction(actionEvent -> {
+            addClientDisabilityMenuButton.setText(addClientDisabilityMenuItem_No.getText());
+            addClientDisabilityValue = Disability.No;
+        });
+        addClientRetireeMenuItem_Yes.setOnAction(actionEvent -> {
+            addClientRetireeMenuButton.setText(addClientRetireeMenuItem_Yes.getText());
+            addClientRetireeValue = Retiree.Yes;
+        });
+        addClientRetireeMenuItem_No.setOnAction(actionEvent -> {
+            addClientRetireeMenuButton.setText(addClientRetireeMenuItem_No.getText());
+            addClientRetireeValue = Retiree.No;
+        });
 
         addClientMobilePhoneTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             addClientMobilePhoneTextField.setStyle("-fx-border-color: transparent");
@@ -2528,16 +2556,16 @@ public class MainController extends Application {
                             Client data = getTableView().getItems().get(getIndex());
                             if (currentLanguage.equals("English")) {
                                 switch (data.getMaritalStatus()) {
-                                    case Single:
+                                    case "Single":
                                         toSet = "Single";
                                         break;
-                                    case Married:
+                                    case "Married":
                                         toSet = "Married";
                                         break;
-                                    case Divorced:
+                                    case "Divorced":
                                         toSet = "Divorced";
                                         break;
-                                    case Unknown:
+                                    case "Unknown":
                                         toSet = "Unknown";
                                         break;
                                     default:
@@ -2551,16 +2579,16 @@ public class MainController extends Application {
                             }
                             if (currentLanguage.equals("Russian")) {
                                 switch (data.getMaritalStatus()) {
-                                    case Single:
+                                    case "Single":
                                         toSet = "Не в браке";
                                         break;
-                                    case Married:
+                                    case "Married":
                                         toSet = "Женат/За мужем";
                                         break;
-                                    case Divorced:
+                                    case "Divorced":
                                         toSet = "Разведён/разведена";
                                         break;
-                                    case Unknown:
+                                    case "Unknown":
                                         toSet = "Не указано";
                                         break;
                                     default:
@@ -2630,19 +2658,19 @@ public class MainController extends Application {
                             Client data = getTableView().getItems().get(getIndex());
                             if (currentLanguage.equals("English")) {
                                 switch (data.getDisability()) {
-                                    case First_group:
+                                    case "First_group":
                                         toSet = "First group";
                                         break;
-                                    case Second_group:
+                                    case "Second_group":
                                         toSet = "Second group";
                                         break;
-                                    case Third_group:
+                                    case "Third_group":
                                         toSet = "Third group";
                                         break;
-                                    case No:
+                                    case "No":
                                         toSet = "No";
                                         break;
-                                    case Unknown:
+                                    case "Unknown":
                                         toSet = "Unknown";
                                         break;
                                     default:
@@ -2657,19 +2685,19 @@ public class MainController extends Application {
                             }
                             if (currentLanguage.equals("Russian")) {
                                 switch (data.getDisability()) {
-                                    case First_group:
+                                    case "First_group":
                                         toSet = "Первая группа";
                                         break;
-                                    case Second_group:
+                                    case "Second_group":
                                         toSet = "Вторая группа";
                                         break;
-                                    case Third_group:
+                                    case "Third_group":
                                         toSet = "Третья группа";
                                         break;
-                                    case No:
+                                    case "No":
                                         toSet = "Нет";
                                         break;
-                                    case Unknown:
+                                    case "Unknown":
                                         toSet = "Не указано";
                                         break;
                                     default:
@@ -2723,10 +2751,10 @@ public class MainController extends Application {
                             Client data = getTableView().getItems().get(getIndex());
                             if (currentLanguage.equals("English")) {
                                 switch (data.getRetiree()) {
-                                    case Yes:
+                                    case "Yes":
                                         toSet = "Yes";
                                         break;
-                                    case No:
+                                    case "No":
                                         toSet = "No";
                                         break;
                                     default:
@@ -2738,10 +2766,10 @@ public class MainController extends Application {
                             }
                             if (currentLanguage.equals("Russian")) {
                                 switch (data.getRetiree()) {
-                                    case Yes:
+                                    case "Yes":
                                         toSet = "Да";
                                         break;
-                                    case No:
+                                    case "No":
                                         toSet = "Нет";
                                         break;
                                     default:
@@ -3138,15 +3166,75 @@ public class MainController extends Application {
 
         if (result) {
             System.out.println("Good");
-          /*  try {
-                String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
+            Client toAdd = new Client();
+            if (!addClientMobilePhoneTextField.getText().trim().equals(""))
+                toAdd.setMobileNumber(addClientMobilePhoneTextField.getText().trim());
+            if (!addClientMonthlyIncomeTextField.getText().trim().equals(""))
+                toAdd.setMonthlyIncome(addClientMonthlyIncomeTextField.getText().trim());
+            if (!addClientEmailTextField.getText().trim().equals(""))
+                toAdd.setEmail(addClientEmailTextField.getText().trim());
+            if (!addClientHomePhoneTextField.getText().trim().equals(""))
+                toAdd.setHomeNumber(addClientHomePhoneTextField.getText().trim());
+            toAdd.setPassportSeries(addClientPassportSeriesTextField.getText().trim());
+            toAdd.setPassportNumber(addClientPassportNumberTextField.getText().trim());
+            toAdd.setBirthPlace(addClientBirthPlaceTextField.getText().trim());
+            toAdd.setCitizenship(addClientCitizenshipTextField.getText().trim());
+            toAdd.setIssuedBy(addClientIssuedByTextField.getText().trim());
+            toAdd.setIdNumber(addClientIDNumberTextField.getText().trim());
+            toAdd.setRegistrationCity(addClientRegistrationCityTextField.getText().trim());
+            toAdd.setName(addClientNameTextField.getText().trim());
+            if (!addClientPositionTextField.getText().trim().equals(""))
+                toAdd.setPosition(addClientPositionTextField.getText().trim());
+            toAdd.setPatronymic(addClientPatronymicTextField.getText().trim());
+            if (!addClientJobTextField.getText().trim().equals(""))
+                toAdd.setJob(addClientJobTextField.getText().trim());
+            toAdd.setSurname(addClientSurnameTextField.getText().trim());
+            toAdd.setActualResidenceCity(addClientCityTextField.getText().trim());
+            toAdd.setActualResidenceAddress(addClientAddressTextField.getText().trim());
+
+            toAdd.setIssuedDate(addClientIssuedDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            toAdd.setBirthDate(addClientBirthDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            toAdd.setMaritalStatus(addClientMaritalStatusValue);
+            toAdd.setDisability(addClientDisabilityValue);
+            toAdd.setRetiree(addClientRetireeValue);
+
+            System.out.println("!!!!!!" + toAdd);
+            try {
+                String prepStat =
+                        "INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Passport_series`, `Passport_number`," +
+                                "                              `Issued_by`, `Issued_date`, `Birth_place`, `Actual_residence_city`," +
+                                "                              `Actual_residence_address`, `Home_number`, `Mobile_number`, `Email`, `Job`, `Position`," +
+                                "                              `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`," +
+                                "                              `Monthly_income`, `Id_number`)" +
+                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                 PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
-                preparedStatement.setInt(2, this.id);
-                preparedStatement.setString(1, retiree.toString());
+                preparedStatement.setString(1, toAdd.getName());
+                preparedStatement.setString(2, toAdd.getSurname());
+                preparedStatement.setString(3, toAdd.getPatronymic());
+                preparedStatement.setDate(4, Date.valueOf(toAdd.getBirthDate()));
+                preparedStatement.setString(5, toAdd.getPassportSeries());
+                preparedStatement.setString(6, toAdd.getPassportNumber());
+                preparedStatement.setString(7, toAdd.getIssuedBy());
+                preparedStatement.setDate(8, Date.valueOf(toAdd.getIssuedDate()));
+                preparedStatement.setString(9, toAdd.getBirthPlace());
+                preparedStatement.setString(10, toAdd.getActualResidenceCity());
+                preparedStatement.setString(11, toAdd.getActualResidenceAddress());
+                preparedStatement.setString(12, toAdd.getHomeNumber());
+                preparedStatement.setString(13, toAdd.getMobileNumber());
+                preparedStatement.setString(14, toAdd.getEmail());
+                preparedStatement.setString(15, toAdd.getJob());
+                preparedStatement.setString(16, toAdd.getPosition());
+                preparedStatement.setString(17, toAdd.getRegistrationCity());
+                preparedStatement.setString(18, toAdd.getDisability());
+                preparedStatement.setString(19, toAdd.getMaritalStatus());
+                preparedStatement.setString(20, toAdd.getCitizenship());
+                preparedStatement.setString(21, toAdd.getRetiree());
+                preparedStatement.setString(22, toAdd.getMonthlyIncome());
+                preparedStatement.setString(23, toAdd.getIdNumber());
                 preparedStatement.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }*/
+            }
         } else {
             System.out.println("Not good");
         }
@@ -3173,6 +3261,5 @@ public class MainController extends Application {
         return true;
     }
 
-    // TODO: back-end формы добавления (осталась сама инъекция в БД)
-    //  сделать date-picker'ы в самой таблице
+    // TODO:
 }
