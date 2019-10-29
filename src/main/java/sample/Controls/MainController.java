@@ -40,7 +40,7 @@ public class MainController extends Application {
     private User currentUser;
     private String currentTheme;
     private String currentLanguage;
-    private DatabaseConnection conn;
+    private DatabaseConnection connDB;
     private ServerConnection connServer;
     private int theme = 0;
     private TableColumn maritalStatusColumn;
@@ -566,11 +566,19 @@ public class MainController extends Application {
     @FXML
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
-        conn =
+        connDB =
                 new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         connServer = new ServerConnection("127.0.0.1", 8189);
-        serverConnectButton.setOnAction(event -> connServer.sendUser(new User("geleb", "ggg")));
+
+        serverConnectButton.setOnAction(event -> initDataFromServerBuffer());
+
+        //       initUsersData();
+        //       initClientsData();
+
+
+
+
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("access_mode"));
@@ -606,10 +614,10 @@ public class MainController extends Application {
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -618,10 +626,10 @@ public class MainController extends Application {
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -630,10 +638,10 @@ public class MainController extends Application {
         patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         patronymicColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -644,10 +652,10 @@ public class MainController extends Application {
             String s = t.getNewValue().trim();
             System.out.println(s);
             if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -656,10 +664,10 @@ public class MainController extends Application {
         passportSeriesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportSeriesColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[a-zA-Z]{2}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -668,10 +676,10 @@ public class MainController extends Application {
         passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^\\d{7}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -680,10 +688,10 @@ public class MainController extends Application {
         issuedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         issuedByColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -694,10 +702,10 @@ public class MainController extends Application {
             String s = t.getNewValue().trim();
             System.out.println(s);
             if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -706,10 +714,10 @@ public class MainController extends Application {
         birthPlaceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         birthPlaceColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -718,10 +726,10 @@ public class MainController extends Application {
         actualResidenceCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -730,10 +738,10 @@ public class MainController extends Application {
         actualResidenceAddressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceAddressColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -742,10 +750,10 @@ public class MainController extends Application {
         homeNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         homeNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^\\d{7}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -754,10 +762,10 @@ public class MainController extends Application {
         mobileNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         mobileNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -766,10 +774,10 @@ public class MainController extends Application {
         emailClientColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         emailClientColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -778,10 +786,10 @@ public class MainController extends Application {
         jobColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         jobColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -790,10 +798,10 @@ public class MainController extends Application {
         positionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         positionColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 0)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -802,10 +810,10 @@ public class MainController extends Application {
         registrationCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         registrationCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -814,10 +822,10 @@ public class MainController extends Application {
         citizenshipColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         citizenshipColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -826,10 +834,10 @@ public class MainController extends Application {
         monthlyIncomeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         monthlyIncomeColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^[0-9]+(\\.[0-9]+)?$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -838,10 +846,10 @@ public class MainController extends Application {
         idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         idNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[A-Z0-9]{14}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberDB(conn, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberDB(connDB, t.getNewValue());
             else {
                 try {
-                    initClientsData();
+                    initClientsDataServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -900,9 +908,6 @@ public class MainController extends Application {
         addClientMonthlyIncomeDescription.getStyleClass().add("descriptionLabel");
         addClientMobilePhoneDescription.getStyleClass().add("descriptionLabel");
         addClientEmailDescription.getStyleClass().add("descriptionLabel");
-
-        initUsersData();
-        initClientsData();
         addButtonsToTable();
 
 
@@ -911,11 +916,11 @@ public class MainController extends Application {
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
             try {
-                conn =
+                connDB =
                         new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
-                initUsersData();
-                initClientsData();
+                initUsersDataServerServer();
+                initClientsDataServer();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -1193,7 +1198,7 @@ public class MainController extends Application {
             String enteredPassword = passwordField.getText();
 
             if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-                if (conn.isConnected()) {
+                if (connDB.isConnected()) {
                     for (User u : usersData)
                         if (enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
                             was = true;
@@ -1524,17 +1529,14 @@ public class MainController extends Application {
         resetSearchButton.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.setOnAction(actionEvent -> {
-            try {
+
                 searchFieldClient.clear();
-                initClientsData();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            initClientsDataServerServer();
         });
         resetSearchButton.setOnAction(actionEvent -> {
             try {
                 searchField.clear();
-                initUsersData();
+                initUsersDataServer();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -1552,6 +1554,7 @@ public class MainController extends Application {
         databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
 
         translate("English");
+        initDataFromServerBuffer();
         loadLastConfig();
         loginBegin();
     } //INITIALIZE
@@ -1619,7 +1622,7 @@ public class MainController extends Application {
             case "English":
                 currentLanguage = "English";
                 if (currentUser != null)
-                    currentUser.setLanguageDB(conn, "English");
+                    currentUser.setLanguageDB(connDB, "English");
                 searchField.setPromptText("Search...");
                 searchFieldClient.setPromptText("Search...");
                 languageButton.setText("English");
@@ -1803,7 +1806,7 @@ public class MainController extends Application {
             case "Russian":
                 currentLanguage = "Russian";
                 if (currentUser != null)
-                    currentUser.setLanguageDB(conn, "Russian");
+                    currentUser.setLanguageDB(connDB, "Russian");
                 searchField.setPromptText("Искать...");
                 searchFieldClient.setPromptText("Искать...");
                 languageButton.setText("Русский");
@@ -1982,7 +1985,7 @@ public class MainController extends Application {
                 break;
         }
         clientsTable.refresh();
-        //initClientsData();
+        //initClientsDataServer();
     }
 
     private void setTheme(String theme) throws SQLException {
@@ -1993,7 +1996,7 @@ public class MainController extends Application {
                 themeButton.setText("Dark");
                 currentTheme = "Dark";
                 if (currentUser != null)
-                    currentUser.setThemeDB(conn, "Dark");
+                    currentUser.setThemeDB(connDB, "Dark");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
                 fixImage.setImage(new Image("assets/fix-black.png"));
@@ -2003,7 +2006,7 @@ public class MainController extends Application {
                 themeButton.setText("Light");
                 currentTheme = "Light";
                 if (currentUser != null)
-                    currentUser.setThemeDB(conn, "Light");
+                    currentUser.setThemeDB(connDB, "Light");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
                 fixImage.setImage(new Image("assets/fix-white.png"));
@@ -2097,7 +2100,7 @@ public class MainController extends Application {
 
         settingsWarningLabel.setStyle("-fx-text-fill: #d85751");
         if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-            if (conn.isConnected()) {
+            if (connDB.isConnected()) {
                 for (User u : usersData)
                     if (enteredUsername.equals(u.getUsername()) && currentUser.getId() != u.getId()) {
                         was = true;
@@ -2108,13 +2111,13 @@ public class MainController extends Application {
                     try {
                         String prepStat =
                                 "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ? WHERE (`id` = ?);";
-                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, enteredUsername);
                         preparedStatement.setString(2, enteredPassword);
                         preparedStatement.setString(3, enteredEmail);
                         preparedStatement.setInt(4, currentUser.getId());
                         preparedStatement.execute();
-                        initUsersData();
+                        initUsersDataServer();
                         settingsWarningLabel.setStyle("-fx-text-fill: #7f8e55");
                         settingsWarningLabel.setText("Account information saved");
                     } catch (SQLException e) {
@@ -2140,7 +2143,7 @@ public class MainController extends Application {
 
         if (submitId()) {
             if (!(enteredPassword.length() < 3 && enteredUsername.length() < 3)) {
-                if (conn.isConnected()) {
+                if (connDB.isConnected()) {
                     for (User u : usersData)
                         if (enteredUsername.equals(u.getUsername())) {
                             was = true;
@@ -2155,14 +2158,14 @@ public class MainController extends Application {
                         try {
                             String prepStat =
                                     "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ?, `access_mode` = ? WHERE (`id` = ?);";
-                            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                            PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                             preparedStatement.setString(1, enteredUsername);
                             preparedStatement.setString(2, enteredPassword);
                             preparedStatement.setString(3, enteredEmail);
                             preparedStatement.setInt(4, enteredAccessMode);
                             preparedStatement.setInt(5, enteredId);
                             preparedStatement.execute();
-                            initUsersData();
+                            initUsersDataServer();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -2176,7 +2179,7 @@ public class MainController extends Application {
     private boolean submitId() {
         if (StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText())) {
             int id = Integer.parseInt(changeUser_AnchorPane_Id.getText());
-            if (conn.isConnected())
+            if (connDB.isConnected())
                 for (User u : usersData)
                     if (id == u.getId()) {
                         changeUser_AnchorPane_Username.setText(u.getUsername());
@@ -2198,9 +2201,9 @@ public class MainController extends Application {
             deleteUserTextField.setText("");
             try {
                 String prepStat = "DELETE FROM `test`.`users` WHERE (`id` > -1)";
-                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                 preparedStatement.execute();
-                initUsersData();
+                initUsersDataServer();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -2211,10 +2214,10 @@ public class MainController extends Application {
                     deleteUserTextField.setText("");
                     try {
                         String prepStat = "DELETE FROM `test`.`users` WHERE (`id` = ?)";
-                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                         preparedStatement.setInt(1, Integer.parseInt(id));
                         preparedStatement.execute();
-                        initUsersData();
+                        initUsersDataServer();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -2231,7 +2234,7 @@ public class MainController extends Application {
         boolean was = false;
 
         if (!(password.length() < 3 || username.length() < 3)) {
-            if (conn.isConnected()) {
+            if (connDB.isConnected()) {
                 for (User u : usersData)
                     if (username.equals(u.getUsername())) {
                         was = true;
@@ -2245,13 +2248,13 @@ public class MainController extends Application {
                     try {
                         String prepStat =
                                 "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
-                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, username);
                         preparedStatement.setString(2, password);
                         preparedStatement.setString(3, email);
                         preparedStatement.setInt(4, access_mode);
                         preparedStatement.execute();
-                        initUsersData();
+                        initUsersDataServer();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -2274,7 +2277,7 @@ public class MainController extends Application {
         boolean was = false;
 
         if (!(password.length() < 3 || username.length() < 3)) {
-            if (conn.isConnected()) {
+            if (connDB.isConnected()) {
                 for (User u : usersData)
                     if (username.equals(u.getUsername())) {
                         was = true;
@@ -2284,11 +2287,11 @@ public class MainController extends Application {
                 if (!was) {
                     try {
                         String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
-                        PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                         preparedStatement.setString(1, username);
                         preparedStatement.setString(2, password);
                         preparedStatement.execute();
-                        initUsersData();
+                        initUsersDataServer();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -2310,7 +2313,7 @@ public class MainController extends Application {
 
         databaseSettingsConnectionStatusLabel.setStyle("-fx-text-fill: #d85751");
         if (!(enteredUsername.length() < 3 || enteredPassword.length() < 3))
-            switch (conn.setConnection(enteredURL, enteredUsername, enteredPassword)) {
+            switch (connDB.setConnection(enteredURL, enteredUsername, enteredPassword)) {
                 case 1:
                     databaseSettingsConnectionStatusLabel.setStyle("-fx-text-fill: #7f8e55");
                     databaseSettingsConnectionStatusLabel.setText("Connected!");
@@ -2424,12 +2427,12 @@ public class MainController extends Application {
         }
     }
 
-    private void initUsersData() throws SQLException {
-        if (conn.isConnected()) {
+    private void initUsersDataServer() throws SQLException {
+        if (connDB.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             usersTable.setItems(usersData);
-            Statement statement = conn.getConnection().createStatement();
-            Statement statement2 = conn.getConnection().createStatement();
+            Statement statement = connDB.getConnection().createStatement();
+            Statement statement2 = connDB.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT  * FROM users");
             usersData.clear();
 
@@ -2454,11 +2457,11 @@ public class MainController extends Application {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
     }
 
-    private void initClientsData() throws SQLException {
-        if (conn.isConnected()) {
+    private void initClientsDataServer() throws SQLException {
+        if (connDB.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
-            Statement statement = conn.getConnection().createStatement();
-            Statement statement2 = conn.getConnection().createStatement();
+            Statement statement = connDB.getConnection().createStatement();
+            Statement statement2 = connDB.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM clients");
             clientsTable.setItems(clientsData);
             clientsData.clear();
@@ -2498,6 +2501,21 @@ public class MainController extends Application {
 
     }
 
+    private void initClientsDataServerServer() {
+        clientsTable.setItems(clientsData);
+        clientsData.clear();
+        for (Client c : connServer.getClientList())
+            clientsData.add(c);
+    }
+
+    private void initUsersDataServerServer() {
+        usersTable.setItems(usersData);
+        usersData.clear();
+        for (User u : connServer.getUserList())
+            usersData.add(u);
+    }
+
+
     private void addButtonsToTable() {
         maritalStatusColumn = new TableColumn("Marital Status");
         disabilityColumn = new TableColumn("Disability");
@@ -2532,22 +2550,22 @@ public class MainController extends Application {
                         btn.setMinWidth(170);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(conn, MaritalStatus.Single);
+                            data.setMaritalStatusDB(connDB, MaritalStatus.Single);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(conn, MaritalStatus.Married);
+                            data.setMaritalStatusDB(connDB, MaritalStatus.Married);
                             btn.setText(mi2.getText());
                         });
                         mi3.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(conn, MaritalStatus.Divorced);
+                            data.setMaritalStatusDB(connDB, MaritalStatus.Divorced);
                             btn.setText(mi3.getText());
                         });
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(conn, MaritalStatus.Unknown);
+                            data.setMaritalStatusDB(connDB, MaritalStatus.Unknown);
                             btn.setText(mi4.getText());
                         });
                     }
@@ -2629,27 +2647,27 @@ public class MainController extends Application {
                         btn.setMinWidth(170);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(conn, Disability.First_group);
+                            data.setDisabilityDB(connDB, Disability.First_group);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(conn, Disability.Second_group);
+                            data.setDisabilityDB(connDB, Disability.Second_group);
                             btn.setText(mi2.getText());
                         });
                         mi3.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(conn, Disability.Third_group);
+                            data.setDisabilityDB(connDB, Disability.Third_group);
                             btn.setText(mi3.getText());
                         });
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(conn, Disability.No);
+                            data.setDisabilityDB(connDB, Disability.No);
                             btn.setText(mi4.getText());
                         });
                         mi5.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(conn, Disability.Unknown);
+                            data.setDisabilityDB(connDB, Disability.Unknown);
                             btn.setText(mi4.getText());
                         });
                     }
@@ -2737,12 +2755,12 @@ public class MainController extends Application {
                         btn.setMinWidth(70);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setRetireeDB(conn, Retiree.Yes);
+                            data.setRetireeDB(connDB, Retiree.Yes);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setRetireeDB(conn, Retiree.No);
+                            data.setRetireeDB(connDB, Retiree.No);
                             btn.setText(mi2.getText());
                         });
                     }
@@ -2804,9 +2822,9 @@ public class MainController extends Application {
                         btn.setMinWidth(15);
                         btn.setPrefWidth(15);
                         btn.setOnAction(event -> {
-                            getTableView().getItems().get(getIndex()).deleteDB(conn);
+                            getTableView().getItems().get(getIndex()).deleteDB(connDB);
                             try {
-                                initClientsData();
+                                initClientsDataServer();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -2871,7 +2889,7 @@ public class MainController extends Application {
 
     private void searchUser() {
         try {
-            initUsersData();
+            initUsersDataServer();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -2919,7 +2937,7 @@ public class MainController extends Application {
 
     private void searchClient() {
         try {
-            initClientsData();
+            initClientsDataServer();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -3212,7 +3230,7 @@ public class MainController extends Application {
                                 "                              `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`," +
                                 "                              `Monthly_income`, `Id_number`)" +
                                 "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                 preparedStatement.setString(1, toAdd.getName());
                 preparedStatement.setString(2, toAdd.getSurname());
                 preparedStatement.setString(3, toAdd.getPatronymic());
@@ -3264,6 +3282,22 @@ public class MainController extends Application {
             }
         }
         return true;
+    }
+
+    private void initDataFromServerBuffer() {
+        connServer.sendString("init");
+        for (int i = 0; i < 10; i++) {
+            if (!connServer.isInProcess()) {
+                initUsersDataServerServer();
+                initClientsDataServerServer();
+                i = 15;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // TODO: TCP

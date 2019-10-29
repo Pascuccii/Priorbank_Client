@@ -1,12 +1,21 @@
 package sample.Connectivity;
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import sample.Controls.Client;
 import sample.Controls.User;
 
 import java.io.IOException;
 
 public class ServerConnection implements TCPConnectionListener {
 
+
+    private ObservableList<User> userList = FXCollections.observableArrayList();
+    private ObservableList<Client> clientList = FXCollections.observableArrayList();
+    private String mode = "User";
+    private int cnt = 0;
+    private boolean inProcess = false;
     private TCPConnection connection;
 
     public ServerConnection(String ip, int port) {
@@ -23,11 +32,25 @@ public class ServerConnection implements TCPConnectionListener {
     }
 
     @Override
-    public void onReceiveString(TCPConnection tcpConnection, String value) {
-        User b;
-        if (value.equals("1"))
-            //b = (User) tcpConnection.receiveUser();
-            System.out.println(tcpConnection.receiveUser());
+    public synchronized void onReceiveString(TCPConnection tcpConnection, String value) {
+        if (value.equals("END"))
+            inProcess = false;
+        String[] vals = value.split(" ");
+        if (cnt == 0) {
+            if (value.matches("\\d USERS:")) {
+                cnt = Integer.parseInt(vals[0]);
+                mode = "User";
+            } else if (value.matches("\\d CLIENTS:")) {
+                cnt = Integer.parseInt(vals[0]);
+                mode = "Client";
+            }
+        } else {
+            cnt--;
+            if (mode.equals("User"))
+                userList.add(new User(value));
+            if (mode.equals("Client"))
+                clientList.add(new Client(value));
+        }
     }
 
     @Override
@@ -41,17 +64,37 @@ public class ServerConnection implements TCPConnectionListener {
     }
 
     public void sendString(String msg) {
+        if (msg.equals("init"))
+            inProcess = true;
         if (!msg.equals(""))
             connection.sendString(msg);
-    }
-
-    public void sendUser(User user) {
-        sendString("1");
-        connection.sendUser(user);
     }
 
     private synchronized void printMessage(String msg) {
         System.out.println(msg);
     }
 
+    public ObservableList<User> getUserList() {
+        return userList;
+    }
+
+    public ObservableList<Client> getClientList() {
+        return clientList;
+    }
+
+    public void printUsersBuffer() {
+        System.out.println("Buffered users:");
+        for (User u : userList)
+            System.out.println(u);
+    }
+
+    public void printClientsBuffer() {
+        System.out.println("Buffered clients:");
+        for (Client c : clientList)
+            System.out.println(c);
+    }
+
+    public boolean isInProcess() {
+        return inProcess;
+    }
 }

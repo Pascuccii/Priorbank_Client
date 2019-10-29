@@ -41,6 +41,36 @@ public class Client implements Serializable {
     public Client() {
     }
 
+    public Client(String client) {
+        //0  1    2      3          4          5  6       7                          8          9     10    11                         12      13                  14                  15     16  17    18      19       20 21 22     23
+        //93#Глеб#Скачко#Дмитриевич#2000-08-09#MP#3418583#Первомайский РУВД г.Минска#2015-08-09#Минск#Минск#Самоцветная улица, дом 131#2943455#+375 (44) 543-53-90#skachko42@gmail.com#Google#CEO#Минск#Married#Беларусь#No#No#1300.0#4729553F119PB4
+        String[] vals = client.split("#");
+        this.id = Integer.parseInt(vals[0]);
+        this.name = vals[1];
+        this.surname = vals[2];
+        this.patronymic = vals[3];
+        this.birthDate = vals[4];
+        this.passportSeries = vals[5];
+        this.passportNumber = vals[6];
+        this.issuedBy = vals[7];
+        this.issuedDate = vals[8];
+        this.birthPlace = vals[9];
+        this.actualResidenceCity = vals[10];
+        this.actualResidenceAddress = vals[11];
+        this.homeNumber = vals[12];
+        this.mobileNumber = vals[13];
+        this.email = vals[14];
+        this.job = vals[15];
+        this.position = vals[16];
+        this.registrationCity = vals[17];
+        this.maritalStatus = vals[18];
+        this.citizenship = vals[19];
+        this.disability = vals[20];
+        this.retiree = vals[21];
+        this.monthlyIncome = vals[22];
+        this.idNumber = vals[23];
+    }
+
     public Client(int id, String name, String surname, String patronymic, String birthDate, String passportSeries, String passportNumber, String issuedBy, String issuedDate, String birthPlace, String actualResidenceCity, String actualResidenceAddress, String homeNumber, String mobileNumber, String email, String job, String position, String registrationCity, String maritalStatus, String citizenship, String disability, String retiree, String monthlyIncome, String idNumber) {
         this.id = id;
         this.name = name;

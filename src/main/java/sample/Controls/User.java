@@ -25,6 +25,19 @@ public class User implements Serializable {
         this.theme = "Dark";
         this.language = "English";
     }
+
+    public User(String user) {
+        //25 0 anton anton  Dark English
+        String[] vals = user.split("#");
+        this.id = Integer.parseInt(vals[0]);
+        this.accessMode = Integer.parseInt(vals[1]);
+        this.username = vals[2];
+        this.password = vals[3];
+        this.email = vals[4];
+        this.theme = vals[5];
+        this.language = vals[6];
+    }
+
     public User(String username, String password) {
         this.id = 0;
         this.accessMode = 0;
