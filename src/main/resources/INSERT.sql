@@ -55,14 +55,6 @@ INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Pa
                               `Actual_residence_address`, `Home_number`, `Mobile_number`, `Email`, `Job`, `Position`,
                               `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`,
                               `Monthly_income`, `Id_number`)
-VALUES ('Яков', 'Чухрай', 'Сергеевич', '1984-07-05', 'PP', '7446209', 'Гродненский РОВД', '2013-12-16', 'Минск',
-        'Минск', 'Солтыса переулок, дом 13, кв 22', '2316495', '+375 (29) 277-48-14', 'online777@tut.by', 'IBM', 'HR',
-        'Минск', 'Second_group', 'Married', 'Беларусь', 'No', '620', '4538861S119PB4');
-INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Passport_series`, `Passport_number`,
-                              `Issued_by`, `Issued_date`, `Birth_place`, `Actual_residence_city`,
-                              `Actual_residence_address`, `Home_number`, `Mobile_number`, `Email`, `Job`, `Position`,
-                              `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`,
-                              `Monthly_income`, `Id_number`)
 VALUES ('Жерар', 'Пилипейко', 'Валерьевич', '1989-09-18', 'MP', '6502020', 'Мостовский РОВД', '2013-02-21', 'Витебск',
         'Минск', 'Седых улица, дом 13, кв 22', '2223185', '+375 (17) 123-55-29', 'bel.j111@gmail.com', 'АТЛАНТ',
         'Консультант', 'Минск', 'First_group', 'Divorced', 'Беларусь', 'No', '290', '9748561R119PB4');

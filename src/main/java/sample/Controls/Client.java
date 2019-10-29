@@ -1,15 +1,18 @@
 package sample.Controls;
 
-import sample.Connectivity.ConnectionClass;
+import sample.Connectivity.DatabaseConnection;
 import sample.enums.Disability;
 import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
-public class Client {
+public class Client implements Serializable {
+    
     private int id;
     private String name;
     private String surname;
@@ -66,11 +69,11 @@ public class Client {
     }
 
     //DB
-    public void setIdDB(ConnectionClass conn, int id) {
+    public void setIdDB(DatabaseConnection conn, int id) {
         this.id = id;
     }
 
-    public void setNameDB(ConnectionClass conn, String name) {
+    public void setNameDB(DatabaseConnection conn, String name) {
         name = name.trim();
         if (name.matches("[а-яА-Я]{2,20}")) {
             this.name = name;
@@ -86,7 +89,7 @@ public class Client {
         }
     }
 
-    public void setSurnameDB(ConnectionClass conn, String surname) {
+    public void setSurnameDB(DatabaseConnection conn, String surname) {
         surname = surname.trim();
         if (surname.matches("[а-яА-Я]{2,20}")) {
             this.surname = surname;
@@ -102,7 +105,7 @@ public class Client {
         }
     }
 
-    public void setPatronymicDB(ConnectionClass conn, String patronymic) {
+    public void setPatronymicDB(DatabaseConnection conn, String patronymic) {
         patronymic = patronymic.trim();
         if (patronymic.matches("[а-яА-Я]{2,30}")) {
             this.patronymic = patronymic;
@@ -118,7 +121,7 @@ public class Client {
         }
     }
 
-    public void setBirthDateDB(ConnectionClass conn, String birthDate) {
+    public void setBirthDateDB(DatabaseConnection conn, String birthDate) {
         birthDate = birthDate.trim();
         if (birthDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
             this.birthDate = birthDate;
@@ -134,7 +137,7 @@ public class Client {
         }
     }
 
-    public void setPassportSeriesDB(ConnectionClass conn, String passportSeries) {
+    public void setPassportSeriesDB(DatabaseConnection conn, String passportSeries) {
         this.passportSeries = passportSeries;
         try {
             String prepStat = "UPDATE clients SET Passport_series = ? WHERE id = ?";
@@ -147,7 +150,7 @@ public class Client {
         }
     }
 
-    public void setPassportNumberDB(ConnectionClass conn, String passportNumber) {
+    public void setPassportNumberDB(DatabaseConnection conn, String passportNumber) {
         passportNumber = passportNumber.trim();
         if (passportNumber.matches("^\\d{7}$")) {
             this.passportNumber = passportNumber;
@@ -163,7 +166,7 @@ public class Client {
         }
     }
 
-    public void setIssuedByDB(ConnectionClass conn, String issuedBy) {
+    public void setIssuedByDB(DatabaseConnection conn, String issuedBy) {
         this.issuedBy = issuedBy;
         try {
             String prepStat = "UPDATE clients SET Issued_by = ? WHERE id = ?";
@@ -176,7 +179,7 @@ public class Client {
         }
     }
 
-    public void setIssuedDateDB(ConnectionClass conn, String issuedDate) {
+    public void setIssuedDateDB(DatabaseConnection conn, String issuedDate) {
         issuedDate = issuedDate.trim();
         if (issuedDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
             this.issuedDate = issuedDate;
@@ -192,7 +195,7 @@ public class Client {
         }
     }
 
-    public void setBirthPlaceDB(ConnectionClass conn, String birthPlace) {
+    public void setBirthPlaceDB(DatabaseConnection conn, String birthPlace) {
         boolean exists = true;
         /*try {
             City.valueOf(birthPlace);
@@ -213,7 +216,7 @@ public class Client {
         }
     }
 
-    public void setActualResidenceCityDB(ConnectionClass conn, String actualResidenceCity) {
+    public void setActualResidenceCityDB(DatabaseConnection conn, String actualResidenceCity) {
         boolean exists = true;
         /*try {
             City.valueOf(actualResidenceCity);
@@ -234,7 +237,7 @@ public class Client {
         }
     }
 
-    public void setActualResidenceAddressDB(ConnectionClass conn, String actualResidenceAddress) {
+    public void setActualResidenceAddressDB(DatabaseConnection conn, String actualResidenceAddress) {
         this.actualResidenceAddress = actualResidenceAddress;
         try {
             String prepStat = "UPDATE clients SET Actual_residence_address = ? WHERE id = ?";
@@ -247,7 +250,7 @@ public class Client {
         }
     }
 
-    public void setHomeNumberDB(ConnectionClass conn, String homeNumber) {
+    public void setHomeNumberDB(DatabaseConnection conn, String homeNumber) {
         this.homeNumber = homeNumber;
         try {
             String prepStat = "UPDATE clients SET Home_number = ? WHERE id = ?";
@@ -260,7 +263,7 @@ public class Client {
         }
     }
 
-    public void setMobileNumberDB(ConnectionClass conn, String mobileNumber) {
+    public void setMobileNumberDB(DatabaseConnection conn, String mobileNumber) {
         this.mobileNumber = mobileNumber;
         try {
             String prepStat = "UPDATE clients SET Mobile_number = ? WHERE id = ?";
@@ -273,7 +276,7 @@ public class Client {
         }
     }
 
-    public void setEmailDB(ConnectionClass conn, String email) {
+    public void setEmailDB(DatabaseConnection conn, String email) {
         this.email = email;
         try {
             String prepStat = "UPDATE clients SET Email = ? WHERE id = ?";
@@ -286,7 +289,7 @@ public class Client {
         }
     }
 
-    public void setJobDB(ConnectionClass conn, String job) {
+    public void setJobDB(DatabaseConnection conn, String job) {
         this.job = job;
         try {
             String prepStat = "UPDATE clients SET Job = ? WHERE id = ?";
@@ -299,7 +302,7 @@ public class Client {
         }
     }
 
-    public void setPositionDB(ConnectionClass conn, String position) {
+    public void setPositionDB(DatabaseConnection conn, String position) {
         this.position = position;
         try {
             String prepStat = "UPDATE clients SET Position = ? WHERE id = ?";
@@ -312,7 +315,7 @@ public class Client {
         }
     }
 
-    public void setRegistrationCityDB(ConnectionClass conn, String registrationCity) {
+    public void setRegistrationCityDB(DatabaseConnection conn, String registrationCity) {
         boolean exists = true;
         /*try {
             City.valueOf(registrationCity);
@@ -333,7 +336,7 @@ public class Client {
         }
     }
 
-    public void setMaritalStatusDB(ConnectionClass conn, MaritalStatus maritalStatus) {
+    public void setMaritalStatusDB(DatabaseConnection conn, MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus.toString();
         try {
             String prepStat = "UPDATE clients SET Marital_status = ? WHERE id = ?";
@@ -347,7 +350,7 @@ public class Client {
         }
     }
 
-    public void setCitizenshipDB(ConnectionClass conn, String citizenship) {
+    public void setCitizenshipDB(DatabaseConnection conn, String citizenship) {
         boolean exists = true;
         /*try {
             City.valueOf(citizenship);
@@ -368,7 +371,7 @@ public class Client {
         }
     }
 
-    public void setDisabilityDB(ConnectionClass conn, Disability disability) {
+    public void setDisabilityDB(DatabaseConnection conn, Disability disability) {
         this.disability = disability.toString();
         try {
             String prepStat = "UPDATE clients SET Disability = ? WHERE id = ?";
@@ -382,13 +385,12 @@ public class Client {
         }
     }
 
-    public void setRetireeDB(ConnectionClass conn, Retiree retiree) {
+    public void setRetireeDB(DatabaseConnection conn, Retiree retiree) {
         this.retiree = retiree.toString();
         try {
             String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
             preparedStatement.setInt(2, this.id);
-            assert retiree != null;
             preparedStatement.setString(1, retiree.toString());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -396,7 +398,7 @@ public class Client {
         }
     }
 
-    public void setMonthlyIncomeDB(ConnectionClass conn, String monthlyIncome) {
+    public void setMonthlyIncomeDB(DatabaseConnection conn, String monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
         try {
             String prepStat = "UPDATE clients SET Monthly_income = ? WHERE id = ?";
@@ -409,20 +411,21 @@ public class Client {
         }
     }
 
-    public void setIdNumberDB(ConnectionClass conn, String idNumber) {
+    public void setIdNumberDB(DatabaseConnection conn, String idNumber) {
         this.idNumber = idNumber;
         try {
             String prepStat = "UPDATE clients SET Id_number = ? WHERE id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
             preparedStatement.setInt(2, this.id);
             preparedStatement.setString(1, this.idNumber);
+            System.out.println(Arrays.toString(prepStat.getBytes()));
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteDB(ConnectionClass conn) {
+    public void deleteDB(DatabaseConnection conn) {
         try {
             String prepStat = "DELETE FROM clients WHERE Id = ?";
             PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -632,6 +635,377 @@ public class Client {
         this.idNumber = idNumber;
     }
 
+
+    public void setIdServer(DatabaseConnection conn, int id) {
+        this.id = id;
+    }
+
+    public void setNameServer(DatabaseConnection conn, String name) {
+        name = name.trim();
+        if (name.matches("[а-яА-Я]{2,20}")) {
+            this.name = name;
+            try {
+                String prepStat = "UPDATE clients SET Name = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, name);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setSurnameServer(DatabaseConnection conn, String surname) {
+        surname = surname.trim();
+        if (surname.matches("[а-яА-Я]{2,20}")) {
+            this.surname = surname;
+            try {
+                String prepStat = "UPDATE clients SET Surname = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, surname);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setPatronymicServer(DatabaseConnection conn, String patronymic) {
+        patronymic = patronymic.trim();
+        if (patronymic.matches("[а-яА-Я]{2,30}")) {
+            this.patronymic = patronymic;
+            try {
+                String prepStat = "UPDATE clients SET Patronymic = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, patronymic);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setBirthDateServer(DatabaseConnection conn, String birthDate) {
+        birthDate = birthDate.trim();
+        if (birthDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
+            this.birthDate = birthDate;
+            try {
+                String prepStat = "UPDATE clients SET Birth_date = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setDate(1, Date.valueOf(this.birthDate));
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setPassportSeriesServer(DatabaseConnection conn, String passportSeries) {
+        this.passportSeries = passportSeries;
+        try {
+            String prepStat = "UPDATE clients SET Passport_series = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.passportSeries);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPassportNumberServer(DatabaseConnection conn, String passportNumber) {
+        passportNumber = passportNumber.trim();
+        if (passportNumber.matches("^\\d{7}$")) {
+            this.passportNumber = passportNumber;
+            try {
+                String prepStat = "UPDATE clients SET Passport_number = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, this.passportNumber);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setIssuedByServer(DatabaseConnection conn, String issuedBy) {
+        this.issuedBy = issuedBy;
+        try {
+            String prepStat = "UPDATE clients SET Issued_by = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.issuedBy);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setIssuedDateServer(DatabaseConnection conn, String issuedDate) {
+        issuedDate = issuedDate.trim();
+        if (issuedDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
+            this.issuedDate = issuedDate;
+            try {
+                String prepStat = "UPDATE clients SET Issued_date = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setDate(1, Date.valueOf(this.issuedDate));
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setBirthPlaceServer(DatabaseConnection conn, String birthPlace) {
+        boolean exists = true;
+        /*try {
+            City.valueOf(birthPlace);
+        } catch (IllegalArgumentException e) {
+            exists = false;
+        }*/
+        if (exists) {
+            this.birthPlace = birthPlace;
+            try {
+                String prepStat = "UPDATE clients SET Birth_place = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, this.birthPlace);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setActualResidenceCityServer(DatabaseConnection conn, String actualResidenceCity) {
+        boolean exists = true;
+        /*try {
+            City.valueOf(actualResidenceCity);
+        } catch (IllegalArgumentException e) {
+            exists = false;
+        }*/
+        if (exists) {
+            this.actualResidenceCity = actualResidenceCity;
+            try {
+                String prepStat = "UPDATE clients SET Actual_residence_city = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, this.actualResidenceCity);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setActualResidenceAddressServer(DatabaseConnection conn, String actualResidenceAddress) {
+        this.actualResidenceAddress = actualResidenceAddress;
+        try {
+            String prepStat = "UPDATE clients SET Actual_residence_address = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.actualResidenceAddress);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setHomeNumberServer(DatabaseConnection conn, String homeNumber) {
+        this.homeNumber = homeNumber;
+        try {
+            String prepStat = "UPDATE clients SET Home_number = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.homeNumber);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMobileNumberServer(DatabaseConnection conn, String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+        try {
+            String prepStat = "UPDATE clients SET Mobile_number = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.mobileNumber);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setEmailServer(DatabaseConnection conn, String email) {
+        this.email = email;
+        try {
+            String prepStat = "UPDATE clients SET Email = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.email);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setJobServer(DatabaseConnection conn, String job) {
+        this.job = job;
+        try {
+            String prepStat = "UPDATE clients SET Job = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.job);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPositionServer(DatabaseConnection conn, String position) {
+        this.position = position;
+        try {
+            String prepStat = "UPDATE clients SET Position = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.position);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setRegistrationCityServer(DatabaseConnection conn, String registrationCity) {
+        boolean exists = true;
+        /*try {
+            City.valueOf(registrationCity);
+        } catch (IllegalArgumentException e) {
+            exists = false;
+        }*/
+        if (exists) {
+            this.registrationCity = registrationCity;
+            try {
+                String prepStat = "UPDATE clients SET Registration_city = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, this.registrationCity);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setMaritalStatusServer(DatabaseConnection conn, MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus.toString();
+        try {
+            String prepStat = "UPDATE clients SET Marital_status = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            assert maritalStatus != null;
+            preparedStatement.setString(1, maritalStatus.toString());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCitizenshipServer(DatabaseConnection conn, String citizenship) {
+        boolean exists = true;
+        /*try {
+            City.valueOf(citizenship);
+        } catch (IllegalArgumentException e) {
+            exists = false;
+        }*/
+        if (exists) {
+            this.citizenship = citizenship;
+            try {
+                String prepStat = "UPDATE clients SET Citizenship = ? WHERE id = ?";
+                PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+                preparedStatement.setInt(2, this.id);
+                preparedStatement.setString(1, this.citizenship);
+                preparedStatement.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setDisabilityServer(DatabaseConnection conn, Disability disability) {
+        this.disability = disability.toString();
+        try {
+            String prepStat = "UPDATE clients SET Disability = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            assert disability != null;
+            preparedStatement.setString(1, disability.toString());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setRetireeServer(DatabaseConnection conn, Retiree retiree) {
+        this.retiree = retiree.toString();
+        try {
+            String prepStat = "UPDATE clients SET Is_retiree = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, retiree.toString());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMonthlyIncomeServer(DatabaseConnection conn, String monthlyIncome) {
+        this.monthlyIncome = monthlyIncome;
+        try {
+            String prepStat = "UPDATE clients SET Monthly_income = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setDouble(1, Double.parseDouble(this.monthlyIncome));
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setIdNumberServer(DatabaseConnection conn, String idNumber) {
+        this.idNumber = idNumber;
+        try {
+            String prepStat = "UPDATE clients SET Id_number = ? WHERE id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(2, this.id);
+            preparedStatement.setString(1, this.idNumber);
+            System.out.println(Arrays.toString(prepStat.getBytes()));
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteServer(DatabaseConnection conn) {
+        try {
+            String prepStat = "DELETE FROM clients WHERE Id = ?";
+            PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
+            preparedStatement.setInt(1, this.id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
     @Override
     public String toString() {
         return "Client{" +

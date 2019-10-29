@@ -1,12 +1,13 @@
 package sample.Controls;
 
-import sample.Connectivity.ConnectionClass;
+import sample.Connectivity.DatabaseConnection;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class User {
-
+public class User implements Serializable {
+    public static final long serialVersionUID = 10L;
     private int id;
     private int accessMode;
     private String username;
@@ -94,7 +95,7 @@ public class User {
     }
 
     //for DB settings
-    public void setAccessModeDB(ConnectionClass conn, int accessMode) throws SQLException {
+    public void setAccessModeDB(DatabaseConnection conn, int accessMode) throws SQLException {
         this.accessMode = accessMode;
         String prepStat = "UPDATE users SET id = ? WHERE id = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -102,7 +103,8 @@ public class User {
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
     }
-    public void setUsernameDB(ConnectionClass conn, String username) throws SQLException {
+
+    public void setUsernameDB(DatabaseConnection conn, String username) throws SQLException {
         this.username = (null == username) ? "" : username;
         String prepStat = "UPDATE users SET name = ? WHERE id = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -110,7 +112,8 @@ public class User {
         preparedStatement.setString(1, username);
         preparedStatement.execute();
     }
-    public void setPasswordDB(ConnectionClass conn, String password) throws SQLException {
+
+    public void setPasswordDB(DatabaseConnection conn, String password) throws SQLException {
         this.password = (null == password) ? "" : password;
         String prepStat = "UPDATE users SET password = ? WHERE id = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -118,7 +121,8 @@ public class User {
         preparedStatement.setString(1, password);
         preparedStatement.execute();
     }
-    public void setEMailDB(ConnectionClass conn, String email) throws SQLException {
+
+    public void setEMailDB(DatabaseConnection conn, String email) throws SQLException {
         this.email = (null == email) ? "" : email;
         String prepStat = "UPDATE users SET email = ? WHERE id = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
@@ -126,7 +130,8 @@ public class User {
         preparedStatement.setString(1, email);
         preparedStatement.execute();
     }
-    public void setThemeDB(ConnectionClass conn, String theme) throws SQLException {
+
+    public void setThemeDB(DatabaseConnection conn, String theme) throws SQLException {
         String prepStat = "UPDATE user_configs SET theme = ? WHERE userId = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
         preparedStatement.setInt(2, this.id);
@@ -144,7 +149,8 @@ public class User {
         }
         preparedStatement.execute();
     }
-    public void setLanguageDB(ConnectionClass conn, String language) throws SQLException {
+
+    public void setLanguageDB(DatabaseConnection conn, String language) throws SQLException {
         String prepStat = "UPDATE user_configs SET language = ? WHERE userId = ?";
         PreparedStatement preparedStatement = conn.getConnection().prepareStatement(prepStat);
         preparedStatement.setInt(2, this.id);

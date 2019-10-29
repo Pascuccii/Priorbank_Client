@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ClientTransport">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ClientTransport.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,11 +1,10 @@
 package sample.Connectivity;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class ConnectionClass {
+public class DatabaseConnection {
 
     private static Connection connection;
     private boolean connected = false;
@@ -13,7 +12,8 @@ public class ConnectionClass {
     public boolean isConnected() {
         return connected;
     }
-    public ConnectionClass (String URL, String USER, String PASS) {
+
+    public DatabaseConnection(String URL, String USER, String PASS) {
         try {
             connection = DriverManager.getConnection(URL, USER, PASS);
             if(!connection.isClosed()) {

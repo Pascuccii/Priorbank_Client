@@ -20,7 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import sample.Connectivity.ConnectionClass;
+import sample.Connectivity.DatabaseConnection;
+import sample.Connectivity.ServerConnection;
 import sample.enums.Disability;
 import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
@@ -39,7 +40,8 @@ public class MainController extends Application {
     private User currentUser;
     private String currentTheme;
     private String currentLanguage;
-    private ConnectionClass conn;
+    private DatabaseConnection conn;
+    private ServerConnection connServer;
     private int theme = 0;
     private TableColumn maritalStatusColumn;
     private TableColumn disabilityColumn;
@@ -146,6 +148,8 @@ public class MainController extends Application {
     private Button menuUserButton4;
     @FXML
     private Button logoutButtonUser;
+    @FXML
+    private Button serverConnectButton;
     @FXML
     private AnchorPane rightAnchorPane;
     @FXML
@@ -563,8 +567,10 @@ public class MainController extends Application {
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         conn =
-                new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+                new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
+        connServer = new ServerConnection("127.0.0.1", 8189);
+        serverConnectButton.setOnAction(event -> connServer.sendUser(new User("geleb", "ggg")));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("access_mode"));
@@ -906,7 +912,7 @@ public class MainController extends Application {
         connectionIndicator.setOnAction(actionEvent -> {
             try {
                 conn =
-                        new ConnectionClass("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
+                        new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
                 initUsersData();
                 initClientsData();
@@ -1736,7 +1742,7 @@ public class MainController extends Application {
                 addClientPositionLabel.setText("Position");
                 addClientRegistrationCityLabel.setText("Registr. city*");
                 addClientCityLabel.setText("City*");
-                addClientAddressLabel.setText("Adress*");
+                addClientAddressLabel.setText("Address*");
                 addClientBirthDateLabel.setText("Birth date*");
                 addClientBirthPlaceLabel.setText("Birth place*");
                 addClientPassportSeriesLabel.setText("Passport series*");
@@ -3198,7 +3204,6 @@ public class MainController extends Application {
             toAdd.setDisability(addClientDisabilityValue);
             toAdd.setRetiree(addClientRetireeValue);
 
-            System.out.println("!!!!!!" + toAdd);
             try {
                 String prepStat =
                         "INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Passport_series`, `Passport_number`," +
@@ -3261,5 +3266,5 @@ public class MainController extends Application {
         return true;
     }
 
-    // TODO:
+    // TODO: TCP
 }
