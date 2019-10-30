@@ -60,7 +60,8 @@ VALUES ('Жерар', 'Пилипейко', 'Валерьевич', '1989-09-18'
         'Консультант', 'Минск', 'First_group', 'Divorced', 'Беларусь', 'No', '290', '9748561R119PB4');
 INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Passport_series`, `Passport_number`,
                               `Issued_by`, `Issued_date`, `Birth_place`, `Actual_residence_city`,
-                              `Actual_residence_address`, `Home_number`, `Mobile_number`, `Email`, `Job`, `Position`,
+                              `Actual_residence_address`, `Home_usersnumber`, `Mobile_number`, `Email`, `Job`,
+                              `Position`,
                               `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`,
                               `Monthly_income`, `Id_number`)
 VALUES ('Инна', 'Кулишенко', 'Станиславовна', '1979-01-22', 'MP', '5232571', 'Ошмянский РОВД', '2015-04-18', 'Могилёв',

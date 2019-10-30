@@ -44,8 +44,8 @@ public class Client implements Serializable {
 
     public Client(String client) {
         //0  1    2      3          4          5  6       7                          8          9     10    11                         12      13                  14                  15     16  17    18      19       20 21 22     23
-        //93#Глеб#Скачко#Дмитриевич#2000-08-09#MP#3418583#Первомайский РУВД г.Минска#2015-08-09#Минск#Минск#Самоцветная улица, дом 131#2943455#+375 (44) 543-53-90#skachko42@gmail.com#Google#CEO#Минск#Married#Беларусь#No#No#1300.0#4729553F119PB4
-        String[] vals = client.split("#");
+        //93|Глеб|Скачко|Дмитриевич|2000-08-09|MP|3418583|Первомайский РУВД г.Минска|2015-08-09|Минск|Минск|Самоцветная улица, дом 131|2943455|+375 (44) 543-53-90|skachko42@gmail.com|Google|CEO|Минск|Married|Беларусь|No|No|1300.0|4729553F119PB4
+        String[] vals = client.split("\\|");
         this.id = Integer.parseInt(vals[0]);
         if (!vals[1].equals("null")) this.name = vals[1];
         if (!vals[2].equals("null")) this.surname = vals[2];
@@ -671,7 +671,7 @@ public class Client implements Serializable {
         name = name.trim();
         if (name.matches("[а-яА-Я]{2,20}")) {
             this.name = name;
-            conn.sendString("Client#setName#" + id + "#" + name);
+            conn.sendString("Client|setName|" + id + "|" + name);
         }
     }
 
@@ -679,7 +679,7 @@ public class Client implements Serializable {
         surname = surname.trim();
         if (surname.matches("[а-яА-Я]{2,20}")) {
             this.surname = surname;
-            conn.sendString("Client#setSurname#" + id + "#" + name);
+            conn.sendString("Client|setSurname|" + id + "|" + surname);
         }
     }
 
@@ -687,7 +687,7 @@ public class Client implements Serializable {
         patronymic = patronymic.trim();
         if (patronymic.matches("[а-яА-Я]{2,30}")) {
             this.patronymic = patronymic;
-            conn.sendString("Client#setPatrnymic#" + id + "#" + name);
+            conn.sendString("Client|setPatronymic|" + id + "|" + patronymic);
         }
     }
 
@@ -695,33 +695,37 @@ public class Client implements Serializable {
         birthDate = birthDate.trim();
         if (birthDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
             this.birthDate = birthDate;
-            conn.sendString("Client#setBirthDate#" + id + "#" + name);
+            conn.sendString("Client|setBirthDate|" + id + "|" + birthDate);
         }
     }
 
     public void setPassportSeriesServer(ServerConnection conn, String passportSeries) {
         this.passportSeries = passportSeries;
-        conn.sendString("Client#setPassportSeries#" + id + "#" + name);
+        if (passportSeries.matches("[A-Z]{2}")) {
+            conn.sendString("Client|setPassportSeries|" + id + "|" + passportSeries);
+        }
     }
 
     public void setPassportNumberServer(ServerConnection conn, String passportNumber) {
         passportNumber = passportNumber.trim();
         if (passportNumber.matches("^\\d{7}$")) {
             this.passportNumber = passportNumber;
-            conn.sendString("Client#setPassportNumber#" + id + "#" + name);
+            conn.sendString("Client|setPassportNumber|" + id + "|" + passportNumber);
         }
     }
 
     public void setIssuedByServer(ServerConnection conn, String issuedBy) {
         this.issuedBy = issuedBy;
-        conn.sendString("Client#setIssuedBy#" + id + "#" + name);
+        if (issuedBy == null || issuedBy.equals(""))
+            issuedBy = "null";
+        conn.sendString("Client|setIssuedBy|" + id + "|" + issuedBy);
     }
 
     public void setIssuedDateServer(ServerConnection conn, String issuedDate) {
         issuedDate = issuedDate.trim();
         if (issuedDate.matches("^\\d{4}[-/](((0)[0-9])|((1)[0-2]))[-/]([0-2][0-9]|(3)[0-1])$")) {
             this.issuedDate = issuedDate;
-            conn.sendString("Client#setIssuedDate#" + id + "#" + name);
+            conn.sendString("Client|setIssuedDate|" + id + "|" + issuedDate);
         }
     }
 
@@ -734,7 +738,7 @@ public class Client implements Serializable {
         }*/
         if (exists) {
             this.birthPlace = birthPlace;
-            conn.sendString("Client#setBirthPlace#" + id + "#" + name);
+            conn.sendString("Client|setBirthPlace|" + id + "|" + birthPlace);
         }
     }
 
@@ -747,38 +751,48 @@ public class Client implements Serializable {
         }*/
         if (exists) {
             this.actualResidenceCity = actualResidenceCity;
-            conn.sendString("Client#setActualResidenceCity#" + id + "#" + name);
+            conn.sendString("Client|setActualResidenceCity|" + id + "|" + actualResidenceCity);
         }
     }
 
     public void setActualResidenceAddressServer(ServerConnection conn, String actualResidenceAddress) {
         this.actualResidenceAddress = actualResidenceAddress;
-        conn.sendString("Client#setActualResidenceAddress#" + id + "#" + name);
+        conn.sendString("Client|setActualResidenceAddress|" + id + "|" + actualResidenceAddress);
     }
 
     public void setHomeNumberServer(ServerConnection conn, String homeNumber) {
         this.homeNumber = homeNumber;
-        conn.sendString("Client#setHomeNumber#" + id + "#" + name);
+        if (homeNumber == null || homeNumber.equals(""))
+            homeNumber = "null";
+        conn.sendString("Client|setHomeNumber|" + id + "|" + homeNumber);
     }
 
     public void setMobileNumberServer(ServerConnection conn, String mobileNumber) {
         this.mobileNumber = mobileNumber;
-        conn.sendString("Client#setMobileNumbe#" + id + "#" + name);
+        if (mobileNumber == null || mobileNumber.equals(""))
+            mobileNumber = "null";
+        conn.sendString("Client|setMobileNumber|" + id + "|" + mobileNumber);
     }
 
     public void setEmailServer(ServerConnection conn, String email) {
         this.email = email;
-        conn.sendString("Client#setEmail#" + id + "#" + name);
+        if (email == null || email.equals(""))
+            email = "null";
+        conn.sendString("Client|setEmail|" + id + "|" + email);
     }
 
     public void setJobServer(ServerConnection conn, String job) {
         this.job = job;
-        conn.sendString("Client#setJob#" + id + "#" + name);
+        if (job == null || job.equals(""))
+            job = "null";
+        conn.sendString("Client|setJob|" + id + "|" + job);
     }
 
     public void setPositionServer(ServerConnection conn, String position) {
         this.position = position;
-        conn.sendString("Client#setPosition#" + id + "#" + name);
+        if (position == null || position.equals(""))
+            position = "null";
+        conn.sendString("Client|setPosition|" + id + "|" + position);
     }
 
     public void setRegistrationCityServer(ServerConnection conn, String registrationCity) {
@@ -790,13 +804,13 @@ public class Client implements Serializable {
         }*/
         if (exists) {
             this.registrationCity = registrationCity;
-            conn.sendString("Client#setRegistrationCity#" + id + "#" + name);
+            conn.sendString("Client|setRegistrationCity|" + id + "|" + registrationCity);
         }
     }
 
     public void setMaritalStatusServer(ServerConnection conn, MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus.toString();
-        conn.sendString("Client#setMaritalStatus#" + id + "#" + name);
+        conn.sendString("Client|setMaritalStatus|" + id + "|" + maritalStatus);
     }
 
     public void setCitizenshipServer(ServerConnection conn, String citizenship) {
@@ -808,32 +822,33 @@ public class Client implements Serializable {
         }*/
         if (exists) {
             this.citizenship = citizenship;
-            conn.sendString("Client#setCitizenship#" + id + "#" + name);
+            conn.sendString("Client|setCitizenship|" + id + "|" + citizenship);
         }
     }
 
     public void setDisabilityServer(ServerConnection conn, Disability disability) {
         this.disability = disability.toString();
-        conn.sendString("Client#setDisability#" + id + "#" + name);
+        conn.sendString("Client|setDisability|" + id + "|" + disability);
     }
 
     public void setRetireeServer(ServerConnection conn, Retiree retiree) {
         this.retiree = retiree.toString();
-        conn.sendString("Client#setRetiree#" + id + "#" + name);
+        conn.sendString("Client|setRetiree|" + id + "|" + retiree);
     }
 
     public void setMonthlyIncomeServer(ServerConnection conn, String monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
-        conn.sendString("Client#setMonthlyIncome#" + id + "#" + name);
+
+        conn.sendString("Client|setMonthlyIncome|" + id + "|" + monthlyIncome);
     }
 
     public void setIdNumberServer(ServerConnection conn, String idNumber) {
         this.idNumber = idNumber;
-        conn.sendString("Client#setIdNumber#" + id + "#" + name);
+        conn.sendString("Client|setIdNumber|" + id + "|" + idNumber);
     }
 
     public void deleteServer(ServerConnection conn) {
-        conn.sendString("Client#delete#" + id + "#" + name);
+        conn.sendString("Client|delete|" + id + "|" + name);
     }
 
 
@@ -841,28 +856,28 @@ public class Client implements Serializable {
     @Override
     public String toString() {
         return id +
-                "#" + name +
-                "#" + surname +
-                "#" + patronymic +
-                "#" + birthDate +
-                "#" + passportSeries +
-                "#" + passportNumber +
-                "#" + issuedBy +
-                "#" + issuedDate +
-                "#" + birthPlace +
-                "#" + actualResidenceCity +
-                "#" + actualResidenceAddress +
-                "#" + homeNumber +
-                "#" + mobileNumber +
-                "#" + email +
-                "#" + job +
-                "#" + position +
-                "#" + registrationCity +
-                "#" + maritalStatus +
-                "#" + citizenship +
-                "#" + disability +
-                "#" + retiree +
-                "#" + monthlyIncome +
-                "#" + idNumber;
+                "|" + name +
+                "|" + surname +
+                "|" + patronymic +
+                "|" + birthDate +
+                "|" + passportSeries +
+                "|" + passportNumber +
+                "|" + issuedBy +
+                "|" + issuedDate +
+                "|" + birthPlace +
+                "|" + actualResidenceCity +
+                "|" + actualResidenceAddress +
+                "|" + homeNumber +
+                "|" + mobileNumber +
+                "|" + email +
+                "|" + job +
+                "|" + position +
+                "|" + registrationCity +
+                "|" + maritalStatus +
+                "|" + citizenship +
+                "|" + disability +
+                "|" + retiree +
+                "|" + monthlyIncome +
+                "|" + idNumber;
     }
 }

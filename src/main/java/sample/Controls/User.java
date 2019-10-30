@@ -29,7 +29,9 @@ public class User implements Serializable {
 
     public User(String user) {
         //25 0 anton anton  Dark English
-        String[] vals = user.split("#");
+        String[] vals = user.split("\\|");
+        for (String s : vals)
+            System.out.println(s);
         this.id = Integer.parseInt(vals[0]);
         this.accessMode = Integer.parseInt(vals[1]);
         this.username = vals[2];
@@ -208,46 +210,60 @@ public class User implements Serializable {
     }
 
     public void setAccessModeServer(ServerConnection conn, String value) {
-        this.username = value;
-        conn.sendString("User#setAccessMode#" + id + "#" + value);
+        this.accessMode = Integer.parseInt(value);
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setAccessMode|" + id + "|" + value);
     }
 
     public void setUsernameServer(ServerConnection conn, String value) {
         this.username = value;
-        conn.sendString("User#setUsername#" + id + "#" + value);
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setUsername|" + id + "|" + value);
     }
 
     public void setPasswordServer(ServerConnection conn, String value) {
-        this.username = value;
-        conn.sendString("User#setPassword#" + id + "#" + value);
+        this.password = value;
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setPassword|" + id + "|" + value);
     }
 
     public void setEMailServer(ServerConnection conn, String value) {
-        this.username = value;
-        conn.sendString("User#setEMail#" + id + "#" + value);
+        this.email = value;
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setEMail|" + id + "|" + value);
     }
 
     public void setThemeServer(ServerConnection conn, String value) {
-        this.username = value;
-        conn.sendString("User#setTheme#" + id + "#" + value);
+        this.theme = value;
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setTheme|" + id + "|" + value);
     }
 
     public void setLanguageServer(ServerConnection conn, String value) {
-        this.username = value;
-        conn.sendString("User#setLanguage#" + id + "#" + value);
+        this.language = value;
+        if (value == null || value.equals(""))
+            value = "null";
+        conn.sendString("User|setLanguage|" + id + "|" + value);
+    }
+
+    public void deleteServer(ServerConnection conn) {
+        conn.sendString("User|delete|" + id + "|" + username);
     }
 
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", accessMode=" + accessMode +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", theme='" + theme + '\'' +
-                ", language='" + language + '\'' +
-                '}';
+        return id +
+                "|" + accessMode +
+                "|" + username +
+                "|" + password +
+                "|" + email +
+                "|" + theme +
+                "|" + language;
     }
 }

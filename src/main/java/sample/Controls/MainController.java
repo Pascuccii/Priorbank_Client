@@ -28,9 +28,7 @@ import sample.enums.Retiree;
 
 import java.io.*;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
@@ -574,7 +572,13 @@ public class MainController extends Application {
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
         connServer = new ServerConnection("127.0.0.1", 8189);
 
-        serverConnectButton.setOnAction(event -> initDataFromServerBuffer());
+        serverConnectButton.setOnAction(event -> new Thread() {
+            @Override
+            public void run() {
+                initDataFromServer();
+            }
+        }.start());
+
 
         //       initUsersData();
         //       initClientsData();
@@ -610,169 +614,189 @@ public class MainController extends Application {
         idNumberColumn.setCellValueFactory(new PropertyValueFactory<>("idNumber"));
         clientsTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-
+        //patro, series, mob,
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         patronymicColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}"))
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         birthDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         birthDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             String s = t.getNewValue().trim();
             System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         passportSeriesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportSeriesColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[a-zA-Z]{2}"))
+            if (t.getNewValue().trim().matches("[a-zA-Z]{2}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("^\\d{7}$"))
+            if (t.getNewValue().trim().matches("^\\d{7}$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         issuedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         issuedByColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         issuedDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         issuedDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             String s = t.getNewValue().trim();
             System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         birthPlaceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         birthPlaceColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         actualResidenceCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         actualResidenceAddressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceAddressColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         homeNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         homeNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("^\\d{7}$"))
+            if (t.getNewValue().trim().matches("^\\d{7}$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         mobileNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         mobileNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"))
+            if (t.getNewValue().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         emailClientColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         emailClientColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))"))
+            if (t.getNewValue().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         jobColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         jobColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         positionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         positionColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 0)
+            if (t.getNewValue().trim().length() > 0) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         registrationCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         registrationCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         citizenshipColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         citizenshipColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().length() > 4)
+            if (t.getNewValue().trim().length() > 4) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         monthlyIncomeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         monthlyIncomeColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("^[0-9]+(\\.[0-9]+)?$"))
+            if (t.getNewValue().trim().matches("^[0-9]+(\\.[0-9]+)?$")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
         idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         idNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[A-Z0-9]{14}"))
+            if (t.getNewValue().trim().matches("[A-Z0-9]{14}")) {
                 (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberServer(connServer, t.getNewValue());
-            else {
-                initClientsDataServer();
+                clientsTable.requestFocus();
+            } else {
+                initClientsDataServerBuffer();
             }
         });
 
@@ -835,8 +859,8 @@ public class MainController extends Application {
         loginWarning.getStyleClass().add("loginWarning");
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
-            initUsersDataServer();
-            initClientsDataServer();
+            initUsersDataServerBuffer();
+            initClientsDataServerBuffer();
         });
 
         title.getStyleClass().add("title");
@@ -1424,31 +1448,34 @@ public class MainController extends Application {
         });
 
         themeItem_Dark.setOnAction(actionEvent -> {
-            try {
-                setTheme("Dark");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            setTheme("Dark");
         });
         themeItem_Light.setOnAction(actionEvent -> {
-            try {
-                setTheme("Light");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            setTheme("Light");
         });
         themeItem_Light.setDisable(true);
 
         resetSearchButton.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.setOnAction(actionEvent -> {
-
             searchFieldClient.clear();
-            initClientsDataServer();
+            initClientsDataServerBuffer();
+            new Thread() {
+                @Override
+                public void run() {
+                    initDataFromServer();
+                }
+            }.start();
         });
         resetSearchButton.setOnAction(actionEvent -> {
             searchField.clear();
-            initUsersDataServer();
+            initUsersDataServerBuffer();
+            new Thread() {
+                @Override
+                public void run() {
+                    initDataFromServer();
+                }
+            }.start();
         });
         searchField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)
@@ -1481,11 +1508,10 @@ public class MainController extends Application {
         addClientSurnameTextField.setText("Скачков");
         addClientCityTextField.setText("Минск");
         addClientAddressTextField.setText("Козлова");
-        
-        
-        
+
+
         translate("English");
-        initDataFromServerBuffer();
+        initDataFromServer();
         loadLastConfig();
         loginBegin();
     } //INITIALIZE
@@ -1864,7 +1890,7 @@ public class MainController extends Application {
                 addClientIssuedByLabel.setText("Орган выдачи*");
                 addClientIssuedDateLabel.setText("Дата выдачи*");
                 addClientCitizenshipLabel.setText("Гражданство*");
-                addClientIDNumberLabel.setText("Идент. номер");
+                addClientIDNumberLabel.setText("Идент. номер*");
                 addClientMaritalStatusLabel.setText("Сем. положение*");
                 addClientDisabilityLabel.setText("Инвалидность*");
                 addClientRetireeLabel.setText("Пенсионер*");
@@ -1919,7 +1945,7 @@ public class MainController extends Application {
         //initClientsDataServer();
     }
 
-    private void setTheme(String theme) throws SQLException {
+    private void setTheme(String theme) {
         theme = theme.trim();
         theme = theme.toLowerCase();
         switch (theme) {
@@ -1933,7 +1959,7 @@ public class MainController extends Application {
                 fixImage.setImage(new Image("assets/fix-black.png"));
 
                 break;
-            case "light":
+            /*case "light":
                 themeButton.setText("Light");
                 currentTheme = "Light";
                 if (currentUser != null)
@@ -1942,7 +1968,7 @@ public class MainController extends Application {
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
                 fixImage.setImage(new Image("assets/fix-white.png"));
 
-                break;
+                break;*/
         }
     }
 
@@ -2039,21 +2065,16 @@ public class MainController extends Application {
                     }
 
                 if (!was) {
-                    try {
-                        String prepStat =
-                                "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ? WHERE (`id` = ?);";
-                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                        preparedStatement.setString(1, enteredUsername);
-                        preparedStatement.setString(2, enteredPassword);
-                        preparedStatement.setString(3, enteredEmail);
-                        preparedStatement.setInt(4, currentUser.getId());
-                        preparedStatement.execute();
-                        initUsersDataServer();
-                        settingsWarningLabel.setStyle("-fx-text-fill: #7f8e55");
-                        settingsWarningLabel.setText("Account information saved");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    connServer.sendString("changeAccountData|" + currentUser.getId() + "|" + enteredUsername + "|" + enteredPassword + "|" + enteredEmail);
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            initDataFromServer();
+                        }
+                    }.start();
+                    settingsWarningLabel.setStyle("-fx-text-fill: #7f8e55");
+                    settingsWarningLabel.setText("Account information saved");
                 } else
                     settingsWarningLabel.setText("Username is not free");
             } else
@@ -2086,20 +2107,19 @@ public class MainController extends Application {
                         changeUser_AnchorPane_Username.setText("");
                         changeUser_AnchorPane_Password.setText("");
                         changeUser_AnchorPane_Email.setText("");
-                        try {
-                            String prepStat =
-                                    "UPDATE `test`.`users` SET `name` = ?, `password` = ?, `email` = ?, `access_mode` = ? WHERE (`id` = ?);";
-                            PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                            preparedStatement.setString(1, enteredUsername);
-                            preparedStatement.setString(2, enteredPassword);
-                            preparedStatement.setString(3, enteredEmail);
-                            preparedStatement.setInt(4, enteredAccessMode);
-                            preparedStatement.setInt(5, enteredId);
-                            preparedStatement.execute();
-                            initUsersDataServer();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        for (User u : usersData)
+                            if (u.getId() == enteredId) {
+                                u.setUsernameServer(connServer, enteredUsername);
+                                u.setPasswordServer(connServer, enteredPassword);
+                                u.setAccessModeServer(connServer, String.valueOf(enteredAccessMode));
+                                u.setEMailServer(connServer, enteredEmail);
+                            }
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                initDataFromServer();
+                            }
+                        }.start();
                     }
                 }
             }
@@ -2134,7 +2154,7 @@ public class MainController extends Application {
                 String prepStat = "DELETE FROM `test`.`users` WHERE (`id` > -1)";
                 PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
                 preparedStatement.execute();
-                initUsersDataServer();
+                initUsersDataServerBuffer();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -2143,17 +2163,17 @@ public class MainController extends Application {
             for (String id : ids) {
                 if (StringUtils.isStrictlyNumeric(id)) {
                     deleteUserTextField.setText("");
-                    try {
-                        String prepStat = "DELETE FROM `test`.`users` WHERE (`id` = ?)";
-                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                        preparedStatement.setInt(1, Integer.parseInt(id));
-                        preparedStatement.execute();
-                        initUsersDataServer();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    for (User u : usersData)
+                        if (u.getId() == Integer.parseInt(id))
+                            u.deleteServer(connServer);
                 }
             }
+            new Thread() {
+                @Override
+                public void run() {
+                    initDataFromServer();
+                }
+            }.start();
         }
     }
 
@@ -2176,19 +2196,15 @@ public class MainController extends Application {
                     createUser_AnchorPane_Username.setText("");
                     createUser_AnchorPane_Password.setText("");
                     createUser_AnchorPane_Email.setText("");
-                    try {
-                        String prepStat =
-                                "INSERT INTO `test`.`users` (`name`, `password`, `email`,`access_mode`) VALUES (?, ?, ?, ?)";
-                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                        preparedStatement.setString(1, username);
-                        preparedStatement.setString(2, password);
-                        preparedStatement.setString(3, email);
-                        preparedStatement.setInt(4, access_mode);
-                        preparedStatement.execute();
-                        initUsersDataServer();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                    User u = new User(0, access_mode, username, password, email);
+                    connServer.sendString("addUser|" + u.toString());
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            initDataFromServer();
+                            System.out.println("added");
+                        }
+                    }.start();
 
                     warningLabel.setStyle("-fx-text-fill: #7f8e55");
                     warningLabel.setText(username + " registered");
@@ -2222,7 +2238,7 @@ public class MainController extends Application {
                         preparedStatement.setString(1, username);
                         preparedStatement.setString(2, password);
                         preparedStatement.execute();
-                        initUsersDataServer();
+                        initUsersDataServerBuffer();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -2358,7 +2374,7 @@ public class MainController extends Application {
         }
     }
 
-    private void initUsersData() throws SQLException {
+    /*private void initUsersData() throws SQLException {
         if (connDB.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             usersTable.setItems(usersData);
@@ -2431,8 +2447,8 @@ public class MainController extends Application {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
 
     }
-
-    private void initClientsDataServer() {
+*/
+    private synchronized void initClientsDataServerBuffer() {
         clientsTable.setItems(clientsData);
         clientsData.clear();
         for (Client c : connServer.getClientList())
@@ -2440,7 +2456,7 @@ public class MainController extends Application {
         clientsTable.refresh();
     }
 
-    private void initUsersDataServer() {
+    private synchronized void initUsersDataServerBuffer() {
         usersTable.setItems(usersData);
         usersData.clear();
         for (User u : connServer.getUserList())
@@ -2756,7 +2772,15 @@ public class MainController extends Application {
                         btn.setPrefWidth(15);
                         btn.setOnAction(event -> {
                             getTableView().getItems().get(getIndex()).deleteServer(connServer);
-                            initClientsDataServer();
+                            clientsData.remove(getTableView().getItems().get(getIndex()));
+                            clientsTable.refresh();
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    initDataFromServer();
+                                    System.out.println("deleted");
+                                }
+                            }.start();
                         });
                     }
 
@@ -2817,7 +2841,7 @@ public class MainController extends Application {
     }
 
     private void searchUser() {
-        initUsersDataServer();
+        initUsersDataServerBuffer();
         if (!searchField.getText().equals("")) {
             Iterator<User> i = usersData.iterator();
             switch (criteriaButton.getText()) {
@@ -2861,7 +2885,7 @@ public class MainController extends Application {
     }
 
     private void searchClient() {
-        initClientsDataServer();
+        initClientsDataServerBuffer();
         if (!searchFieldClient.getText().equals("")) {
             Iterator<Client> i = clientsData.iterator();
             switch (criteriaButtonClient.getText()) {
@@ -3153,8 +3177,14 @@ public class MainController extends Application {
                 toAdd.setRetiree(addClientRetireeValue);
             else
                 toAdd.setRetiree(Retiree.No);
-            connServer.sendString("addClient#" + toAdd.toString());
-            initDataFromServerBuffer();
+            connServer.sendString("addClient|" + toAdd.toString());
+            new Thread() {
+                @Override
+                public void run() {
+                    initDataFromServer();
+                    System.out.println("added");
+                }
+            }.start();
         } else {
             System.out.println("Not good");
         }
@@ -3181,12 +3211,12 @@ public class MainController extends Application {
         return true;
     }
 
-    private void initDataFromServerBuffer() {
+    private synchronized void initDataFromServer() {
         connServer.sendString("init");
         for (int i = 0; i < 10; i++) {
             if (!connServer.isInProcess()) {
-                initUsersDataServer();
-                initClientsDataServer();
+                initUsersDataServerBuffer();
+                initClientsDataServerBuffer();
                 i = 15;
             }
             try {
@@ -3197,6 +3227,5 @@ public class MainController extends Application {
         }
     }
 
-    // TODO: TCP баг с C#   + не красит красным поле ввода "Неуникальный ID" addClient проверить объект на се
-    // null парситься как строка "null"
+    // TODO:
 }
