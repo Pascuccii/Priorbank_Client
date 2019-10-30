@@ -1,6 +1,7 @@
 package sample.Controls;
 
 import sample.Connectivity.DatabaseConnection;
+import sample.Connectivity.ServerConnection;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -205,6 +206,37 @@ public class User implements Serializable {
     public String getLanguage() {
         return language;
     }
+
+    public void setAccessModeServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setAccessMode#" + id + "#" + value);
+    }
+
+    public void setUsernameServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setUsername#" + id + "#" + value);
+    }
+
+    public void setPasswordServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setPassword#" + id + "#" + value);
+    }
+
+    public void setEMailServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setEMail#" + id + "#" + value);
+    }
+
+    public void setThemeServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setTheme#" + id + "#" + value);
+    }
+
+    public void setLanguageServer(ServerConnection conn, String value) {
+        this.username = value;
+        conn.sendString("User#setLanguage#" + id + "#" + value);
+    }
+
 
     @Override
     public String toString() {

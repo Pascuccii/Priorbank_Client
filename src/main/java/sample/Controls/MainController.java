@@ -27,7 +27,10 @@ import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
 
 import java.io.*;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
@@ -577,9 +580,6 @@ public class MainController extends Application {
         //       initClientsData();
 
 
-
-
-
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("access_mode"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -614,37 +614,25 @@ public class MainController extends Application {
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         patronymicColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         birthDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -652,49 +640,33 @@ public class MainController extends Application {
             String s = t.getNewValue().trim();
             System.out.println(s);
             if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         passportSeriesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportSeriesColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[a-zA-Z]{2}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportSeriesServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^\\d{7}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         issuedByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         issuedByColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedByServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         issuedDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -702,157 +674,105 @@ public class MainController extends Application {
             String s = t.getNewValue().trim();
             System.out.println(s);
             if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         birthPlaceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         birthPlaceColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthPlaceServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         actualResidenceCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceCityServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         actualResidenceAddressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         actualResidenceAddressColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setActualResidenceAddressServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         homeNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         homeNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^\\d{7}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setHomeNumberServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         mobileNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         mobileNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^(\\+375|375)?[\\s\\-]?\\(?(17|29|33|44)\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMobileNumberServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         emailClientColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         emailClientColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setEmailServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         jobColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         jobColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setJobServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         positionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         positionColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 0)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPositionServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         registrationCityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         registrationCityColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setRegistrationCityServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         citizenshipColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         citizenshipColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().length() > 4)
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setCitizenshipServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         monthlyIncomeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         monthlyIncomeColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("^[0-9]+(\\.[0-9]+)?$"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setMonthlyIncomeServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
         idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         idNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
             if (t.getNewValue().trim().matches("[A-Z0-9]{14}"))
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberDB(connDB, t.getNewValue());
+                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberServer(connServer, t.getNewValue());
             else {
-                try {
-                    initClientsDataServer();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                initClientsDataServer();
             }
         });
 
@@ -915,15 +835,8 @@ public class MainController extends Application {
         loginWarning.getStyleClass().add("loginWarning");
         connectionIndicator.getStyleClass().add("connectionIndicator");
         connectionIndicator.setOnAction(actionEvent -> {
-            try {
-                connDB =
-                        new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
-                                "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
-                initUsersDataServerServer();
-                initClientsDataServer();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            initUsersDataServer();
+            initClientsDataServer();
         });
 
         title.getStyleClass().add("title");
@@ -1377,7 +1290,7 @@ public class MainController extends Application {
         });
         addClientCitizenshipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             addClientCitizenshipTextField.setStyle("-fx-border-color: transparent");
-            addClientMobilePhoneDescription.setText("");
+            addClientCitizenshipDescription.setText("");
         });
         addClientIssuedByTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             addClientIssuedByTextField.setStyle("-fx-border-color: transparent");
@@ -1530,16 +1443,12 @@ public class MainController extends Application {
         resetSearchButtonClient.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.setOnAction(actionEvent -> {
 
-                searchFieldClient.clear();
-            initClientsDataServerServer();
+            searchFieldClient.clear();
+            initClientsDataServer();
         });
         resetSearchButton.setOnAction(actionEvent -> {
-            try {
-                searchField.clear();
-                initUsersDataServer();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            searchField.clear();
+            initUsersDataServer();
         });
         searchField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)
@@ -1553,6 +1462,28 @@ public class MainController extends Application {
         searchButtonClient.setOnAction(actionEvent -> searchClient());
         databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
 
+        //#######################################################################УБРАТЬ
+        addClientMobilePhoneTextField.setText("");
+        addClientMonthlyIncomeTextField.setText("");
+        addClientEmailTextField.setText("");
+        addClientHomePhoneTextField.setText("");
+        addClientPassportSeriesTextField.setText("MP");
+        addClientPassportNumberTextField.setText("3418583");
+        addClientBirthPlaceTextField.setText("Минск");
+        addClientCitizenshipTextField.setText("Беларусь");
+        addClientIssuedByTextField.setText("Орган выдачи");
+        addClientIDNumberTextField.setText("6632915P119PB4");
+        addClientRegistrationCityTextField.setText("Минск");
+        addClientNameTextField.setText("Глеб");
+        addClientPositionTextField.setText("");
+        addClientPatronymicTextField.setText("Дмитриевич");
+        addClientJobTextField.setText("");
+        addClientSurnameTextField.setText("Скачков");
+        addClientCityTextField.setText("Минск");
+        addClientAddressTextField.setText("Козлова");
+        
+        
+        
         translate("English");
         initDataFromServerBuffer();
         loadLastConfig();
@@ -1622,7 +1553,7 @@ public class MainController extends Application {
             case "English":
                 currentLanguage = "English";
                 if (currentUser != null)
-                    currentUser.setLanguageDB(connDB, "English");
+                    currentUser.setLanguageServer(connServer, "English");
                 searchField.setPromptText("Search...");
                 searchFieldClient.setPromptText("Search...");
                 languageButton.setText("English");
@@ -1806,7 +1737,7 @@ public class MainController extends Application {
             case "Russian":
                 currentLanguage = "Russian";
                 if (currentUser != null)
-                    currentUser.setLanguageDB(connDB, "Russian");
+                    currentUser.setLanguageServer(connServer, "Russian");
                 searchField.setPromptText("Искать...");
                 searchFieldClient.setPromptText("Искать...");
                 languageButton.setText("Русский");
@@ -1996,7 +1927,7 @@ public class MainController extends Application {
                 themeButton.setText("Dark");
                 currentTheme = "Dark";
                 if (currentUser != null)
-                    currentUser.setThemeDB(connDB, "Dark");
+                    currentUser.setThemeServer(connServer, "Dark");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
                 fixImage.setImage(new Image("assets/fix-black.png"));
@@ -2006,7 +1937,7 @@ public class MainController extends Application {
                 themeButton.setText("Light");
                 currentTheme = "Light";
                 if (currentUser != null)
-                    currentUser.setThemeDB(connDB, "Light");
+                    currentUser.setThemeServer(connServer, "Light");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
                 fixImage.setImage(new Image("assets/fix-white.png"));
@@ -2427,7 +2358,7 @@ public class MainController extends Application {
         }
     }
 
-    private void initUsersDataServer() throws SQLException {
+    private void initUsersData() throws SQLException {
         if (connDB.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             usersTable.setItems(usersData);
@@ -2457,7 +2388,7 @@ public class MainController extends Application {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-red.png)");
     }
 
-    private void initClientsDataServer() throws SQLException {
+    private void initClientsData() throws SQLException {
         if (connDB.isConnected()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             Statement statement = connDB.getConnection().createStatement();
@@ -2501,18 +2432,20 @@ public class MainController extends Application {
 
     }
 
-    private void initClientsDataServerServer() {
+    private void initClientsDataServer() {
         clientsTable.setItems(clientsData);
         clientsData.clear();
         for (Client c : connServer.getClientList())
             clientsData.add(c);
+        clientsTable.refresh();
     }
 
-    private void initUsersDataServerServer() {
+    private void initUsersDataServer() {
         usersTable.setItems(usersData);
         usersData.clear();
         for (User u : connServer.getUserList())
             usersData.add(u);
+        usersTable.refresh();
     }
 
 
@@ -2550,22 +2483,22 @@ public class MainController extends Application {
                         btn.setMinWidth(170);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(connDB, MaritalStatus.Single);
+                            data.setMaritalStatusServer(connServer, MaritalStatus.Single);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(connDB, MaritalStatus.Married);
+                            data.setMaritalStatusServer(connServer, MaritalStatus.Married);
                             btn.setText(mi2.getText());
                         });
                         mi3.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(connDB, MaritalStatus.Divorced);
+                            data.setMaritalStatusServer(connServer, MaritalStatus.Divorced);
                             btn.setText(mi3.getText());
                         });
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setMaritalStatusDB(connDB, MaritalStatus.Unknown);
+                            data.setMaritalStatusServer(connServer, MaritalStatus.Unknown);
                             btn.setText(mi4.getText());
                         });
                     }
@@ -2647,27 +2580,27 @@ public class MainController extends Application {
                         btn.setMinWidth(170);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(connDB, Disability.First_group);
+                            data.setDisabilityServer(connServer, Disability.First_group);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(connDB, Disability.Second_group);
+                            data.setDisabilityServer(connServer, Disability.Second_group);
                             btn.setText(mi2.getText());
                         });
                         mi3.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(connDB, Disability.Third_group);
+                            data.setDisabilityServer(connServer, Disability.Third_group);
                             btn.setText(mi3.getText());
                         });
                         mi4.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(connDB, Disability.No);
+                            data.setDisabilityServer(connServer, Disability.No);
                             btn.setText(mi4.getText());
                         });
                         mi5.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setDisabilityDB(connDB, Disability.Unknown);
+                            data.setDisabilityServer(connServer, Disability.Unknown);
                             btn.setText(mi4.getText());
                         });
                     }
@@ -2755,12 +2688,12 @@ public class MainController extends Application {
                         btn.setMinWidth(70);
                         mi1.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setRetireeDB(connDB, Retiree.Yes);
+                            data.setRetireeServer(connServer, Retiree.Yes);
                             btn.setText(mi1.getText());
                         });
                         mi2.setOnAction(actionEvent -> {
                             Client data = getTableView().getItems().get(getIndex());
-                            data.setRetireeDB(connDB, Retiree.No);
+                            data.setRetireeServer(connServer, Retiree.No);
                             btn.setText(mi2.getText());
                         });
                     }
@@ -2822,12 +2755,8 @@ public class MainController extends Application {
                         btn.setMinWidth(15);
                         btn.setPrefWidth(15);
                         btn.setOnAction(event -> {
-                            getTableView().getItems().get(getIndex()).deleteDB(connDB);
-                            try {
-                                initClientsDataServer();
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
+                            getTableView().getItems().get(getIndex()).deleteServer(connServer);
+                            initClientsDataServer();
                         });
                     }
 
@@ -2888,11 +2817,7 @@ public class MainController extends Application {
     }
 
     private void searchUser() {
-        try {
-            initUsersDataServer();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        initUsersDataServer();
         if (!searchField.getText().equals("")) {
             Iterator<User> i = usersData.iterator();
             switch (criteriaButton.getText()) {
@@ -2936,11 +2861,7 @@ public class MainController extends Application {
     }
 
     private void searchClient() {
-        try {
-            initClientsDataServer();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        initClientsDataServer();
         if (!searchFieldClient.getText().equals("")) {
             Iterator<Client> i = clientsData.iterator();
             switch (criteriaButtonClient.getText()) {
@@ -3218,46 +3139,22 @@ public class MainController extends Application {
 
             toAdd.setIssuedDate(addClientIssuedDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             toAdd.setBirthDate(addClientBirthDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            toAdd.setMaritalStatus(addClientMaritalStatusValue);
-            toAdd.setDisability(addClientDisabilityValue);
-            toAdd.setRetiree(addClientRetireeValue);
+            if (addClientMaritalStatusValue != null)
+                toAdd.setMaritalStatus(addClientMaritalStatusValue);
+            else
+                toAdd.setMaritalStatus(MaritalStatus.Single);
 
-            try {
-                String prepStat =
-                        "INSERT INTO `test`.`clients` (`Name`, `Surname`, `Patronymic`, `Birth_date`, `Passport_series`, `Passport_number`," +
-                                "                              `Issued_by`, `Issued_date`, `Birth_place`, `Actual_residence_city`," +
-                                "                              `Actual_residence_address`, `Home_number`, `Mobile_number`, `Email`, `Job`, `Position`," +
-                                "                              `Registration_city`, `Disability`, `Marital_status`, `Citizenship`, `Is_retiree`," +
-                                "                              `Monthly_income`, `Id_number`)" +
-                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-                PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                preparedStatement.setString(1, toAdd.getName());
-                preparedStatement.setString(2, toAdd.getSurname());
-                preparedStatement.setString(3, toAdd.getPatronymic());
-                preparedStatement.setDate(4, Date.valueOf(toAdd.getBirthDate()));
-                preparedStatement.setString(5, toAdd.getPassportSeries());
-                preparedStatement.setString(6, toAdd.getPassportNumber());
-                preparedStatement.setString(7, toAdd.getIssuedBy());
-                preparedStatement.setDate(8, Date.valueOf(toAdd.getIssuedDate()));
-                preparedStatement.setString(9, toAdd.getBirthPlace());
-                preparedStatement.setString(10, toAdd.getActualResidenceCity());
-                preparedStatement.setString(11, toAdd.getActualResidenceAddress());
-                preparedStatement.setString(12, toAdd.getHomeNumber());
-                preparedStatement.setString(13, toAdd.getMobileNumber());
-                preparedStatement.setString(14, toAdd.getEmail());
-                preparedStatement.setString(15, toAdd.getJob());
-                preparedStatement.setString(16, toAdd.getPosition());
-                preparedStatement.setString(17, toAdd.getRegistrationCity());
-                preparedStatement.setString(18, toAdd.getDisability());
-                preparedStatement.setString(19, toAdd.getMaritalStatus());
-                preparedStatement.setString(20, toAdd.getCitizenship());
-                preparedStatement.setString(21, toAdd.getRetiree());
-                preparedStatement.setString(22, toAdd.getMonthlyIncome());
-                preparedStatement.setString(23, toAdd.getIdNumber());
-                preparedStatement.execute();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            if (addClientDisabilityValue != null)
+                toAdd.setDisability(addClientDisabilityValue);
+            else
+                toAdd.setDisability(Disability.No);
+
+            if (addClientRetireeValue != null)
+                toAdd.setRetiree(addClientRetireeValue);
+            else
+                toAdd.setRetiree(Retiree.No);
+            connServer.sendString("addClient#" + toAdd.toString());
+            initDataFromServerBuffer();
         } else {
             System.out.println("Not good");
         }
@@ -3273,11 +3170,11 @@ public class MainController extends Application {
     }
 
     private boolean isIDNumberUnique(TextField idNumber, Label description) {
-        System.out.println(idNumber);
         for (Client c : clientsData) {
             System.out.println(c.getIdNumber());
             if (c.getIdNumber().equals(idNumber.getText().trim())) {
-                description.setText(currentLanguage.equals("English") ? "Non-unique ID" : "Неукальный ID");
+                description.setText(currentLanguage.equals("English") ? "Non-unique ID" : "Неуникальный ID");
+                idNumber.setStyle("-fx-border-color: rgb(255,13,19)");
                 return false;
             }
         }
@@ -3288,8 +3185,8 @@ public class MainController extends Application {
         connServer.sendString("init");
         for (int i = 0; i < 10; i++) {
             if (!connServer.isInProcess()) {
-                initUsersDataServerServer();
-                initClientsDataServerServer();
+                initUsersDataServer();
+                initClientsDataServer();
                 i = 15;
             }
             try {
@@ -3300,5 +3197,6 @@ public class MainController extends Application {
         }
     }
 
-    // TODO: TCP
+    // TODO: TCP баг с C#   + не красит красным поле ввода "Неуникальный ID" addClient проверить объект на се
+    // null парситься как строка "null"
 }

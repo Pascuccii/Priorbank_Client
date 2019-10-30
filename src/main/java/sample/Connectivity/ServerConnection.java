@@ -37,10 +37,12 @@ public class ServerConnection implements TCPConnectionListener {
             inProcess = false;
         String[] vals = value.split(" ");
         if (cnt == 0) {
-            if (value.matches("\\d USERS:")) {
+            if (value.matches("[0-9]+ USERS:")) {
+                userList.clear();
                 cnt = Integer.parseInt(vals[0]);
                 mode = "User";
-            } else if (value.matches("\\d CLIENTS:")) {
+            } else if (value.matches("[0-9]+ CLIENTS:")) {
+                clientList.clear();
                 cnt = Integer.parseInt(vals[0]);
                 mode = "Client";
             }
