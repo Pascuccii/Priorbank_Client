@@ -20,14 +20,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import sample.Connectivity.DatabaseConnection;
 import sample.Connectivity.ServerConnection;
 import sample.enums.Disability;
 import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
 
 import java.io.*;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +39,7 @@ public class MainController extends Application {
     private User currentUser;
     private String currentTheme;
     private String currentLanguage;
-    private DatabaseConnection connDB;
+    //private DatabaseConnection connDB;
     private ServerConnection connServer;
     private int theme = 0;
     private TableColumn maritalStatusColumn;
@@ -567,17 +565,14 @@ public class MainController extends Application {
     @FXML
     void initialize() throws SQLException {
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
-        connDB =
+        /*connDB =
                 new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
-                        "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");
+                        "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");*/
         connServer = new ServerConnection("127.0.0.1", 8189);
-
-        serverConnectButton.setOnAction(event -> new Thread() {
-            @Override
-            public void run() {
-                initDataFromServer();
-            }
-        }.start());
+        if (!connServer.exists()) {
+            loginWarning.setStyle("-fx-text-fill: #d85751");
+            loginWarning.setText("No connection.");
+        }
 
 
         //       initUsersData();
@@ -873,34 +868,36 @@ public class MainController extends Application {
         menuUser.getStyleClass().add("menu");
         primaryAnchorPane.getStyleClass().add("primaryAnchorPane");
         primaryAnchorPane.setOnKeyPressed(keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case DIGIT1:
-                    if (currentUser.getAccessMode() == 1)
-                        menuAdminButton1.fire();
-                    else
-                        menuUserButton1.fire();
-                    break;
-                case DIGIT2:
-                    if (currentUser.getAccessMode() == 1)
-                        menuAdminButton2.fire();
-                    else
-                        menuUserButton2.fire();
-                    break;
-                case DIGIT3:
-                    if (currentUser.getAccessMode() == 1)
-                        menuAdminButton3.fire();
-                    else
-                        menuUserButton3.fire();
-                    break;
-                case DIGIT4:
-                    if (currentUser.getAccessMode() == 1)
-                        menuAdminButton4.fire();
-                    else
-                        menuUserButton4.fire();
-                    break;
-                case ESCAPE:
-                    logoutButtonAdmin.fire();
-                    break;
+            if (currentUser != null) {
+                switch (keyEvent.getCode()) {
+                    case DIGIT1:
+                        if (currentUser.getAccessMode() == 1)
+                            menuAdminButton1.fire();
+                        else
+                            menuUserButton1.fire();
+                        break;
+                    case DIGIT2:
+                        if (currentUser.getAccessMode() == 1)
+                            menuAdminButton2.fire();
+                        else
+                            menuUserButton2.fire();
+                        break;
+                    case DIGIT3:
+                        if (currentUser.getAccessMode() == 1)
+                            menuAdminButton3.fire();
+                        else
+                            menuUserButton3.fire();
+                        break;
+                    case DIGIT4:
+                        if (currentUser.getAccessMode() == 1)
+                            menuAdminButton4.fire();
+                        else
+                            menuUserButton4.fire();
+                        break;
+                    case ESCAPE:
+                        logoutButtonAdmin.fire();
+                        break;
+                }
             }
         });
         leftAnchorPane.getStyleClass().add("leftAnchorPane");
@@ -1129,40 +1126,75 @@ public class MainController extends Application {
         });
 
         loginButton.setOnAction(actionEvent -> {
-            loginWarning.setStyle("-fx-text-fill: #d85751");
-            boolean was = false;
-            String enteredUsername = usernameField.getText();
-            String enteredPassword = passwordField.getText();
-
-            if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-                if (connDB.isConnected()) {
-                    for (User u : usersData)
-                        if (enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
-                            was = true;
-                            currentUser = u;
-                            break;
-                        }
-
-                    if (was) {
-                        try {
-                            loginSuccess();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    } else
-                        loginWarning.setText("Wrong login/password.");
-                } else
+            if (!connServer.exists()) {
+                connServer = new ServerConnection("127.0.0.1", 8189);
+                if (connServer.exists()) {
+                    loginWarning.setStyle("-fx-text-fill: #7f8e55");
+                    loginWarning.setText("Connection established.");
+                } else {
+                    loginWarning.setStyle("-fx-text-fill: #d85751");
                     loginWarning.setText("No connection.");
-            } else
-                loginWarning.setText("Username/password must be at least 3 characters");
+                }
+                if (connServer.exists())
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            initDataFromServer();
+                        }
+                    }.start();
+            } else {
+                loginWarning.setStyle("-fx-text-fill: #d85751");
+                boolean was = false;
+                String enteredUsername = usernameField.getText();
+                String enteredPassword = passwordField.getText();
+
+                if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
+                    if (connServer.exists()) {
+                        for (User u : usersData)
+                            if (enteredUsername.equals(u.getUsername()) && enteredPassword.equals(u.getPassword())) {
+                                was = true;
+                                currentUser = u;
+                                break;
+                            }
+
+                        if (was) {
+                            try {
+                                loginSuccess();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        } else
+                            loginWarning.setText("Wrong login/password.");
+                    } else
+                        loginWarning.setText("No connection.");
+                } else
+                    loginWarning.setText("Username/password must be at least 3 characters");
+            }
         });
-        signUpButton.setOnAction(actionEvent -> registration_User(loginWarning, usernameField.getText(), passwordField.getText()));
+        signUpButton.setOnAction(actionEvent -> {
+            if (!connServer.exists()) {
+                loginWarning.setText("No connection.");
+                connServer = new ServerConnection("127.0.0.1", 8189);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        initDataFromServer();
+                    }
+                }.start();
+            } else {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        initDataFromServer();
+                    }
+                }.start();
+                registration_User(loginWarning, usernameField.getText(), passwordField.getText());
+            }
+        });
         logoutButtonAdmin.setOnAction(actionEvent -> {
             saveLastConfig();
-            loginBegin();
-        });
-        logoutButtonAdmin.setOnAction(actionEvent -> {
-            saveLastConfig();
+            usernameField.clear();
+            passwordField.clear();
             loginBegin();
         });
         changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> submitId());
@@ -1487,7 +1519,7 @@ public class MainController extends Application {
         });
         searchButton.setOnAction(actionEvent -> searchUser());
         searchButtonClient.setOnAction(actionEvent -> searchClient());
-        databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
+        //databaseSettingsConnectButton.setOnAction(actionEvent -> newConnection());
 
         //#######################################################################УБРАТЬ
         addClientMobilePhoneTextField.setText("");
@@ -1511,7 +1543,24 @@ public class MainController extends Application {
 
 
         translate("English");
-        initDataFromServer();
+        if (connServer.exists())
+            initDataFromServer();
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (!connServer.exists() && currentUser != null) {
+                        loginBegin();
+                    }
+
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
         loadLastConfig();
         loginBegin();
     } //INITIALIZE
@@ -2003,17 +2052,17 @@ public class MainController extends Application {
                     "-fx-background-position: 1 1;");
     }
 
-    private void loginBegin() {
-        menuAdmin.setVisible(false);
-        menuUser.setVisible(false);
-        leftAnchorPane.setDisable(true);
-        currentUser = null;
-        currentUserLabelAdmin.setText("");
-        currentUserLabelUser.setText("");
-        setAllInvisible();
-        loginPane.setVisible(true);
-        usernameField.clear();
-        passwordField.clear();
+    private synchronized void loginBegin() {
+        try {
+            menuAdmin.setVisible(false);
+            menuUser.setVisible(false);
+            leftAnchorPane.setDisable(true);
+            currentUser = null;
+            setAllInvisible();
+            loginPane.setVisible(true);
+        } catch (IllegalStateException e) {
+            System.out.println("GG");
+        }
     }
 
     private void loginSuccess() throws SQLException {
@@ -2057,7 +2106,7 @@ public class MainController extends Application {
 
         settingsWarningLabel.setStyle("-fx-text-fill: #d85751");
         if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
-            if (connDB.isConnected()) {
+            if (!connServer.isClosed()) {
                 for (User u : usersData)
                     if (enteredUsername.equals(u.getUsername()) && currentUser.getId() != u.getId()) {
                         was = true;
@@ -2095,7 +2144,7 @@ public class MainController extends Application {
 
         if (submitId()) {
             if (!(enteredPassword.length() < 3 && enteredUsername.length() < 3)) {
-                if (connDB.isConnected()) {
+                if (!connServer.isClosed()) {
                     for (User u : usersData)
                         if (enteredUsername.equals(u.getUsername())) {
                             was = true;
@@ -2130,7 +2179,7 @@ public class MainController extends Application {
     private boolean submitId() {
         if (StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText())) {
             int id = Integer.parseInt(changeUser_AnchorPane_Id.getText());
-            if (connDB.isConnected())
+            if (!connServer.isClosed())
                 for (User u : usersData)
                     if (id == u.getId()) {
                         changeUser_AnchorPane_Username.setText(u.getUsername());
@@ -2150,14 +2199,13 @@ public class MainController extends Application {
     private void deleteUsers() {
         if (deleteUserTextField.getText().equals("all")) {
             deleteUserTextField.setText("");
-            try {
-                String prepStat = "DELETE FROM `test`.`users` WHERE (`id` > -1)";
-                PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                preparedStatement.execute();
-                initUsersDataServerBuffer();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            connServer.sendString("deleteAllUsers");
+            new Thread() {
+                @Override
+                public void run() {
+                    initDataFromServer();
+                }
+            }.start();
         } else {
             String[] ids = deleteUserTextField.getText().split(",");
             for (String id : ids) {
@@ -2185,33 +2233,30 @@ public class MainController extends Application {
         boolean was = false;
 
         if (!(password.length() < 3 || username.length() < 3)) {
-            if (connDB.isConnected()) {
-                for (User u : usersData)
-                    if (username.equals(u.getUsername())) {
-                        was = true;
-                        break;
+            for (User u : usersData)
+                if (username.equals(u.getUsername())) {
+                    was = true;
+                    break;
+                }
+
+            if (!was) {
+                createUser_AnchorPane_Username.setText("");
+                createUser_AnchorPane_Password.setText("");
+                createUser_AnchorPane_Email.setText("");
+                User u = new User(0, access_mode, username, password, email);
+                connServer.sendString("addUser|" + u.toString());
+                new Thread() {
+                    @Override
+                    public void run() {
+                        initDataFromServer();
+                        System.out.println("added");
                     }
+                }.start();
 
-                if (!was) {
-                    createUser_AnchorPane_Username.setText("");
-                    createUser_AnchorPane_Password.setText("");
-                    createUser_AnchorPane_Email.setText("");
-                    User u = new User(0, access_mode, username, password, email);
-                    connServer.sendString("addUser|" + u.toString());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            initDataFromServer();
-                            System.out.println("added");
-                        }
-                    }.start();
-
-                    warningLabel.setStyle("-fx-text-fill: #7f8e55");
-                    warningLabel.setText(username + " registered");
-                } else
-                    warningLabel.setText("Username is not free");
+                warningLabel.setStyle("-fx-text-fill: #7f8e55");
+                warningLabel.setText(username + " registered");
             } else
-                warningLabel.setText("No connection");
+                warningLabel.setText("Username is not free");
         } else {
             warningLabel.setText("Username/password must be at least 3 characters");
         }
@@ -2224,36 +2269,32 @@ public class MainController extends Application {
         boolean was = false;
 
         if (!(password.length() < 3 || username.length() < 3)) {
-            if (connDB.isConnected()) {
-                for (User u : usersData)
-                    if (username.equals(u.getUsername())) {
-                        was = true;
-                        break;
-                    }
+            for (User u : usersData)
+                if (username.equals(u.getUsername())) {
+                    was = true;
+                    break;
+                }
 
-                if (!was) {
-                    try {
-                        String prepStat = "INSERT INTO `test`.`users` (`name`, `password`) VALUES (?, ?)";
-                        PreparedStatement preparedStatement = connDB.getConnection().prepareStatement(prepStat);
-                        preparedStatement.setString(1, username);
-                        preparedStatement.setString(2, password);
-                        preparedStatement.execute();
-                        initUsersDataServerBuffer();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+            if (!was) {
+                User u = new User(0, 0, username, password, "");
+                connServer.sendString("addUser|" + u.toString());
+                new Thread() {
+                    @Override
+                    public void run() {
+                        initDataFromServer();
+                        System.out.println("added");
                     }
+                }.start();
 
-                    warningLabel.setStyle("-fx-text-fill: #7f8e55");
-                    warningLabel.setText(username + " registered");
-                } else
-                    warningLabel.setText("Username is not free");
+                warningLabel.setStyle("-fx-text-fill: #7f8e55");
+                warningLabel.setText(username + " registered");
             } else
-                warningLabel.setText("No connection");
+                warningLabel.setText("Username is not free");
         } else
             warningLabel.setText("Username/password must be at least 3 characters");
     }
 
-    private void newConnection() {
+    /*private void newConnection() {
         String enteredURL = databaseSettingsURLTextField.getText();
         String enteredUsername = databaseSettingsUsernameTextField.getText();
         String enteredPassword = databaseSettingsPasswordTextField.getText();
@@ -2275,7 +2316,7 @@ public class MainController extends Application {
                     databaseSettingsConnectionStatusLabel.setText("???");
                     break;
             }
-    }
+    }*/
 
     private void minimize() {
         Stage stage = (Stage) minimizeButton.getScene().getWindow();
@@ -2375,7 +2416,7 @@ public class MainController extends Application {
     }
 
     /*private void initUsersData() throws SQLException {
-        if (connDB.isConnected()) {
+        if (!connServer.isClosed()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             usersTable.setItems(usersData);
             Statement statement = connDB.getConnection().createStatement();
@@ -2405,7 +2446,7 @@ public class MainController extends Application {
     }
 
     private void initClientsData() throws SQLException {
-        if (connDB.isConnected()) {
+        if (!connServer.isClosed()) {
             connectionIndicator.setStyle("-fx-background-image: url(assets/indicator-green.png)");
             Statement statement = connDB.getConnection().createStatement();
             Statement statement2 = connDB.getConnection().createStatement();
@@ -3212,17 +3253,21 @@ public class MainController extends Application {
     }
 
     private synchronized void initDataFromServer() {
-        connServer.sendString("init");
-        for (int i = 0; i < 10; i++) {
-            if (!connServer.isInProcess()) {
-                initUsersDataServerBuffer();
-                initClientsDataServerBuffer();
-                i = 15;
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (!connServer.exists())
+            loginBegin();
+        else {
+            connServer.sendString("init");
+            for (int i = 0; i < 10; i++) {
+                if (!connServer.isInProcess()) {
+                    initUsersDataServerBuffer();
+                    initClientsDataServerBuffer();
+                    i = 15;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

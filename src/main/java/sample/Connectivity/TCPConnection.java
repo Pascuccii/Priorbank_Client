@@ -58,6 +58,10 @@ public class TCPConnection {
         }
     }
 
+    public boolean isClosed() {
+        return socket.isClosed();
+    }
+
     @Override
     public String toString() {
         return "TCPConnection: " + socket.getInetAddress() + ": " + socket.getPort();

@@ -6,8 +6,6 @@ import javafx.collections.ObservableList;
 import sample.Controls.Client;
 import sample.Controls.User;
 
-import java.io.IOException;
-
 public class ServerConnection implements TCPConnectionListener {
 
 
@@ -21,8 +19,18 @@ public class ServerConnection implements TCPConnectionListener {
     public ServerConnection(String ip, int port) {
         try {
             connection = new TCPConnection(this, ip, port);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Connection exception: " + e);
+        }
+    }
+
+    public boolean reconnect(String ip, int port) {
+        try {
+            connection = new TCPConnection(this, ip, port);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -58,6 +66,7 @@ public class ServerConnection implements TCPConnectionListener {
     @Override
     public void onDisconnect(TCPConnection tcpConnection) {
         printMessage("Connection closed...");
+        connection = null;
     }
 
     @Override
@@ -66,10 +75,12 @@ public class ServerConnection implements TCPConnectionListener {
     }
 
     public void sendString(String msg) {
-        if (msg.equals("init"))
-            inProcess = true;
-        if (!msg.equals(""))
-            connection.sendString(msg);
+        if (exists()) {
+            if (msg.equals("init"))
+                inProcess = true;
+            if (!msg.equals(""))
+                connection.sendString(msg);
+        }
     }
 
     private synchronized void printMessage(String msg) {
@@ -98,5 +109,14 @@ public class ServerConnection implements TCPConnectionListener {
 
     public boolean isInProcess() {
         return inProcess;
+    }
+
+
+    public synchronized boolean exists() {
+        return connection != null;
+    }
+
+    public synchronized boolean isClosed() {
+        return connection.isClosed();
     }
 }
