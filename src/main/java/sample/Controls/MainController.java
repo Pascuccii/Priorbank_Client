@@ -575,6 +575,7 @@ public class MainController extends Application {
         }
 
 
+
         //       initUsersData();
         //       initClientsData();
 
@@ -1485,7 +1486,7 @@ public class MainController extends Application {
         themeItem_Light.setOnAction(actionEvent -> {
             setTheme("Light");
         });
-        themeItem_Light.setDisable(true);
+        themeItem_Light.setDisable(false);
 
         resetSearchButton.getStyleClass().add("resetSearchButton");
         resetSearchButtonClient.getStyleClass().add("resetSearchButton");
@@ -2008,7 +2009,7 @@ public class MainController extends Application {
                 fixImage.setImage(new Image("assets/fix-black.png"));
 
                 break;
-            /*case "light":
+            case "light":
                 themeButton.setText("Light");
                 currentTheme = "Light";
                 if (currentUser != null)
@@ -2017,7 +2018,7 @@ public class MainController extends Application {
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
                 fixImage.setImage(new Image("assets/fix-white.png"));
 
-                break;*/
+                break;
         }
     }
 
@@ -3152,7 +3153,8 @@ public class MainController extends Application {
             result = addClientFillingError(addClientRegistrationCityTextField, addClientRegistrationCityDescription);
         if (!addClientPassportSeriesTextField.getText().trim().matches("[A-Z]{2}"))
             result = addClientFillingError(addClientPassportSeriesTextField, addClientPassportSeriesDescription);
-        if (!addClientPassportNumberTextField.getText().trim().matches("[\\d]{7}"))
+
+        if (!addClientPassportNumberTextField.getText().trim().matches("[0-9]{7}"))
             result = addClientFillingError(addClientPassportNumberTextField, addClientPassportNumberDescription);
         if (!addClientIssuedByTextField.getText().trim().matches("[а-яА-Я\\-\\s/.\\d]{2,40}"))
             result = addClientFillingError(addClientIssuedByTextField, addClientIssuedByDescription);
@@ -3162,8 +3164,8 @@ public class MainController extends Application {
             result = addClientFillingError(addClientCitizenshipTextField, addClientCitizenshipDescription);
         if (!addClientIDNumberTextField.getText().trim().matches("[0-9A-Z]{14}"))
             result = addClientFillingError(addClientIDNumberTextField, addClientIDNumberDescription);
-        else
-            result = isIDNumberUnique(addClientIDNumberTextField, addClientIDNumberDescription);
+        if (!isIDNumberUnique(addClientIDNumberTextField, addClientIDNumberDescription))
+            result = false;
         if (!addClientMonthlyIncomeTextField.getText().trim().matches("^[0-9]+(\\.[0-9]+)?$") && !addClientMonthlyIncomeTextField.getText().equals(""))
             result = addClientFillingError(addClientMonthlyIncomeTextField, addClientMonthlyIncomeDescription);
         if (!addClientEmailTextField.getText().trim().matches("(?:[a-z0-9!_-]+(?:\\.[a-z0-9!_-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+))") && !addClientEmailTextField.getText().equals(""))
