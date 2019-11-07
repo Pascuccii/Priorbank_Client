@@ -930,6 +930,7 @@ public class MainController extends Application {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             saveLastConfig();
             stage.close();
+            System.exit(0);
         });
 
         languageButton.setFocusTraversable(false);
@@ -1572,6 +1573,7 @@ public class MainController extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainWindow.fxml"));
         primaryStage.setTitle("Main");
         Scene scene = new Scene(root, 800, 500, Color.TRANSPARENT);
+        primaryStage.getIcons().add(new Image("assets/client-icon.png"));
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         root.setOnMousePressed(mouseEvent -> {
             xOffset = mouseEvent.getSceneX();

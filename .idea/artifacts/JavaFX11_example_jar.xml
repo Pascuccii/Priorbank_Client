@@ -2,7 +2,7 @@
   <artifact type="jar" name="JavaFX11-example:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/JavaFX11_example_jar</output-path>
     <root id="archive" name="JavaFX11-example.jar">
-      <element id="module-output" name="JavaFX11-example" />
+      <element id="module-output" name="FLS_Client" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/11/javafx-graphics-11.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-media/11/javafx-media-11-win.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/EXTERNAL LIBRARIES/mysql-connector-java-5.1.47-bin.jar" path-in-jar="/" />
