@@ -27,13 +27,16 @@ import sample.enums.Retiree;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 @SuppressWarnings("ALL")
 public class MainController extends Application {
-
+    private Instant start;
+    private Instant stop;
     private double xOffset = 0;
     private double yOffset = 0;
     private User currentUser;
@@ -558,12 +561,15 @@ public class MainController extends Application {
     @FXML
     private Label loginWarning;
 
+
     public static void main(String[] args) {
+
         launch(args);
     }
 
     @FXML
     void initialize() throws SQLException {
+        start = Instant.now();
         primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
         /*connDB =
                 new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
@@ -922,6 +928,7 @@ public class MainController extends Application {
         exitButton.getStyleClass().add("exitButton");
 
         hideButton.setOnAction(actionEvent -> {
+            connServer.sendString("hello world :)");
             Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             stage2.setIconified(true);
         });
@@ -1199,6 +1206,12 @@ public class MainController extends Application {
             passwordField.clear();
             loginBegin();
         });
+        logoutButtonUser.setOnAction(actionEvent -> {
+            saveLastConfig();
+            usernameField.clear();
+            passwordField.clear();
+            loginBegin();
+        });
         changeUser_AnchorPane_IdSubmitButton.setOnAction(actionEvent -> submitId());
         changeUserButton.setOnAction(actionEvent -> {
             System.out.println(changeUser_AnchorPane_Username.getText() + " " + changeUser_AnchorPane_Password.getText());
@@ -1468,6 +1481,8 @@ public class MainController extends Application {
 
         languageItem_English.setOnAction(actionEvent -> {
             try {
+                if (currentUser != null)
+                    currentUser.setLanguageServer(connServer, "English");
                 translate("English");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -1475,6 +1490,8 @@ public class MainController extends Application {
         });
         languageItem_Russian.setOnAction(actionEvent -> {
             try {
+                if (currentUser != null)
+                    currentUser.setLanguageServer(connServer, "Russian");
                 translate("Russian");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -1482,9 +1499,13 @@ public class MainController extends Application {
         });
 
         themeItem_Dark.setOnAction(actionEvent -> {
+            if (currentUser != null)
+                currentUser.setThemeServer(connServer, "Dark");
             setTheme("Dark");
         });
         themeItem_Light.setOnAction(actionEvent -> {
+            if (currentUser != null)
+                currentUser.setThemeServer(connServer, "Light");
             setTheme("Light");
         });
         themeItem_Light.setDisable(false);
@@ -1547,6 +1568,8 @@ public class MainController extends Application {
         translate("English");
         if (connServer.exists())
             initDataFromServer();
+
+
         new Thread() {
             @Override
             public void run() {
@@ -1563,12 +1586,15 @@ public class MainController extends Application {
                 }
             }
         }.start();
+
+
         loadLastConfig();
         loginBegin();
     } //INITIALIZE
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        start = Instant.now();
         System.out.println("Starting...");
         Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainWindow.fxml"));
         primaryStage.setTitle("Main");
@@ -1586,6 +1612,8 @@ public class MainController extends Application {
         primaryStage.setMaximized(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+        stop = Instant.now();
+        System.out.println(String.valueOf(Duration.between(start, stop)));
     }
 
     @Override
@@ -1597,12 +1625,10 @@ public class MainController extends Application {
         try {
             File lastConfig = new File("src/main/java/sample/Controls/lastConfig.txt");
             BufferedReader reader = new BufferedReader(new FileReader(lastConfig));
-            String text = reader.readLine();
-            for (User u : usersData)
-                if (text.equals(u.getUsername())) {
-                    translate(u.getLanguage());
-                    setTheme(u.getTheme());
-                }
+            String theme = reader.readLine();
+            String language = reader.readLine();
+            translate(language);
+            setTheme(theme);
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
@@ -1617,7 +1643,7 @@ public class MainController extends Application {
                     if (lastConfig.createNewFile())
                         System.out.println("lastConfig.txt created.");
 
-                lastConfigWriter.write(currentUser.getUsername());
+                lastConfigWriter.write(currentUser.getLanguage() + "\n" + currentUser.getTheme());
                 lastConfigWriter.flush();
                 System.out.println("last config saved");
             }
@@ -1630,8 +1656,6 @@ public class MainController extends Application {
         switch (language) {
             case "English":
                 currentLanguage = "English";
-                if (currentUser != null)
-                    currentUser.setLanguageServer(connServer, "English");
                 searchField.setPromptText("Search...");
                 searchFieldClient.setPromptText("Search...");
                 languageButton.setText("English");
@@ -1814,8 +1838,6 @@ public class MainController extends Application {
                 break;
             case "Russian":
                 currentLanguage = "Russian";
-                if (currentUser != null)
-                    currentUser.setLanguageServer(connServer, "Russian");
                 searchField.setPromptText("Искать...");
                 searchFieldClient.setPromptText("Искать...");
                 languageButton.setText("Русский");
@@ -2004,8 +2026,6 @@ public class MainController extends Application {
             case "dark":
                 themeButton.setText("Dark");
                 currentTheme = "Dark";
-                if (currentUser != null)
-                    currentUser.setThemeServer(connServer, "Dark");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
                 fixImage.setImage(new Image("assets/fix-black.png"));
@@ -2014,8 +2034,6 @@ public class MainController extends Application {
             case "light":
                 themeButton.setText("Light");
                 currentTheme = "Light";
-                if (currentUser != null)
-                    currentUser.setThemeServer(connServer, "Light");
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
                 fixImage.setImage(new Image("assets/fix-white.png"));
@@ -2060,6 +2078,7 @@ public class MainController extends Application {
             menuAdmin.setVisible(false);
             menuUser.setVisible(false);
             leftAnchorPane.setDisable(true);
+            if (currentUser != null) connServer.sendString("setCurrentUser|null|");
             currentUser = null;
             setAllInvisible();
             loginPane.setVisible(true);
@@ -2089,6 +2108,7 @@ public class MainController extends Application {
         accountSettingsPasswordTextField.setText(currentUser.getPassword());
         accountSettingsEmailTextField.setText(currentUser.getEmail());
 
+        connServer.sendString("setCurrentUser|" + currentUser.getUsername() + "|");
         loginPane.setVisible(false);
         loginWarning.setText("");
     }
@@ -2149,9 +2169,10 @@ public class MainController extends Application {
             if (!(enteredPassword.length() < 3 && enteredUsername.length() < 3)) {
                 if (!connServer.isClosed()) {
                     for (User u : usersData)
-                        if (enteredUsername.equals(u.getUsername())) {
-                            was = true;
-                            break;
+                        if (enteredUsername.equals(u.getUsername()))
+                            if (enteredId != u.getId()) {
+                                was = true;
+                                break;
                         }
 
                     if (!was) {
@@ -2331,10 +2352,7 @@ public class MainController extends Application {
             fixImage2.setLayoutX(526);
             fixImage2.setLayoutY(233);
             createUser_AnchorPane.setLayoutY(212);
-            if (currentTheme.equals("Dark"))
-                minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
-            else
-                minimizeButton.setStyle("-fx-background-image: url(assets/expand-black.png)");
+            minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
             loginElementsPane.setLayoutX(250);
             loginElementsPane.setLayoutY(176);
             loginWarning.setLayoutX(45);
@@ -2377,10 +2395,7 @@ public class MainController extends Application {
             fixImage2.setLayoutX(1274);
             fixImage2.setLayoutY(402.7);
             createUser_AnchorPane.setLayoutY(667);
-            if (currentTheme.equals("Dark"))
-                minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
-            else
-                minimizeButton.setStyle("-fx-background-image: url(assets/minimize-black.png)");
+            minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
             loginElementsPane.setLayoutX(610);
             loginElementsPane.setLayoutY(350);
             loginWarning.setLayoutX(405);
