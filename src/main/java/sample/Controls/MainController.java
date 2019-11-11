@@ -3217,6 +3217,26 @@ public class MainController extends Application {
         if (!addClientHomePhoneTextField.getText().trim().matches("[0-9]{7}") && !addClientHomePhoneTextField.getText().equals(""))
             result = addClientFillingError(addClientHomePhoneTextField, addClientHomePhoneDescription);
 
+        if (addClientBirthDatePicker.getValue().isAfter(LocalDate.now())) {
+            result = false;
+            addClientBirthDatePicker.setStyle("-fx-border-color: rgb(255,13,19);" +
+                    "-fx-border-width: 1px");
+            addClientBirthDateDescription.setText(currentLanguage.equals("English") ? "Wrong format" : "Неверный формат");
+        } else {
+            addClientBirthDatePicker.setStyle("-fx-border-color: transparent;" +
+                    "-fx-border-width: 0px");
+            addClientBirthDateDescription.setText("");
+        }
+        if (addClientIssuedDatePicker.getValue().isAfter(LocalDate.now())) {
+            result = false;
+            addClientIssuedDatePicker.setStyle("-fx-border-color: rgb(255,13,19);" +
+                    "-fx-border-width: 1px");
+            addClientIssuedDateDescription.setText(currentLanguage.equals("English") ? "Wrong format" : "Неверный формат");
+        } else {
+            addClientIssuedDatePicker.setStyle("-fx-border-color: transparent;" +
+                    "-fx-border-width: 0px");
+            addClientIssuedDateDescription.setText("");
+        }
 
         if (result) {
             System.out.println("Good");
@@ -3316,5 +3336,5 @@ public class MainController extends Application {
         }
     }
 
-    // TODO: шифоров очка
+    // TODO:
 }

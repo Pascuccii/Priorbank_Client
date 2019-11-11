@@ -302,11 +302,11 @@
                                                             <Label fx:id="addClientIDNumberLabel" layoutX="15.0"
                                                                    layoutY="260.0" text="Id number"/>
                                                             <DatePicker fx:id="addClientIssuedDatePicker"
-                                                                        layoutX="130.0" layoutY="115.0"
+                                                                        editable="false" layoutX="130.0" layoutY="115.0"
                                                                         prefHeight="27.0" prefWidth="161.0"/>
-                                                            <DatePicker fx:id="addClientBirthDatePicker" layoutX="130.0"
-                                                                        layoutY="185.0" prefHeight="27.0"
-                                                                        prefWidth="161.0"/>
+                                                            <DatePicker fx:id="addClientBirthDatePicker"
+                                                                        editable="false" layoutX="130.0" layoutY="185.0"
+                                                                        prefHeight="27.0" prefWidth="161.0"/>
                                                             <TextField fx:id="addClientPassportSeriesTextField"
                                                                        layoutX="130.0" layoutY="10.0"/>
                                                             <TextField fx:id="addClientPassportNumberTextField"
