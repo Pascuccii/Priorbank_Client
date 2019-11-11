@@ -26,12 +26,18 @@ import sample.enums.MaritalStatus;
 import sample.enums.Retiree;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Iterator;
+
+import static java.lang.Thread.sleep;
 
 @SuppressWarnings("ALL")
 public class MainController extends Application {
@@ -140,8 +146,6 @@ public class MainController extends Application {
     private FlowPane menuUser;
     @FXML
     private Label currentUserLabelUser;
-    @FXML
-    private Button menuUserButton1;
     @FXML
     private Button menuUserButton2;
     @FXML
@@ -581,16 +585,8 @@ public class MainController extends Application {
         }
 
 
-
         //       initUsersData();
         //       initClientsData();
-
-
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        accessModeColumn.setCellValueFactory(new PropertyValueFactory<>("access_mode"));
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
 
         idClientColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -880,8 +876,6 @@ public class MainController extends Application {
                     case DIGIT1:
                         if (currentUser.getAccessMode() == 1)
                             menuAdminButton1.fire();
-                        else
-                            menuUserButton1.fire();
                         break;
                     case DIGIT2:
                         if (currentUser.getAccessMode() == 1)
@@ -928,7 +922,6 @@ public class MainController extends Application {
         exitButton.getStyleClass().add("exitButton");
 
         hideButton.setOnAction(actionEvent -> {
-            connServer.sendString("hello world :)");
             Stage stage2 = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             stage2.setIconified(true);
         });
@@ -956,7 +949,6 @@ public class MainController extends Application {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         menuAdminButton1.setOnAction(actionEvent -> selectMenuItem(menuAdminButton1, menuPane1));
-        menuUserButton1.setOnAction(actionEvent -> selectMenuItem(menuUserButton1, menuPane1));
         menuAdminButton2.setOnAction(actionEvent -> selectMenuItem(menuAdminButton2, menuPane2));
         menuUserButton2.setOnAction(actionEvent -> selectMenuItem(menuUserButton2, menuPane2));
         menuAdminButton3.setOnAction(actionEvent -> selectMenuItem(menuAdminButton3, menuPane3));
@@ -1136,7 +1128,10 @@ public class MainController extends Application {
 
         loginButton.setOnAction(actionEvent -> {
             if (!connServer.exists()) {
+                loginButton.setDisable(true);
+                signUpButton.setDisable(true);
                 connServer = new ServerConnection("127.0.0.1", 8189);
+
                 if (connServer.exists()) {
                     loginWarning.setStyle("-fx-text-fill: #7f8e55");
                     loginWarning.setText("Connection established.");
@@ -1155,7 +1150,16 @@ public class MainController extends Application {
                 loginWarning.setStyle("-fx-text-fill: #d85751");
                 boolean was = false;
                 String enteredUsername = usernameField.getText();
-                String enteredPassword = passwordField.getText();
+                String enteredPassword;
+                MessageDigest digest = null;
+                try {
+                    digest = MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                byte[] hash = digest.digest(passwordField.getText().trim().getBytes(StandardCharsets.UTF_8));
+                enteredPassword = Base64.getEncoder().encodeToString(hash);
 
                 if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
                     if (connServer.exists()) {
@@ -1179,17 +1183,28 @@ public class MainController extends Application {
                 } else
                     loginWarning.setText("Username/password must be at least 3 characters");
             }
+            loginButton.setDisable(false);
+            signUpButton.setDisable(false);
         });
         signUpButton.setOnAction(actionEvent -> {
             if (!connServer.exists()) {
-                loginWarning.setText("No connection.");
+                loginButton.setDisable(true);
+                signUpButton.setDisable(true);
                 connServer = new ServerConnection("127.0.0.1", 8189);
-                new Thread() {
-                    @Override
-                    public void run() {
-                        initDataFromServer();
-                    }
-                }.start();
+                if (connServer.exists()) {
+                    loginWarning.setStyle("-fx-text-fill: #7f8e55");
+                    loginWarning.setText("Connection established.");
+                } else {
+                    loginWarning.setStyle("-fx-text-fill: #d85751");
+                    loginWarning.setText("No connection.");
+                }
+                if (connServer.exists())
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            initDataFromServer();
+                        }
+                    }.start();
             } else {
                 new Thread() {
                     @Override
@@ -1199,6 +1214,8 @@ public class MainController extends Application {
                 }.start();
                 registration_User(loginWarning, usernameField.getText(), passwordField.getText());
             }
+            loginButton.setDisable(false);
+            signUpButton.setDisable(false);
         });
         logoutButtonAdmin.setOnAction(actionEvent -> {
             saveLastConfig();
@@ -1524,7 +1541,6 @@ public class MainController extends Application {
         });
         resetSearchButton.setOnAction(actionEvent -> {
             searchField.clear();
-            initUsersDataServerBuffer();
             new Thread() {
                 @Override
                 public void run() {
@@ -1663,7 +1679,6 @@ public class MainController extends Application {
                 loginPasswordLabel.setText("Password");
                 loginButton.setText("Log In");
                 menuAdminButton1.setText(" 1 User management");
-                menuUserButton1.setText(" 1 User management");
                 menuAdminButton2.setText(" 2 Client management");
                 menuUserButton2.setText(" 2 Client management");
                 menuAdminButton3.setText(" 3 Settings");
@@ -1845,7 +1860,6 @@ public class MainController extends Application {
                 loginPasswordLabel.setText("Пароль");
                 loginButton.setText("Войти");
                 menuAdminButton1.setText(" 1 Управление пользователями");
-                menuUserButton1.setText(" 1 Управление пользователями");
                 menuAdminButton2.setText(" 2 Управление клиентами");
                 menuUserButton2.setText(" 2 Управление клиентами");
                 menuAdminButton3.setText(" 3 Настройки");
@@ -2044,7 +2058,6 @@ public class MainController extends Application {
 
     private void selectMenuItem(Button menuItem, AnchorPane pane) {
         menuAdminButton1.setStyle("");
-        menuUserButton1.setStyle("");
         menuAdminButton2.setStyle("");
         menuUserButton2.setStyle("");
         menuAdminButton3.setStyle("");
@@ -2095,7 +2108,7 @@ public class MainController extends Application {
             databaseSettingsPane.setDisable(false);
         } else {
             menuUser.setVisible(true);
-            menuUserButton1.fire();
+            menuUserButton2.fire();
             databaseSettingsPane.setDisable(true);
         }
         translate(currentUser.getLanguage());
@@ -2124,8 +2137,19 @@ public class MainController extends Application {
     private void changeAccountData() {
         boolean was = false;
         String enteredUsername = accountSettingsUsernameTextField.getText();
-        String enteredPassword = accountSettingsPasswordTextField.getText();
         String enteredEmail = accountSettingsEmailTextField.getText();
+        if (enteredEmail.equals(""))
+            enteredEmail = "null";
+        String enteredPassword;
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return;
+        }
+        byte[] hash = digest.digest(accountSettingsPasswordTextField.getText().trim().getBytes(StandardCharsets.UTF_8));
+        enteredPassword = Base64.getEncoder().encodeToString(hash);
 
         settingsWarningLabel.setStyle("-fx-text-fill: #d85751");
         if (!(enteredPassword.length() < 3 || enteredUsername.length() < 3)) {
@@ -2137,7 +2161,7 @@ public class MainController extends Application {
                     }
 
                 if (!was) {
-                    connServer.sendString("changeAccountData|" + currentUser.getId() + "|" + enteredUsername + "|" + enteredPassword + "|" + enteredEmail);
+                    connServer.sendString("changeAccountData|" + currentUser.getId() + "|" + enteredUsername + "|" + enteredPassword + "|" + enteredEmail + "|");
 
                     new Thread() {
                         @Override
@@ -2161,6 +2185,7 @@ public class MainController extends Application {
                 StringUtils.isStrictlyNumeric(changeUser_AnchorPane_Id.getText()) ? Integer.parseInt(changeUser_AnchorPane_Id.getText()) : 0;
         String enteredUsername = changeUser_AnchorPane_Username.getText();
         String enteredPassword = changeUser_AnchorPane_Password.getText();
+
         String enteredEmail = changeUser_AnchorPane_Email.getText();
         int enteredAccessMode = (changeUser_AnchorPane_AccessMode_MenuButton.getText().equals("Admin") ||
                 changeUser_AnchorPane_AccessMode_MenuButton.getText().equals("Администратор")) ? 1 : 0;
@@ -2173,7 +2198,7 @@ public class MainController extends Application {
                             if (enteredId != u.getId()) {
                                 was = true;
                                 break;
-                        }
+                            }
 
                     if (!was) {
                         changeUser_AnchorPane_Id.setText("");
@@ -2267,7 +2292,7 @@ public class MainController extends Application {
                 createUser_AnchorPane_Username.setText("");
                 createUser_AnchorPane_Password.setText("");
                 createUser_AnchorPane_Email.setText("");
-                User u = new User(0, access_mode, username, password, email);
+                User u = new User(0, access_mode, username, password, email, false);
                 connServer.sendString("addUser|" + u.toString());
                 new Thread() {
                     @Override
@@ -2300,7 +2325,7 @@ public class MainController extends Application {
                 }
 
             if (!was) {
-                User u = new User(0, 0, username, password, "");
+                User u = new User(0, 0, username, password, "", false);
                 connServer.sendString("addUser|" + u.toString());
                 new Thread() {
                     @Override
@@ -3283,7 +3308,7 @@ public class MainController extends Application {
                     i = 15;
                 }
                 try {
-                    Thread.sleep(1000);
+                    sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -3291,5 +3316,5 @@ public class MainController extends Application {
         }
     }
 
-    // TODO:
+    // TODO: шифоров очка
 }

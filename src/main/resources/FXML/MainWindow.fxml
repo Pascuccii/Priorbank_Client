@@ -85,14 +85,6 @@
                                     <Insets left="4.0" />
                                  </padding>
                               </Label>
-                              <Button fx:id="menuUserButton1" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 1  User management">
-                                 <FlowPane.margin>
-                                    <Insets left="2.0" right="2.0" />
-                                 </FlowPane.margin>
-                                 <padding>
-                                    <Insets bottom="8.0" left="4.0" top="8.0" />
-                                 </padding>
-                              </Button>
                               <Button fx:id="menuUserButton2" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" prefHeight="34.0" prefWidth="205.0" text=" 2  Car management">
                                  <FlowPane.margin>
                                     <Insets left="2.0" right="2.0" />

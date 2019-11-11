@@ -57,7 +57,7 @@ public class ServerConnection implements TCPConnectionListener {
         } else {
             cnt--;
             if (mode.equals("User"))
-                userList.add(new User(value));
+                userList.add(new User(value, true));
             if (mode.equals("Client"))
                 clientList.add(new Client(value));
         }
