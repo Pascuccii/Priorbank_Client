@@ -1590,12 +1590,18 @@ public class MainController extends Application {
             @Override
             public void run() {
                 while (true) {
-                    if (!connServer.exists() && currentUser != null) {
+                    if (!connServer.exists()) {
+                        System.out.print("!e");
                         loginBegin();
+                    } else {
+                        if (!connServer.isClosed()) {
+                            System.out.print("!c ");
+                        }
                     }
 
+
                     try {
-                        sleep(1000);
+                        sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -3336,5 +3342,5 @@ public class MainController extends Application {
         }
     }
 
-    // TODO:
+    // TODO: вход на разных серверах за один аккаунт
 }

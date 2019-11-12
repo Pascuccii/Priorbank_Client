@@ -41,25 +41,29 @@ public class ServerConnection implements TCPConnectionListener {
 
     @Override
     public synchronized void onReceiveString(TCPConnection tcpConnection, String value) {
-        if (value.equals("END"))
-            inProcess = false;
-        String[] vals = value.split(" ");
-        if (cnt == 0) {
-            if (value.matches("[0-9]+ USERS:")) {
-                userList.clear();
-                cnt = Integer.parseInt(vals[0]);
-                mode = "User";
-            } else if (value.matches("[0-9]+ CLIENTS:")) {
-                clientList.clear();
-                cnt = Integer.parseInt(vals[0]);
-                mode = "Client";
+        if (value != null) {
+            if (value.equals("END"))
+                inProcess = false;
+            String[] vals = value.split(" ");
+            if (cnt == 0) {
+                if (value.matches("[0-9]+ USERS:")) {
+                    userList.clear();
+                    cnt = Integer.parseInt(vals[0]);
+                    mode = "User";
+                } else if (value.matches("[0-9]+ CLIENTS:")) {
+                    clientList.clear();
+                    cnt = Integer.parseInt(vals[0]);
+                    mode = "Client";
+                }
+            } else {
+                cnt--;
+                if (mode.equals("User"))
+                    userList.add(new User(value, true));
+                if (mode.equals("Client"))
+                    clientList.add(new Client(value));
             }
-        } else {
-            cnt--;
-            if (mode.equals("User"))
-                userList.add(new User(value, true));
-            if (mode.equals("Client"))
-                clientList.add(new Client(value));
+            if (value.equals("close"))
+                connection.disconnect();
         }
     }
 
