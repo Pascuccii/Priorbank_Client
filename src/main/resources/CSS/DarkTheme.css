@@ -104,7 +104,7 @@
 }
 
 .menu > .button {
-    -fx-background-color: #383838;
+    -fx-background-color: linear-gradient(from 15px 20px to 17px 60px, rgb(60, 60, 60), rgb(69, 69, 69));
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-color: #4B4B4B;
@@ -113,7 +113,7 @@
 }
 
 .button {
-    -fx-background-color: #383838;
+    -fx-background-color: linear-gradient(from 15px 23px to 17px 40px, rgb(60, 60, 60), rgb(69, 69, 69));
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-color: #777777;
@@ -210,8 +210,7 @@
 }
 
 .title {
-    -fx-background-color: #282828;
-    -fx-opacity: 0.9;
+    -fx-background-color: linear-gradient(from 200px 0px to 600px 0px, rgb(40, 40, 40), rgba(52, 52, 52, 0.82));
 }
 
 .root {
@@ -245,7 +244,7 @@
 
 .signUpButton {
     -fx-background-image: url(../assets/signUpButton-white.png);
-    -fx-border-color: #4B4B4B;
+    -fx-border-color: #5a5a5a;
     -fx-background-size: 20pt;
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5 5.5;
@@ -256,7 +255,7 @@
 }
 
 .loginButton {
-    -fx-border-color: #4B4B4B;
+    -fx-border-color: #5a5a5a;
 }
 
 .loginWarning {
@@ -269,7 +268,7 @@
 }
 
 .menu-button {
-    -fx-background-color: #383838;
+    -fx-background-color: linear-gradient(from 15px 23px to 17px 40px, rgb(60, 60, 60), rgb(69, 69, 69));
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-border-width: 1;
@@ -352,6 +351,17 @@
     -fx-border-width: 0px;
 }
 
+.table-view .filler {
+    -fx-background-color: #282828;
+}
+
+.table-view .corner {
+    -fx-background-color: #383838;
+}
+
+.text-area .corner {
+    -fx-background-color: #383838;
+}
 .date-picker .text-field {
     -fx-border-color: transparent;
     -fx-border-width: 0px;

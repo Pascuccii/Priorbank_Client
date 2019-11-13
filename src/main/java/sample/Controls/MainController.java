@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -178,8 +177,6 @@ public class MainController extends Application {
     private Button searchButton;
     @FXML
     private Button resetSearchButton;
-    @FXML
-    private ImageView fixImage;
     @FXML
     private AnchorPane createUser_AnchorPane;
     @FXML
@@ -475,8 +472,6 @@ public class MainController extends Application {
     @FXML
     private MenuItem criteriaClientID;
     @FXML
-    private ImageView fixImage2;
-    @FXML
     private AnchorPane menuPane3;
     @FXML
     private AnchorPane menuPane31;
@@ -564,6 +559,8 @@ public class MainController extends Application {
     private PasswordField passwordField;
     @FXML
     private Label loginWarning;
+    @FXML
+    private Label titleLabel;
 
 
     public static void main(String[] args) {
@@ -578,7 +575,7 @@ public class MainController extends Application {
         /*connDB =
                 new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");*/
-        connServer = new ServerConnection("127.0.0.1", 8189);
+        connServer = new ServerConnection("192.168.0.185", 8189);
         if (!connServer.exists()) {
             loginWarning.setStyle("-fx-text-fill: #d85751");
             loginWarning.setText("No connection.");
@@ -798,7 +795,7 @@ public class MainController extends Application {
             }
         });
 
-
+        serverConnectButton.setOnAction(event -> connServer.sendString("addClient|0|Глеба|Скачков|Дмитриевича|2019-11-13|MP|3418582|Орган выдачи|2019-11-13|Минск|Минск|Козлова|null|null|null|null|null|Минск|Single|Беларусь|No|No|null|6632915P119P01"));
         clientsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         addClientNameDescription.setText("");
@@ -914,7 +911,6 @@ public class MainController extends Application {
         clientManagementScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         clientManagementScrollPane.setMinWidth(550);
         clientManagementScrollPane.setMaxWidth(1920);
-        fixImage.getStyleClass().add("fixImage");
 
 
         hideButton.getStyleClass().add("hideButton");
@@ -1130,7 +1126,7 @@ public class MainController extends Application {
             if (!connServer.exists()) {
                 loginButton.setDisable(true);
                 signUpButton.setDisable(true);
-                connServer = new ServerConnection("127.0.0.1", 8189);
+                connServer = new ServerConnection("192.168.0.185", 8189);
 
                 if (connServer.exists()) {
                     loginWarning.setStyle("-fx-text-fill: #7f8e55");
@@ -1190,7 +1186,7 @@ public class MainController extends Application {
             if (!connServer.exists()) {
                 loginButton.setDisable(true);
                 signUpButton.setDisable(true);
-                connServer = new ServerConnection("127.0.0.1", 8189);
+                connServer = new ServerConnection("192.168.0.185", 8189);
                 if (connServer.exists()) {
                     loginWarning.setStyle("-fx-text-fill: #7f8e55");
                     loginWarning.setText("Connection established.");
@@ -1590,16 +1586,8 @@ public class MainController extends Application {
             @Override
             public void run() {
                 while (true) {
-                    if (!connServer.exists()) {
-                        System.out.print("!e");
+                    if (!connServer.exists())
                         loginBegin();
-                    } else {
-                        if (!connServer.isClosed()) {
-                            System.out.print("!c ");
-                        }
-                    }
-
-
                     try {
                         sleep(200);
                     } catch (InterruptedException e) {
@@ -1647,8 +1635,10 @@ public class MainController extends Application {
         try {
             File lastConfig = new File("src/main/java/sample/Controls/lastConfig.txt");
             BufferedReader reader = new BufferedReader(new FileReader(lastConfig));
-            String theme = reader.readLine();
             String language = reader.readLine();
+            String theme = reader.readLine();
+            System.out.println("SAVED THEME: " + theme);
+            System.out.println("SAVED LANGUAGE: " + language);
             translate(language);
             setTheme(theme);
         } catch (IOException | SQLException e) {
@@ -2048,7 +2038,6 @@ public class MainController extends Application {
                 currentTheme = "Dark";
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/DarkTheme.css");
-                fixImage.setImage(new Image("assets/fix-black.png"));
 
                 break;
             case "light":
@@ -2056,7 +2045,6 @@ public class MainController extends Application {
                 currentTheme = "Light";
                 primaryAnchorPane.getStylesheets().clear();
                 primaryAnchorPane.getStylesheets().add("CSS/LightTheme.css");
-                fixImage.setImage(new Image("assets/fix-white.png"));
 
                 break;
         }
@@ -2081,15 +2069,8 @@ public class MainController extends Application {
             pane.requestFocus();
         }
         if (currentUser.getTheme().equals("Dark"))
-            menuItem.setStyle("-fx-background-image: url(assets/selected-white.png);" +
-                    "-fx-background-repeat: no-repeat;" +
-                    "-fx-background-size: 2pt 25pt;" +
-                    "-fx-background-position: 1 1;");
-        else
-            menuItem.setStyle("-fx-background-image: url(assets/selected-black.png);" +
-                    "-fx-background-repeat: no-repeat;" +
-                    "-fx-background-size: 2pt 25pt;" +
-                    "-fx-background-position: 1 1;");
+            menuItem.setStyle("-fx-border-width: 1 1 1 4;" +
+                    "-fx-border-color: #D8D8D8");
     }
 
     private synchronized void loginBegin() {
@@ -2380,8 +2361,6 @@ public class MainController extends Application {
             usersTable.setPrefHeight(154d);
             clientsTable.setPrefWidth(513d);
             clientsTable.setPrefHeight(200d);
-            fixImage2.setLayoutX(526);
-            fixImage2.setLayoutY(233);
             createUser_AnchorPane.setLayoutY(212);
             minimizeButton.setStyle("-fx-background-image: url(assets/expand-white.png)");
             loginElementsPane.setLayoutX(250);
@@ -2423,8 +2402,6 @@ public class MainController extends Application {
             usersTable.setPrefHeight(606d);
             clientsTable.setPrefWidth(1250d);
             clientsTable.setPrefHeight(370d);
-            fixImage2.setLayoutX(1274);
-            fixImage2.setLayoutY(402.7);
             createUser_AnchorPane.setLayoutY(667);
             minimizeButton.setStyle("-fx-background-image: url(assets/minimize-white.png)");
             loginElementsPane.setLayoutX(610);
@@ -3193,6 +3170,8 @@ public class MainController extends Application {
             result = addClientFillingError(addClientSurnameTextField, addClientSurnameDescription);
         if (!addClientPatronymicTextField.getText().trim().matches("[а-яА-Я]{2,30}"))
             result = addClientFillingError(addClientPatronymicTextField, addClientPatronymicDescription);
+        if (!isFullnameUnique(addClientNameTextField, addClientSurnameTextField, addClientPatronymicTextField, addClientNameDescription))
+            result = false;
         if (!addClientCityTextField.getText().trim().matches("[а-яА-Я.\\-\\s]{2,20}"))
             result = addClientFillingError(addClientCityTextField, addClientCityDescription);
         if (!addClientAddressTextField.getText().trim().matches("[а-яА-Я.\\-\\s/0-9]{2,40}"))
@@ -3204,6 +3183,8 @@ public class MainController extends Application {
 
         if (!addClientPassportNumberTextField.getText().trim().matches("[0-9]{7}"))
             result = addClientFillingError(addClientPassportNumberTextField, addClientPassportNumberDescription);
+        if (!isPassportNumberUnique(addClientPassportNumberTextField, addClientPassportNumberDescription))
+            result = false;
         if (!addClientIssuedByTextField.getText().trim().matches("[а-яА-Я\\-\\s/.\\d]{2,40}"))
             result = addClientFillingError(addClientIssuedByTextField, addClientIssuedByDescription);
         if (!addClientBirthPlaceTextField.getText().trim().matches("[а-яА-Я\\-\\s/.]{2,30}"))
@@ -3312,7 +3293,6 @@ public class MainController extends Application {
 
     private boolean isIDNumberUnique(TextField idNumber, Label description) {
         for (Client c : clientsData) {
-            System.out.println(c.getIdNumber());
             if (c.getIdNumber().equals(idNumber.getText().trim())) {
                 description.setText(currentLanguage.equals("English") ? "Non-unique ID" : "Неуникальный ID");
                 idNumber.setStyle("-fx-border-color: rgb(255,13,19)");
@@ -3321,6 +3301,29 @@ public class MainController extends Application {
         }
         return true;
     }
+
+    private boolean isPassportNumberUnique(TextField passNum, Label description) {
+        for (Client c : clientsData) {
+            if (c.getPassportNumber().equals(passNum.getText().trim())) {
+                description.setText(currentLanguage.equals("English") ? "Non-unique number" : "Неуникальный номер");
+                passNum.setStyle("-fx-border-color: rgb(255,13,19)");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isFullnameUnique(TextField name, TextField surname, TextField patro, Label description) {
+        for (Client c : clientsData) {
+            if (c.getName().equals(name.getText().trim()) && c.getSurname().equals(surname.getText().trim()) && c.getPatronymic().equals(patro.getText().trim())) {
+                description.setText(currentLanguage.equals("English") ? "Non-unique fullname" : "Неуникальное ФИО");
+                return false;
+            }
+        }
+        description.setText("");
+        return true;
+    }
+
 
     private synchronized void initDataFromServer() {
         if (!connServer.exists())
@@ -3342,5 +3345,8 @@ public class MainController extends Application {
         }
     }
 
-    // TODO: вход на разных серверах за один аккаунт
+    // TODO: ПРОДУБЛИРОВАТЬ ПРОВЕРКИ НА СЕРВЕР
+    //  вход на разных клиентах за один аккаунт
+    //  to write IP's and Port's of sockets in the title of each window
+    //  + попробовать в интернет
 }

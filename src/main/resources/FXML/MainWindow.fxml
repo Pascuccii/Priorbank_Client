@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="primaryAnchorPane" prefHeight="500.0" prefWidth="800.0" stylesheets="@../CSS/DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controls.MainController">
    <children>
@@ -12,6 +10,8 @@
             <Button fx:id="hideButton" focusTraversable="false" layoutX="517.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="3.0" />
             <Button fx:id="minimizeButton" focusTraversable="false" layoutX="543.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="3.0" />
             <Button fx:id="exitButton" focusTraversable="false" layoutX="569.4" layoutY="3.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+             <Label fx:id="titleLabel" layoutX="14.0" layoutY="5.0" prefHeight="18.0" prefWidth="341.0"
+                    AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="442.4" AnchorPane.topAnchor="5.0"/>
          </children>
          <padding>
             <Insets bottom="3.0" />
@@ -128,9 +128,8 @@
                 <AnchorPane fx:id="rightAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="369.0" prefWidth="409.0">
                      <children>
                          <AnchorPane fx:id="menuPane1" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-                                     prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0"
-                                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                     AnchorPane.topAnchor="0.0">
+                                     prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TextField fx:id="searchField" layoutX="221.0" layoutY="12.0" prefHeight="27.0" prefWidth="286.0" promptText="Search..." AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="271.0" AnchorPane.topAnchor="12.0" />
                               <TableView fx:id="usersTable" editable="true" focusTraversable="false" layoutX="14.0" layoutY="43.0" maxWidth="513.0" prefHeight="154.0" prefWidth="513.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="50.0">
@@ -159,11 +158,6 @@
                               </MenuButton>
                               <Button fx:id="searchButton" focusTraversable="false" layoutX="501.79999999999995" layoutY="12.0" mnemonicParsing="false" text="Search" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="12.0" />
                               <Button fx:id="resetSearchButton" focusTraversable="false" layoutX="266.0" layoutY="11.5" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" AnchorPane.rightAnchor="263.6" AnchorPane.topAnchor="11.5" />
-                              <ImageView fx:id="fixImage" fitHeight="25.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="fixImage" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="52.0">
-                                 <image>
-                                    <Image url="@../assets/fix-black.png" />
-                                 </image>
-                              </ImageView>
                                <AnchorPane fx:id="createUser_AnchorPane" layoutX="30.0" layoutY="212.0"
                                            prefHeight="82.0" prefWidth="538.0" AnchorPane.leftAnchor="16.0">
                                  <children>
@@ -206,8 +200,9 @@
                               </AnchorPane>
                            </children></AnchorPane>
                          <AnchorPane fx:id="menuPane2" minHeight="0.0" minWidth="0.0" prefHeight="160.0"
-                                     prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                     prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0"
+                                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                     AnchorPane.topAnchor="0.0">
                            <children>
                               <ScrollPane fx:id="clientManagementScrollPane" focusTraversable="false" prefHeight="462.0" prefWidth="573.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
@@ -532,11 +527,6 @@
                                                 <MenuItem fx:id="criteriaClientID" mnemonicParsing="false" text="ID" />
                                              </items>
                                           </MenuButton>
-                                          <ImageView fx:id="fixImage2" fitHeight="17.0" fitWidth="13.5" layoutX="524.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" scaleZ="-19.0" styleClass="fixImage">
-                                             <image>
-                                                <Image url="@../assets/fix-black-2.png" />
-                                             </image>
-                                          </ImageView>
                                        </children>
                                     </AnchorPane>
                                 </content>
