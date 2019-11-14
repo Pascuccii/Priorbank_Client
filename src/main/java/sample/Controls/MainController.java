@@ -575,7 +575,7 @@ public class MainController extends Application {
         /*connDB =
                 new DatabaseConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true" +
                         "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow", "root", "root");*/
-        connServer = new ServerConnection("192.168.0.185", 8189);
+        connServer = new ServerConnection("127.0.0.1", 8189);
         if (!connServer.exists()) {
             loginWarning.setStyle("-fx-text-fill: #d85751");
             loginWarning.setText("No connection.");
@@ -612,8 +612,9 @@ public class MainController extends Application {
         //patro, series, mob,
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setNameServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}") && isFullnameUnique(t.getNewValue(), cl.getSurname(), cl.getPatronymic())) {
+                cl.setNameServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -621,8 +622,9 @@ public class MainController extends Application {
         });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setSurnameServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,20}") && isFullnameUnique(cl.getName(), t.getNewValue(), cl.getPatronymic())) {
+                cl.setSurnameServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -630,8 +632,9 @@ public class MainController extends Application {
         });
         patronymicColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         patronymicColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPatronymicServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("[а-яА-Я]{2,30}") && isFullnameUnique(cl.getName(), cl.getSurname(), t.getNewValue())) {
+                cl.setPatronymicServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -639,10 +642,9 @@ public class MainController extends Application {
         });
         birthDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         birthDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            String s = t.getNewValue().trim();
-            System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setBirthDateServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$") && !LocalDate.parse(t.getNewValue()).isAfter(LocalDate.now())) {
+                cl.setBirthDateServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -659,8 +661,9 @@ public class MainController extends Application {
         });
         passportNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         passportNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("^\\d{7}$")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setPassportNumberServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("^\\d{7}$") && isPassportNumberUnique(t.getNewValue())) {
+                cl.setPassportNumberServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -677,10 +680,9 @@ public class MainController extends Application {
         });
         issuedDateColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         issuedDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            String s = t.getNewValue().trim();
-            System.out.println(s);
-            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIssuedDateServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("^\\d{4}[-/.](((0)[0-9])|((1)[0-2]))[-/.]([0-2][0-9]|(3)[0-1])$") && !LocalDate.parse(t.getNewValue()).isAfter(LocalDate.now())) {
+                cl.setIssuedDateServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -787,8 +789,9 @@ public class MainController extends Application {
         });
         idNumberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         idNumberColumn.setOnEditCommit((TableColumn.CellEditEvent<Client, String> t) -> {
-            if (t.getNewValue().trim().matches("[A-Z0-9]{14}")) {
-                (t.getTableView().getItems().get(t.getTablePosition().getRow())).setIdNumberServer(connServer, t.getNewValue());
+            Client cl = (t.getTableView().getItems().get(t.getTablePosition().getRow()));
+            if (t.getNewValue().trim().matches("[A-Z0-9]{14}") && isIDNumberUnique(t.getNewValue())) {
+                cl.setIdNumberServer(connServer, t.getNewValue());
                 clientsTable.requestFocus();
             } else {
                 initClientsDataServerBuffer();
@@ -1126,7 +1129,7 @@ public class MainController extends Application {
             if (!connServer.exists()) {
                 loginButton.setDisable(true);
                 signUpButton.setDisable(true);
-                connServer = new ServerConnection("192.168.0.185", 8189);
+                connServer = new ServerConnection("127.0.0.1", 8189);
 
                 if (connServer.exists()) {
                     loginWarning.setStyle("-fx-text-fill: #7f8e55");
@@ -1186,7 +1189,7 @@ public class MainController extends Application {
             if (!connServer.exists()) {
                 loginButton.setDisable(true);
                 signUpButton.setDisable(true);
-                connServer = new ServerConnection("192.168.0.185", 8189);
+                connServer = new ServerConnection("127.0.0.1", 8189);
                 if (connServer.exists()) {
                     loginWarning.setStyle("-fx-text-fill: #7f8e55");
                     loginWarning.setText("Connection established.");
@@ -3302,11 +3305,29 @@ public class MainController extends Application {
         return true;
     }
 
+    private boolean isIDNumberUnique(String idNumber) {
+        for (Client c : clientsData) {
+            if (c.getIdNumber().equals(idNumber.trim())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isPassportNumberUnique(TextField passNum, Label description) {
         for (Client c : clientsData) {
             if (c.getPassportNumber().equals(passNum.getText().trim())) {
                 description.setText(currentLanguage.equals("English") ? "Non-unique number" : "Неуникальный номер");
                 passNum.setStyle("-fx-border-color: rgb(255,13,19)");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isPassportNumberUnique(String passNum) {
+        for (Client c : clientsData) {
+            if (c.getPassportNumber().equals(passNum.trim())) {
                 return false;
             }
         }
@@ -3324,6 +3345,15 @@ public class MainController extends Application {
         return true;
     }
 
+    private boolean isFullnameUnique(String name, String surname, String patro) {
+        for (Client c : clientsData) {
+            if (c.getName().equals(name) && c.getSurname().equals(surname) && c.getPatronymic().equals(patro)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     private synchronized void initDataFromServer() {
         if (!connServer.exists())
@@ -3334,7 +3364,7 @@ public class MainController extends Application {
                 if (!connServer.isInProcess()) {
                     initUsersDataServerBuffer();
                     initClientsDataServerBuffer();
-                    i = 15;
+                    break;
                 }
                 try {
                     sleep(1000);
@@ -3345,8 +3375,5 @@ public class MainController extends Application {
         }
     }
 
-    // TODO: ПРОДУБЛИРОВАТЬ ПРОВЕРКИ НА СЕРВЕР
-    //  вход на разных клиентах за один аккаунт
-    //  to write IP's and Port's of sockets in the title of each window
-    //  + попробовать в интернет
+    // TODO: ПРОВЕРКИ РЕДАКТИРОВАНИЯ
 }
