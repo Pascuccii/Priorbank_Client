@@ -1309,7 +1309,7 @@ public class MainController extends Application {
         addClientMaritalStatusMenuButton.setOnAction(actionEvent -> addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuButton.getText()));
         addClientDisabilityMenuButton.setOnAction(actionEvent -> addClientDisabilityMenuButton.setText(criteriaClientID.getText()));
         addClientRetireeMenuButton.setOnAction(actionEvent -> addClientRetireeMenuButton.setText(criteriaClientID.getText()));
-
+        System.out.println("test");
         addClientMaritalStatusMenuItem_Single.setOnAction(actionEvent -> {
             addClientMaritalStatusMenuButton.setText(addClientMaritalStatusMenuItem_Single.getText());
             addClientMaritalStatusValue = MaritalStatus.Single;
