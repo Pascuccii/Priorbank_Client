@@ -41,6 +41,7 @@ public class ServerConnection implements TCPConnectionListener {
 
     @Override
     public synchronized void onReceiveString(TCPConnection tcpConnection, String value) {
+        System.out.println(value);
         if (value != null) {
             if (value.equals("END"))
                 inProcess = false;

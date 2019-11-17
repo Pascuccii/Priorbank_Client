@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="FLS_Client" />
+        <module name="Priorbank_Client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="FLS_Client" target="11" />
+      <module name="Priorbank" target="11" />
+      <module name="Priorbank_Client" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
